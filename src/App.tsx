@@ -5,14 +5,12 @@ const App = () => {
 
   const handleClick = async () => {
     const response = await electron.openFile();
-    console.log("Electron's Response:", response);
     setPath(response);
-    console.log('New Path:', path);
   };
 
   return (
     <>
-      <h1>Testing</h1>
+      <h1>Testing Test</h1>
       <button onClick={ handleClick }>Upload file</button>
       <input
         type="text"

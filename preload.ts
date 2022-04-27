@@ -1,12 +1,9 @@
 const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('electron', {
-  openFile: {
-    async openFile() {
-      console.log('clicked!');
+  openFile: 
+    async () => {
       const response = await ipcRenderer.invoke('open');
-      console.log(response);
       return response;
     },
-  },
 });
