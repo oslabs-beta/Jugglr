@@ -32,9 +32,10 @@ try{
 
 
  app.whenReady().then(createWindow)
+ 
 ipcMain.handle('open', async (_)=>{
     
-    const response = await dialog.showOpenDialog({properties: ['openFile'] }).then(function (response) {
+    const response1 = await dialog.showOpenDialog({properties: ['openFile'] }).then(function (response) {
             if (!response.canceled) {
                 // handle fully qualified file name
               
@@ -46,7 +47,7 @@ ipcMain.handle('open', async (_)=>{
                 return '';
             }
         })
-   return response;
+   return response1;
     
 })
  app.on( 'window-all-closed', () => {
