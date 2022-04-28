@@ -14,6 +14,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@mantine/core": "^4.2.1",
+    "@mantine/form": "^4.2.1",
+    "@mantine/hooks": "^4.2.1",
+    "@mantine/next": "^4.2.1",
     "@reduxjs/toolkit": "^1.8.1",
     "@types/dockerode": "^3.3.8",
     "@types/pg": "^8.6.5",
