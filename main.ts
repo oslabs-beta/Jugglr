@@ -17,31 +17,33 @@ function createWindow() {
       nodeIntegration: true,
       contextIsolation: true,
       preload: path.join(__dirname, "preload.ts")
-    },
+    }
   });
-  win.loadFile('index.html');
+  win.loadFile("index.html");
   //win.loadURL('localhost://env variable for endpoint')
   win.webContents.openDevTools();
 }
 
 app.whenReady().then(createWindow);
 
-ipcMain.handle("open",async (_) => {
-   const response = await dialog.showOpenDialog({ properties: ["openFile"] }).then((responseValue) => {
-       if (!responseValue.canceled) {
-           // handle fully qualified file name
-           const fileName = responseValue.filePaths[0];
-           return fileName;
-       } else {
+ipcMain.handle("open", async _ => {
+  const response = await dialog
+    .showOpenDialog({ properties: ["openFile"] })
+    .then(responseValue => {
+      if (!responseValue.canceled) {
+        // handle fully qualified file name
+        const fileName = responseValue.filePaths[0];
+        return fileName;
+      } else {
         console.log("No file selected.");
-        return '';
-       }
-   }); 
-   return response;
+        return "";
+      }
+    });
+  return response;
 });
 
 app.on("window-all-closed", () => {
-    if (process.platform != "darwin") {
-        app.quit();
-    }
+  if (process.platform != "darwin") {
+    app.quit();
+  }
 });
