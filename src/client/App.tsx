@@ -14,7 +14,7 @@ const App = () => {
   const [path, setPath] = useState('');
 
   const handleClick = async () => {
-    const response = await electron.openFile();
+    const response = await fileController.openFile();
     console.log("Electron's Response:", response);
     setPath(response);
     console.log('New Path:', path);

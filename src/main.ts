@@ -1,4 +1,9 @@
 const { BrowserWindow, app, dialog, ipcMain } = require("electron");
+const {
+  default: installExtension,
+  REDUX_DEVTOOLS,
+  REACT_DEVELOPER_TOOLS
+} = require('electron-devtools-installer');
 const path = require("path");
 
 try {
@@ -25,6 +30,16 @@ function createWindow() {
 }
 
 app.whenReady().then(createWindow);
+// Tester code
+app.whenReady().then(() => {
+  const extensions = [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS];
+  const extensionsPlural = extensions.length > 0 ? 's' : '';
+  Promise.all(extensions.map(extension => installExtension(extension)))
+    .then(names =>
+      console.log(`[electron-extensions] Added DevTools Extension${extensionsPlural}: ${names.join(', ')}`))
+    .catch(err =>
+      console.log('[electron-extensions] An error occurred: ', err));
+});
 
 ipcMain.handle("open",async _ => {
    const response = await dialog.showOpenDialog({ properties: ["openFile"] }).then((responseValue) => {

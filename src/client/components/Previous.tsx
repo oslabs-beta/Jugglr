@@ -1,15 +1,10 @@
-import { useRecoilState } from "recoil";
-import { counter } from "../atoms/counter";
-
-import { Button, Text } from "@chakra-ui/react";
 
 const Previous = () => {
-  const [count, setCount] = useRecoilState(counter);
-
+  const count = 0;
   return (
     <>
-      <Text>COUNT_2: {count}</Text>
-      <Button onClick={() => setCount(count + 10)}>PLUS 10</Button>
+      <p>COUNT_2: {count}</p>
+      <button onClick={() => count + 10}>PLUS 10</button>
     </>
   );
 };
