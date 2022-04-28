@@ -8,7 +8,7 @@ const App = () => {
   const [path, setPath] = useState("");
 
   const handleClick = async () => {
-    const response = await fileController.openFile();
+    const response = await selectorModal.openFile();
     console.log("Electron's Response:", response);
     setPath(response);
     console.log("New Path:", path);

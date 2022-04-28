@@ -1,3 +1,3 @@
-declare namespace fileController {
+declare namespace selectorModal {
   function openFile(): string;
 }
