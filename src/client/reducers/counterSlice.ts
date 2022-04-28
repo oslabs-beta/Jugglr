@@ -6,8 +6,8 @@ export const counterSlice = createSlice({
   name: 'counter',
   initialState: { value: 0 },
   reducers: {
-    increment: state => { console.log(state.value); state.value + 1 },
-    decrement: state => { console.log(state.value); state.value - 1 },
+    increment: state => { state.value += 1 },
+    decrement: state => { state.value -= 1 },
   }
 });
 

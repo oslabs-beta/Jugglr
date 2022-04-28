@@ -1,3 +1,4 @@
+import { increment } from "../reducers/counterSlice";
 
 const Previous = () => {
   const count = 0;

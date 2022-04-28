@@ -1,40 +1,43 @@
-import { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import {
-  decrement,
-  increment,
-  selectCount,
-} from './reducers/counterSlice';
-
-import './App.css';
+import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { decrement, increment, selectCount } from "./reducers/counterSlice";
+import {Button, Paper, Text , MantineProvider, Loader} from '@mantine/core'
 
 const App = () => {
   const count = useSelector(selectCount);
   const dispatch = useDispatch();
-  const [path, setPath] = useState('');
+  const [path, setPath] = useState("");
 
   const handleClick = async () => {
     const response = await fileController.openFile();
     console.log("Electron's Response:", response);
     setPath(response);
-    console.log('New Path:', path);
+    console.log("New Path:", path);
   };
 
   return (
     <div id="container">
       <div>
-        <h1>Testing</h1>
-        <button onClick={handleClick}>Upload file</button>
+        
+        <MantineProvider theme={{
+          colorScheme:"dark",
+          fontFamily: "Open Sans",
+          fontSizes: {md: 60},
+          radius: {sm:25}
+        }}>
+          <Text>Testing</Text>
+        <Button onClick={handleClick}>Upload file</Button>
+        </MantineProvider>
         <input
           type="text"
-          style={{ width: '500px' }}
+          style={{ width: "500px" }}
           value={`${path}`}
           readOnly
         />
       </div>
       <div>
         <button
-        className='button'
+          className="button"
           aria-label="Increment value"
           onClick={() => dispatch(increment())}
         >
@@ -42,7 +45,7 @@ const App = () => {
         </button>
         <span>{count}</span>
         <button
-          className='button'
+          className="button"
           aria-label="Decrement value"
           onClick={() => dispatch(decrement())}
         >
