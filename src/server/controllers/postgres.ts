@@ -1,7 +1,8 @@
+export {}
 const { Pool } = require('pg');
 const fs = require('fs');
 const copyFrom = require('pg-copy-streams').from
-import path from 'path';
+const path = require('path');
 
 const pool = new Pool({
   user: 'postgres',
