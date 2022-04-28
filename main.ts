@@ -26,7 +26,7 @@ function createWindow() {
 
 app.whenReady().then(createWindow);
 
-ipcMain.handle("open",async (_) => {
+ipcMain.handle("open",async _ => {
    const response = await dialog.showOpenDialog({ properties: ["openFile"] }).then((responseValue) => {
        if (!responseValue.canceled) {
            // handle fully qualified file name
