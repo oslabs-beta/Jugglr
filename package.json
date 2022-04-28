@@ -8,7 +8,7 @@
     "tsc": "tsc",
     "build": "webpack -w",
     "clean": "rm -rf ./build",
-    "start": "electron ./main.ts"
+    "start": "electron ./src/main.ts"
   },
   "keywords": [],
   "author": "",
@@ -16,10 +16,12 @@
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.1",
     "electron": "^18.1.0",
+    "framer-motion": "^6.3.3",
     "react": "^18.0.0",
     "react-dom": "^18.1.0",
     "react-redux": "^8.0.1",
     "react-router-dom": "^6.3.0",
+    "recoil": "^0.7.2",
     "typescript": "^4.6.3"
   },
   "devDependencies": {

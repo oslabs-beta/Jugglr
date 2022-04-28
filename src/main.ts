@@ -17,9 +17,9 @@ function createWindow() {
       nodeIntegration: true,
       contextIsolation: true,
       preload: path.join(__dirname, "preload.ts")
-    },
+    }
   });
-  win.loadFile('index.html');
+  win.loadFile("../index.html");
   //win.loadURL('localhost://env variable for endpoint')
   win.webContents.openDevTools();
 }
@@ -34,14 +34,14 @@ ipcMain.handle("open",async _ => {
            return fileName;
        } else {
         console.log("No file selected.");
-        return '';
-       }
-   }); 
-   return response;
+        return "";
+      }
+    });
+  return response;
 });
 
 app.on("window-all-closed", () => {
-    if (process.platform != "darwin") {
-        app.quit();
-    }
+  if (process.platform != "darwin") {
+    app.quit();
+  }
 });
