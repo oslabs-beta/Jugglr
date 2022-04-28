@@ -15,7 +15,12 @@
   "license": "ISC",
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.1",
+    "@types/dockerode": "^3.3.8",
+    "@types/pg": "^8.6.5",
+    "@types/pg-copy-streams": "^1.2.1",
+    "dockerode": "^3.3.1",
     "electron": "^18.1.0",
+    "pg-copy-streams": "^6.0.2",
     "react": "^18.0.0",
     "react-dom": "^18.1.0",
     "react-redux": "^8.0.1",
