@@ -19,14 +19,14 @@ function createWindow() {
       preload: path.join(__dirname, "preload.ts")
     }
   });
-  win.loadFile("index.html");
+  win.loadFile("../index.html");
   //win.loadURL('localhost://env variable for endpoint')
   win.webContents.openDevTools();
 }
 
 app.whenReady().then(createWindow);
 
-ipcMain.handle("open", async _ => {
+ipcMain.handle("open", async () => {
   const response = await dialog
     .showOpenDialog({ properties: ["openFile"] })
     .then(responseValue => {

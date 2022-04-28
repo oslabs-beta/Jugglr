@@ -14,7 +14,7 @@ const App = () => {
   };
 
   const handleClick = async () => {
-    const response = await electron.openFile();
+    const response = await fileController.openFile();
     setPath(response);
   };
 
