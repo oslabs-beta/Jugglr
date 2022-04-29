@@ -6,3 +6,9 @@ contextBridge.exposeInMainWorld("selectorModal", {
     return response;
   }
 });
+
+contextBridge.exposeInMainWorld("dockerController", {
+  createDockerfile: async (...args) => {
+    return await ipcRenderer.invoke('createDockerfile', ...args);
+  }
+})
