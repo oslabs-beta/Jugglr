@@ -1,7 +1,6 @@
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-import { MantineProvider } from "@mantine/core";
 import store from "./store";
 import App from "./App";
 
@@ -13,9 +12,7 @@ const root = createRoot(rootElement);
 root.render(
   <Provider store={store}>
     <BrowserRouter>
-      <MantineProvider>
-        <App />
-      </MantineProvider>
+      <App />
     </BrowserRouter>
   </Provider>
 );

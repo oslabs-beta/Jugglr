@@ -16,7 +16,7 @@ function createWindow() {
   const win = new BrowserWindow({
     width: 1200,
     height: 800,
-    backgroundColor: "yellow",
+    backgroundColor: "rgb(241, 243, 245)",
     resizable: false,
     webPreferences: {
       nodeIntegration: true,

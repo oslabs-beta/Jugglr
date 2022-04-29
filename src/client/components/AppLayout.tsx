@@ -1,19 +1,11 @@
-import React, { useState } from "react";
-import {
-  AppShell,
-  Navbar,
-  Header,
-  Footer,
-  Aside,
-  Text,
-  MediaQuery,
-  Burger,
-  useMantineTheme
-} from "@mantine/core";
+import { useState } from "react";
+import { AppShell, Navbar, Header, Text, useMantineTheme } from "@mantine/core";
+import NavSteps from "./NavSteps";
+import PageBanner from "./PageBanner";
 
 const AppLayout = () => {
-  const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
+  const theme = useMantineTheme();
 
   return (
     <AppShell
@@ -22,51 +14,24 @@ const AppLayout = () => {
           background:
             theme.colorScheme === "dark"
               ? theme.colors.dark[8]
-              : theme.colors.gray[0]
+              : theme.colors.gray[1]
         }
       }}
       navbarOffsetBreakpoint="sm"
-      asideOffsetBreakpoint="sm"
       fixed
       navbar={
         <Navbar
           p="md"
           hiddenBreakpoint="sm"
           hidden={!opened}
-          width={{ sm: 200, lg: 300 }}
+          width={{ sm: 300, lg: 400 }}
         >
-          <Text>Application navbar</Text>
+          <NavSteps />
         </Navbar>
       }
-      aside={
-        <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
-          <Aside p="md" hiddenBreakpoint="sm" width={{ sm: 200, lg: 300 }}>
-            <Text>Application sidebar</Text>
-          </Aside>
-        </MediaQuery>
-      }
-      footer={
-        <Footer height={60} p="md">
-          Application footer
-        </Footer>
-      }
       header={
-        <Header height={70} p="md">
-          <div
-            style={{ display: "flex", alignItems: "center", height: "100%" }}
-          >
-            <MediaQuery largerThan="sm" styles={{ display: "none" }}>
-              <Burger
-                opened={opened}
-                onClick={() => setOpened(o => !o)}
-                size="sm"
-                color={theme.colors.gray[6]}
-                mr="xl"
-              />
-            </MediaQuery>
-
-            <Text>Application header</Text>
-          </div>
+        <Header height={70} p="lg">
+          <PageBanner opened={opened} setOpened={setOpened} />
         </Header>
       }
     >
