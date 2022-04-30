@@ -8,6 +8,11 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.tsx?$/,
+        use: "ts-loader",
+        exclude: /node_modules/
+      },
+      {
         test: /.(js)$/,
         exclude: /node_modules/,
         use: {
@@ -26,11 +31,6 @@ module.exports = {
             ]
           }
         }
-      },
-      {
-        test: /\.tsx?$/,
-        use: "ts-loader",
-        exclude: /node_modules/
       },
       {
         test: [/\.s[ac]ss$/i, /\.css$/i],
