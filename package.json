@@ -50,6 +50,7 @@
     "electron-reloader": "^1.2.3",
     "eslint": "^8.14.0",
     "eslint-plugin-react": "^7.29.4",
+    "html-webpack-plugin": "^5.5.0",
     "jest": "^28.0.3",
     "jest-webpack-resolver": "^0.3.0",
     "sass": "^1.51.0",
