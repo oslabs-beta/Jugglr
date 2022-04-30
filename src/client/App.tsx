@@ -1,48 +1,21 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { decrement, increment, selectCount } from "./reducers/counterSlice";
+import {Button, Paper, Text , MantineProvider, Center, Header, Navbar, AppShell, useMantineTheme} from '@mantine/core'
+import AppShellTest  from './components/Appshell'
 
 const App = () => {
-  const count = useSelector(selectCount);
-  const dispatch = useDispatch();
-  const [path, setPath] = useState("");
+  
 
-  const handleClick = async () => {
-    const response = await selectorModal.openFile();
-    console.log("Electron's Response:", response);
-    setPath(response);
-    console.log("New Path:", path);
-  };
+  const theme = useMantineTheme();
 
   return (
     <div id="container">
-      <div>
-        <h1>Testing</h1>
-        <button onClick={handleClick}>Upload file</button>
-        <input
-          type="text"
-          style={{ width: "500px" }}
-          value={`${path}`}
-          readOnly
-        />
-      </div>
-      <div>
-        <button
-          className="button"
-          aria-label="Increment value"
-          onClick={() => dispatch(increment())}
-        >
-          +
-        </button>
-        <span>{count}</span>
-        <button
-          className="button"
-          aria-label="Decrement value"
-          onClick={() => dispatch(decrement())}
-        >
-          -
-        </button>
-      </div>
+    
+        
+        <AppShellTest/>
+       
+        
     </div>
   );
 };
