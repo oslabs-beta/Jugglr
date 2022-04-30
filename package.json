@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "main.ts",
-  "type": "commonjs",
+
   "scripts": {
     "tsc": "tsc",
     "build": "webpack -w",

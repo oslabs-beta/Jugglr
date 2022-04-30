@@ -1,10 +1,8 @@
-export {}
 const fs = require('fs');
 const copyFrom = require('pg-copy-streams').from
 const path = require('path');
 const env = require('../../.env')
-import { Pool } from 'pg';
-
+const { Pool } = require('pg')
 
 const pool = new Pool({
   user: env.PGUSER,
@@ -20,10 +18,10 @@ const connect = async () => {
 };
 connect();
 
-const uploadData = async (table: string, sqlSchema: string) => {
+const uploadData = async (table, sqlSchema) => {
   
-  const csvCopyString: string = copyFrom(`COPY $1 FROM STDIN DELIMITERS ',' CSV HEADER`)
-  const params: Array<string> = [table];
+  const csvCopyString = copyFrom(`COPY $1 FROM STDIN DELIMITERS ',' CSV HEADER`)
+  const params = [table];
   const stream = await pool.query(csvCopyString, params);
   const fileStream = await fs.createReadStream(path.resolve(__dirname, sqlSchema));
     

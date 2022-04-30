@@ -12,4 +12,4 @@ const fileController = {
       }
     }
   }
-module.exports = fileController;
+module.exports = fileController

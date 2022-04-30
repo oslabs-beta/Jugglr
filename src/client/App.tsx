@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { decrement, increment, selectCount } from "./reducers/counterSlice";
+import { decrement, increment, selectCount } from "./reducers/counterSlice"; 
 
 const App = () => {
   const count = useSelector(selectCount);
@@ -8,7 +8,7 @@ const App = () => {
   const [path, setPath] = useState("");
 
   const handleClick = async () => {
-    const response = await selectorModal.openFile();
+    const response = await selectorModule.openFile();
     console.log("Electron's Response:", response);
     setPath(response);
     console.log("New Path:", path);
