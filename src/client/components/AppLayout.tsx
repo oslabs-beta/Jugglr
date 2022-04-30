@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { AppShell, Navbar, Header, Text, useMantineTheme } from "@mantine/core";
+import { AppShell, Navbar, Header, useMantineTheme, Container } from "@mantine/core";
 import NavSteps from "./NavSteps";
 import PageBanner from "./PageBanner";
+import DockerConfig from "../containers/DockerConfig";
 
 const AppLayout = () => {
   const [opened, setOpened] = useState(false);
@@ -35,7 +36,9 @@ const AppLayout = () => {
         </Header>
       }
     >
-      <Text>Resize app to see responsive navbar in action</Text>
+      <Container p={5}>
+        <DockerConfig />
+      </Container>
     </AppShell>
   );
 };
