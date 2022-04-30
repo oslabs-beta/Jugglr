@@ -1,7 +1,7 @@
 import {Select, Input , SelectChevronIcon, Textarea} from "@mantine/core"
 
 const Run = () => {
-    
+  
     return (
       <div>
       <Select  style={{width:"80%"}}  placeholder="select existing image" label="Image" data={['Image1','Image2']} />

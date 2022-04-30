@@ -1,7 +1,7 @@
 import {MantineProvider, Center, Text, Button, Paper, AppShell, Navbar,Header, Footer, useMantineTheme} from '@mantine/core'
 import { useState } from "react";
 import { selectCount } from "../reducers/counterSlice";
-import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
+import { HashRouter, Link, Route, Routes } from 'react-router-dom';
 import Home from './Home'
 import Create from './Create'
 import Run from './Run'
@@ -12,10 +12,11 @@ const AppShellTest = () => {
     
    
       const theme1 = useMantineTheme();
-
+      
+    
     return(
         <div>
-        <BrowserRouter>
+        <HashRouter>
         <MantineProvider theme={{fontFamily: 'Trebuchet MS'}}  >
         <AppShell 
         // header={
@@ -28,8 +29,8 @@ const AppShellTest = () => {
         
         > 
         <div className = 'Navbar' style={{display:'flex',gap:'75%',flexDirection:'column', marginLeft: '7%', marginTop:'15%'}}>
-            <Navbar.Section><Text  style= {{color: 'white'}} component={Link} variant="link" to="/"> Home </Text></Navbar.Section>
-            <Navbar.Section><Text style= {{color: 'white'}}component={Link} variant="link" to="/create"> Create Docker Image</Text></Navbar.Section>
+            {/* <Navbar.Section><Text  style= {{color: 'white'}} component={Link} variant="link" to="/home"> Home </Text></Navbar.Section> */}
+            <Navbar.Section><Text style= {{color: 'white'}}component={Link} variant="link" to="/"> Create Docker Image</Text></Navbar.Section>
             <Navbar.Section> <Text style= {{color: 'white'}}component={Link} variant="link" to="/run"> Run Docker Container</Text></Navbar.Section>
         </div>
        
@@ -44,24 +45,16 @@ const AppShellTest = () => {
         
        >
         
-    
         
-        
-        
-       
-        
-        
-        
-       
-      
+            
         <Routes>
-        <Route path='/' element={<Home/>}/>
-        <Route path='/create' element={<Create/>}/>
-        <Route path='/run' element={<Run/>}/>
+        {/* <Route path='/home' element={<Home/>}/> */}
+        <Route path = "/" element={<Create/>}/>
+        <Route path="/run" element={<Run/>}/>
         </Routes>
         </AppShell>
         </MantineProvider>
-        </BrowserRouter>
+        </HashRouter>
         
         </div>
 

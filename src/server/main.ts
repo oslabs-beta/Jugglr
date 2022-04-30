@@ -1,15 +1,21 @@
 //const fileController = require( "./controllers/fileController");
 const { BrowserWindow, app, ipcMain } = require("electron");
 const mpath = require("path");
-const selectorModule = require('./controllers/fileController.ts');
-const { psUploadData } = require('./controllers/postgres.ts')
+const selectorModule = require('./controllers/fileController');
+const { psUploadData } = require('./controllers/postgres')
+
+try {
+  require("electron-reloader")(module);
+} catch (_) {
+  console.log("Error");
+}
 // import { Dockerfile } from '../types'
 
 function createWindow() {
   const win = new BrowserWindow({
     width: 1200,
     height: 800,
-    backgroundColor: "yellow",
+    backgroundColor: "white",
     resizable: false,
     webPreferences: {
       nodeIntegration: true,
@@ -58,11 +64,6 @@ const {
 } = require('electron-devtools-installer');
 
 
-try {
-  require("electron-reloader")(module);
-} catch (_) {
-  console.log("Error");
-}
 
 // Tester code
 // app.whenReady().then(() => {
