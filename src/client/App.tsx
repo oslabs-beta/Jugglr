@@ -1,11 +1,22 @@
+import {
+  ColorScheme,
+  ColorSchemeProvider,
+  MantineProvider
+} from "@mantine/core";
+import { useLocalStorage } from "@mantine/hooks";
 import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { decrement, increment, selectCount } from "./reducers/counterSlice"; 
+import AppLayout from "./components/AppLayout";
 
 const App = () => {
-  const count = useSelector(selectCount);
-  const dispatch = useDispatch();
   const [path, setPath] = useState("");
+  const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
+    key: "mantine-color-scheme",
+    defaultValue: "dark",
+    getInitialValueInEffect: true
+  });
+
+  const toggleColorScheme = (value?: ColorScheme) =>
+    setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
 
   const handleClick = async () => {
     const response = await selectorModule.openFile();
@@ -16,33 +27,14 @@ const App = () => {
 
   return (
     <div id="container">
-      <div>
-        <h1>Testing</h1>
-        <button onClick={handleClick}>Upload file</button>
-        <input
-          type="text"
-          style={{ width: "500px" }}
-          value={`${path}`}
-          readOnly
-        />
-      </div>
-      <div>
-        <button
-          className="button"
-          aria-label="Increment value"
-          onClick={() => dispatch(increment())}
-        >
-          +
-        </button>
-        <span>{count}</span>
-        <button
-          className="button"
-          aria-label="Decrement value"
-          onClick={() => dispatch(decrement())}
-        >
-          -
-        </button>
-      </div>
+      <ColorSchemeProvider
+        colorScheme={colorScheme}
+        toggleColorScheme={toggleColorScheme}
+      >
+        <MantineProvider theme={{ colorScheme }}>
+          <AppLayout />
+        </MantineProvider>
+      </ColorSchemeProvider>
     </div>
   );
 };
