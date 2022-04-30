@@ -13,10 +13,6 @@
     "noUnusedParameters": true,                      
     "skipLibCheck": true,
     "moduleResolution": "node",
-    "paths": {
-      "baseUrl": ["/Users/Miriam/codesmith/Jugglr"],
-      "*": [ "/Users/Miriam/codesmith/Jugglr/node_modules/*", "./src/*", "/__tests__"]
-    }
   },
   "include": ["src/**/*", "__tests__"]
 }
