@@ -2,13 +2,13 @@
   "name": "electron-react",
   "version": "1.0.0",
   "description": "",
-  "main": "main.ts",
+  "main": "main.js",
   "type": "commonjs",
   "scripts": {
     "tsc": "tsc",
     "build": "webpack -w",
     "clean": "rm -rf ./build",
-    "start": "electron ./src/main.ts"
+    "start": "electron ./build/main.js"
   },
   "keywords": [],
   "author": "",

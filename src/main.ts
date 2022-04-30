@@ -16,12 +16,13 @@ function createWindow() {
   const win = new BrowserWindow({
     width: 1200,
     height: 800,
-    backgroundColor: "yellow",
+    backgroundColor: "white",
     resizable: false,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: true,
-      preload: path.join(__dirname, "preload.ts")
+      preload: path.join(__dirname, "preload.js"),
+      // webSecurity:false
     }
   });
   win.loadFile("../index.html");
@@ -52,7 +53,7 @@ ipcMain.handle("open",async _ => {
         return "";
       }
     });
-  return response;
+  return response; 
 });
 
 app.on("window-all-closed", () => {
