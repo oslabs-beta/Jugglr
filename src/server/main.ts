@@ -1,10 +1,9 @@
 //const fileController = require( "./controllers/fileController");
-
 const { BrowserWindow, app, ipcMain } = require("electron");
-const path = require("path");
-const selectorModal = require('./controllers/fileController');
-const { uploadData } = require('./controllers/postgres')
-import { Dockerfile } from '../types'
+const mpath = require("path");
+const selectorModule = require('./controllers/fileController.ts');
+const { psUploadData } = require('./controllers/postgres.ts')
+// import { Dockerfile } from '../types'
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -15,7 +14,7 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: true,
-      preload: path.join(__dirname, "../preload.js")
+      preload: mpath.join(__dirname, "../preload.js")
     }
   });
   win.loadFile("../../index.html");
@@ -27,7 +26,7 @@ app.whenReady().then(createWindow);
 
 ipcMain.handle("open", async () => {
   try {
-    const result = await selectorModal.openFile();
+    const result = await selectorModule.openFile();
     return result;
   }
   catch (err) {
@@ -35,9 +34,9 @@ ipcMain.handle("open", async () => {
   }
 });
 
-ipcMain.handle("uploadData", async (table: string, sqlSchema: string) => {
+ipcMain.handle("uploadData", async (table, sqlSchema) => {
   try {
-    const result = await uploadData(table, sqlSchema);
+    const result = await psUploadData(table, sqlSchema);
     return result;
   }
   catch (err) {

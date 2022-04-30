@@ -4,16 +4,18 @@
     "jsx": "react-jsx", 
     "module": "commonjs", 
     "esModuleInterop": true,
-    "sourceMap": true,
+
     "preserveConstEnums": true,
-    "types": ["react/next", "react-dom/next", "node", "jest", "pg"],
+    "types": ["react/next", "react-dom/next", "node", "jest", "pg", ],
     "forceConsistentCasingInFileNames": true, 
     "strict": true, 
     "noImplicitAny": false,  
     "noUnusedParameters": true,                      
     "skipLibCheck": true,
     "moduleResolution": "node",
-    "outDir": "./build"
+    "outDir": "./build",
+    "lib": ["DOM","es6"]
   },
-  "include": ["src/**/*", "__tests__"]
+  "include": ["src/**/*"],
+  "exclude": ["__tests__/**/*"]
 }
