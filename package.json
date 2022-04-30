@@ -8,12 +8,8 @@
     "tsc": "tsc",
     "build": "webpack -w",
     "clean": "rm -rf ./build",
-<<<<<<< HEAD
     "start": "electron ./src/server/main.ts",
     "test": "jest"
-=======
-    "start": "electron ./build/main.js"
->>>>>>> alvin/redux
   },
   "keywords": [],
   "author": "",
