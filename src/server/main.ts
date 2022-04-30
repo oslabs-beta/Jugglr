@@ -1,19 +1,10 @@
 //const fileController = require( "./controllers/fileController");
 
 const { BrowserWindow, app, ipcMain } = require("electron");
-const {
-  default: installExtension,
-  REDUX_DEVTOOLS,
-  REACT_DEVELOPER_TOOLS
-} = require('electron-devtools-installer');
 const path = require("path");
 const selectorModal = require('./controllers/fileController.ts');
-
-try {
-  require("electron-reloader")(module);
-} catch (_) {
-  console.log("Error");
-}
+const { uploadData } = require('./controllers/postgres')
+import { Dockerfile } from '../types'
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -33,20 +24,20 @@ function createWindow() {
 }
 
 app.whenReady().then(createWindow);
-// Tester code
-// app.whenReady().then(() => {
-//   const extensions = [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS];
-//   const extensionsPlural = extensions.length > 0 ? 's' : '';
-//   Promise.all(extensions.map(extension => installExtension(extension)))
-//     .then(names =>
-//       console.log(`[electron-extensions] Added DevTools Extension${extensionsPlural}: ${names.join(', ')}`))
-//     .catch(err =>
-//       console.log('[electron-extensions] An error occurred: ', err));
-// });
 
 ipcMain.handle("open", async () => {
   try {
     const result = await selectorModal.openFile();
+    return result;
+  }
+  catch (err) {
+    console.log(err);
+  }
+});
+
+ipcMain.handle("uploadData", async (table: string, sqlSchema: string) => {
+  try {
+    const result = await uploadData(table, sqlSchema);
     return result;
   }
   catch (err) {
@@ -59,3 +50,28 @@ app.on("window-all-closed", () => {
     app.quit();
   }
 });
+
+/** testing specific code */
+const {
+  default: installExtension,
+  REDUX_DEVTOOLS,
+  REACT_DEVELOPER_TOOLS
+} = require('electron-devtools-installer');
+
+
+try {
+  require("electron-reloader")(module);
+} catch (_) {
+  console.log("Error");
+}
+
+// Tester code
+// app.whenReady().then(() => {
+//   const extensions = [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS];
+//   const extensionsPlural = extensions.length > 0 ? 's' : '';
+//   Promise.all(extensions.map(extension => installExtension(extension)))
+//     .then(names =>
+//       console.log(`[electron-extensions] Added DevTools Extension${extensionsPlural}: ${names.join(', ')}`))
+//     .catch(err =>
+//       console.log('[electron-extensions] An error occurred: ', err));
+// });

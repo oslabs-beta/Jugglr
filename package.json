@@ -8,7 +8,8 @@
     "tsc": "tsc",
     "build": "webpack -w",
     "clean": "rm -rf ./build",
-    "start": "electron ./src/server/main.ts"
+    "start": "electron ./src/server/main.ts",
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -29,15 +30,14 @@
     "react": "^18.0.0",
     "react-dom": "^18.1.0",
     "react-redux": "^8.0.1",
-    "react-router-dom": "^6.3.0",
-    "ts-node": "^10.7.0",
-    "typescript": "^4.6.3"
+    "react-router-dom": "^6.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.17.9",
     "@babel/plugin-transform-runtime": "^7.17.0",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
+    "@types/jest": "^27.4.1",
     "@types/node": "^17.0.29",
     "@types/react": "^18.0.8",
     "@types/react-dom": "^18.0.0",
@@ -50,10 +50,15 @@
     "electron-reloader": "^1.2.3",
     "eslint": "^8.14.0",
     "eslint-plugin-react": "^7.29.4",
+    "jest": "^28.0.3",
+    "jest-webpack-resolver": "^0.3.0",
     "sass": "^1.51.0",
     "sass-loader": "^12.6.0",
+    "source-map-support": "^0.5.21",
     "style-loader": "^3.3.1",
     "ts-loader": "^9.2.9",
+    "ts-node": "^10.7.0",
+    "typescript": "^4.6.4",
     "webpack": "^5.72.0",
     "webpack-cli": "^4.9.2"
   }
