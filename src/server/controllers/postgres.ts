@@ -1,54 +1,54 @@
-export {}
-const fs = require('fs');
-const copyFrom = require('pg-copy-streams').from
-const path = require('path');
-const env = require('../../.env')
-import { Pool } from 'pg';
+// export {}
+// const fs = require('fs');
+// const copyFrom = require('pg-copy-streams').from
+// const path = require('path');
+// const env = require('../../.env')
+// import { Pool } from 'pg';
 
 
-const pool = new Pool({
-  user: env.PGUSER,
-  host: env.PGHOST,
-  database: env.PGDATABASE,
-  password: env.PGPASSWORD,
-  port: env.PGPORT,
-});
+// const pool = new Pool({
+//   user: env.PGUSER,
+//   host: env.PGHOST,
+//   database: env.PGDATABASE,
+//   password: env.PGPASSWORD,
+//   port: env.PGPORT,
+// });
 
-const connect = async () => { 
-  const status = await pool.connect() 
-  return status;
-};
-connect();
+// const connect = async () => { 
+//   const status = await pool.connect() 
+//   return status;
+// };
+// connect();
 
-const uploadData = async (table: string, sqlSchema: string) => {
+// const uploadData = async (table: string, sqlSchema: string) => {
   
-  const csvCopyString: string = copyFrom(`COPY $1 FROM STDIN DELIMITERS ',' CSV HEADER`)
-  const params: Array<string> = [table];
-  const stream = await pool.query(csvCopyString, params);
-  const fileStream = await fs.createReadStream(path.resolve(__dirname, sqlSchema));
+//   const csvCopyString: string = copyFrom(`COPY $1 FROM STDIN DELIMITERS ',' CSV HEADER`)
+//   const params: Array<string> = [table];
+//   const stream = await pool.query(csvCopyString, params);
+//   const fileStream = await fs.createReadStream(path.resolve(__dirname, sqlSchema));
     
-  // fileStream.on('open', (stream) => {
-  //   console.log('open!', stream);
-  // })
-  // fileStream.on('ready', (stream) => {  console.log('ready!', stream);
-  // });
-  // fileStream.on('close', (stream) => {
-  //   console.log('closed!', stream);
-  // });
+//   // fileStream.on('open', (stream) => {
+//   //   console.log('open!', stream);
+//   // })
+//   // fileStream.on('ready', (stream) => {  console.log('ready!', stream);
+//   // });
+//   // fileStream.on('close', (stream) => {
+//   //   console.log('closed!', stream);
+//   // });
 
-  fileStream.on('error', (stream) => {
-    console.log('filestream error!', stream)
-    return stream;
-  });
+//   fileStream.on('error', (stream) => {
+//     console.log('filestream error!', stream)
+//     return stream;
+//   });
 
-  const result = await fileStream.pipe(stream);
-  return result;
-}
+//   const result = await fileStream.pipe(stream);
+//   return result;
+// }
 
-module.exports = {
-  query: (text, params, callback) => {
-    console.log('executed query', text);
-    return pool.query(text, params, callback);
-  }, 
-  uploadData
-};
+// module.exports = {
+//   query: (text, params, callback) => {
+//     console.log('executed query', text);
+//     return pool.query(text, params, callback);
+//   }, 
+//   uploadData
+// };

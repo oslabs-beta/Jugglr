@@ -8,7 +8,7 @@
     "tsc": "tsc",
     "build": "webpack -w",
     "clean": "rm -rf ./build",
-    "start": "electron ./build/main.js",
+    "start": "electron ./build/src/server/main.js",
     "test": "jest"
   },
   "keywords": [],

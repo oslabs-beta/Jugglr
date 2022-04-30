@@ -2,7 +2,7 @@
 
 const { BrowserWindow, app, ipcMain } = require("electron");
 const path = require("path");
-const selectorModal = require('./controllers/fileController.ts');
+const selectorModal = require('./controllers/fileController');
 const { uploadData } = require('./controllers/postgres')
 import { Dockerfile } from '../types'
 
@@ -15,7 +15,7 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: true,
-      preload: path.join(__dirname, "../preload.ts")
+      preload: path.join(__dirname, "../preload.js")
     }
   });
   win.loadFile("../../index.html");
