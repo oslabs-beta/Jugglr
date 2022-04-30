@@ -13,6 +13,7 @@
     "noUnusedParameters": true,                      
     "skipLibCheck": true,
     "moduleResolution": "node",
+    "outDir": "./build"
   },
   "include": ["src/**/*", "__tests__"]
 }
