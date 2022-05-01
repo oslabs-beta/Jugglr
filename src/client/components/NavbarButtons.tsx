@@ -22,16 +22,22 @@ const NavbarButtons = ({ navigate }) => {
 
   return (
     <>
-      <UnstyledButton onClick={() => navigate(0)} sx={theme => buttonStyles(theme)}>
+      <UnstyledButton
+        onClick={() => navigate(0)}
+        sx={theme => buttonStyles(theme)}
+      >
         <Group>
           <ThemeIcon variant="light" style={{ background: "none" }}>
             <BrandDocker />
-          </ThemeIcon >
+          </ThemeIcon>
           <Text size="md">Docker</Text>
         </Group>
       </UnstyledButton>
 
-      <UnstyledButton onClick={() => navigate(1)} sx={theme => buttonStyles(theme)}>
+      <UnstyledButton
+        onClick={() => navigate(1)}
+        sx={theme => buttonStyles(theme)}
+      >
         <Group>
           <ThemeIcon variant="light" style={{ background: "none" }}>
             <Database />
@@ -40,7 +46,10 @@ const NavbarButtons = ({ navigate }) => {
         </Group>
       </UnstyledButton>
 
-      <UnstyledButton onClick={() => navigate(2)} sx={theme => buttonStyles(theme)}>
+      <UnstyledButton
+        onClick={() => navigate(2)}
+        sx={theme => buttonStyles(theme)}
+      >
         <Group>
           <ThemeIcon variant="light" style={{ background: "none" }}>
             <CloudStorm />
@@ -54,6 +63,6 @@ const NavbarButtons = ({ navigate }) => {
 
 NavbarButtons.propTypes = {
   navigate: PropTypes.func.isRequired
-}
+};
 
 export default NavbarButtons;

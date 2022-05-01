@@ -1,12 +1,16 @@
+/**
+ * Stateful component uses Mantine AppShell
+ * AppShell takes props header, navbar, footer, aside for ease of layout
+ * ref: https://mantine.dev/core/app-shell/
+ */
 import { useState } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
+import { useMediaQuery } from "@mantine/hooks";
 import {
   AppShell,
   Navbar,
   Header,
-  Burger,
   Container,
-  MediaQuery,
   useMantineTheme
 } from "@mantine/core";
 
@@ -15,13 +19,21 @@ import DatabaseConfig from "./DatabaseConfig";
 import DarkModeButton from "./DarkModeButton";
 import StartupConfig from "./StartupConfig";
 import NavbarButtons from "./NavbarButtons";
+import BurgerIcon from "../containers/BurgerIcon";
 
 const AppLayout = () => {
   const [opened, setOpened] = useState(false);
   const theme = useMantineTheme();
+  const isSmallView = useMediaQuery("(min-width: 993px");
   const navigate = useNavigate();
   const endpoints = { 0: "/", 1: "/database", 2: "/startup" };
 
+  /**
+   * function created to give NavBarButtons pseudo-ordering
+   * using the above endpoints record for controlling browser's URL
+   * @param index
+   * @returns void
+   */
   const urlNavigation = (index: number) => {
     return navigate(endpoints[index]);
   };
@@ -52,18 +64,16 @@ const AppLayout = () => {
               justifyContent: "space-around",
               alignItems: "center",
               height: "100%",
-              width: "100%"
+              width: "100%",
+              paddingLeft: "10px"
             }}
           >
-            <MediaQuery largerThan="sm" styles={{ display: "none" }}>
-              <Burger
-                opened={opened}
-                onClick={() => setOpened(o => !o)}
-                size="sm"
-                color={theme.colors.gray[6]}
-                mr="xl"
-              />
-            </MediaQuery>
+            <BurgerIcon
+              opened={opened}
+              color={theme.colors.gray[6]}
+              isSmallView={isSmallView}
+              setOpened={setOpened}
+            />
 
             <div style={{ marginLeft: "auto", marginRight: "50px" }}>
               <DarkModeButton />

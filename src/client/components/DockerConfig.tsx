@@ -1,3 +1,7 @@
+/**
+ * Application uses Mantine form hook as part of application state flow.
+ * ref: https://mantine.dev/form/use-form/
+ */
 import {
   Box,
   Button,
@@ -8,15 +12,29 @@ import {
   Title
 } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
+import { FileSearch } from "tabler-icons-react";
+
+import { useAppSelector } from "../utility/hooks.types";
 
 const DockerConfig = () => {
+  const { rootDir, schema, image } = useAppSelector(state => state.envConfig);
   const form = useForm({
     initialValues: {
-      project: "",
-      schema: "",
-      imageName: ""
+      project: rootDir,
+      schema: schema,
+      imageName: image
     }
   });
+  const rightSectionButton = (
+    <Button
+      variant="subtle"
+      size="sm"
+      mr={25}
+      style={{ borderRadius: "0 5px 5px 0" }}
+    >
+      <FileSearch />
+    </Button>
+  );
 
   return (
     <Box sx={{ maxWidth: 500 }} mx="auto">
@@ -33,6 +51,7 @@ const DockerConfig = () => {
           label="Project"
           placeholder="Project folder path"
           {...form.getInputProps("project")}
+          rightSection={rightSectionButton}
         />
         <Space h="sm" />
 
@@ -48,7 +67,7 @@ const DockerConfig = () => {
           required
           label="Image Name"
           placeholder="Docker image name"
-          {...form.getInputProps("project")}
+          {...form.getInputProps("imageName")}
         />
         <Space h="sm" />
 
