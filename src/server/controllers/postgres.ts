@@ -4,6 +4,9 @@ const path = require('path');
 const env = require('../../.env')
 const { Pool } = require('pg')
 
+require('dotenv').config();
+console.log(process.env.PGDATABASE);
+
 const pool = new Pool({
   user: env.PGUSER,
   host: env.PGHOST,
@@ -11,6 +14,8 @@ const pool = new Pool({
   password: env.PGPASSWORD,
   port: env.PGPORT,
 });
+
+console.log('pool', pool);
 
 const connect = async () => { 
   const status = await pool.connect() 

@@ -48,6 +48,7 @@ const file = {
     
 };
 
+file.mkJugglr();
 
 const dockerController = {
   ////frontend:: user clicks 'Generate Docker File' button. onClick(?) calls the dockerController.createDockerfile function
@@ -148,7 +149,8 @@ const dockerController = {
 dockerController.createDockerfile(pathDockerfile, dockerfileContents);
 
 
-
+module.exports = fileController;
+module.exports = dockerController;
 
 
 
