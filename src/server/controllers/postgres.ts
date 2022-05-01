@@ -19,7 +19,7 @@ const connect = async () => {
 connect();
 
 const uploadData = async (table, sqlSchema) => {
-  
+  const status = await pool.connect()
   const csvCopyString = copyFrom(`COPY $1 FROM STDIN DELIMITERS ',' CSV HEADER`)
   const params = [table];
   const stream = await pool.query(csvCopyString, params);

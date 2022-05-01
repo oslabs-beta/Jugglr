@@ -80,6 +80,7 @@ export default {
     "json",
     "node"
   ],
+  verbose: true,
   extensionsToTreatAsEsm: ['.ts'],
   globals: {
     'ts-jest': {
