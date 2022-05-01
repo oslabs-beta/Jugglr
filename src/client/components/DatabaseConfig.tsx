@@ -60,16 +60,16 @@ const DatabaseConfig = () => {
         <Space h="sm" />
 
         <div style={{ width: "25%" }}>
-        <NumberInput
-          required
-          hideControls
-          label="Port"
-          defaultValue={5432}
-          min={1}
-          max={9999}
-          placeholder="Database port"
-          {...form.getInputProps("databasePort")}
-        />
+          <NumberInput
+            required
+            hideControls
+            label="Port"
+            defaultValue={5432}
+            min={1}
+            max={9999}
+            placeholder="Database port"
+            {...form.getInputProps("databasePort")}
+          />
         </div>
         <Space h="sm" />
 
