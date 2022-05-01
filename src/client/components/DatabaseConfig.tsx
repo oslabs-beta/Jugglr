@@ -18,7 +18,7 @@ const DatabaseConfig = () => {
       databaseName: "",
       databaseUser: "",
       databasePass: "",
-      databasePort: 5432
+      databasePort: null
     }
   });
 
@@ -59,12 +59,18 @@ const DatabaseConfig = () => {
         />
         <Space h="sm" />
 
+        <div style={{ width: "25%" }}>
         <NumberInput
           required
+          hideControls
           label="Port"
+          defaultValue={5432}
+          min={1}
+          max={9999}
           placeholder="Database port"
           {...form.getInputProps("databasePort")}
         />
+        </div>
         <Space h="sm" />
 
         <Group position="right" mt="md">

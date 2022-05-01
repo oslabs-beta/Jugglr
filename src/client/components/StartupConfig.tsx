@@ -19,26 +19,15 @@ const Startup = () => {
         }}
       >
         <div style={{ width: "30%" }}>
-          <Button
-            fullWidth
-          >
-            Start
-          </Button>
+          <Button fullWidth>Start</Button>
         </div>
 
         <div style={{ width: "30%" }}>
-          <Button
-            fullWidth
-          >
-            Stop
-          </Button>
+          <Button fullWidth>Stop</Button>
         </div>
 
         <div style={{ width: "30%" }}>
-          <Button
-            fullWidth
-            variant="outline"
-          >
+          <Button fullWidth variant="outline">
             Remove
           </Button>
         </div>

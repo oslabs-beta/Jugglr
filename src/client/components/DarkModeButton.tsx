@@ -1,12 +1,12 @@
 import { ActionIcon, useMantineColorScheme } from "@mantine/core";
 import { useHotkeys } from "@mantine/hooks";
-import { MoonStars, Sun } from "tabler-icons-react";
+import { MoonOff, MoonStars } from "tabler-icons-react";
 
 const DarkModeButton = () => {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   useHotkeys([["mod+J", () => toggleColorScheme()]]);
   const dark = colorScheme === "dark";
-  
+
   return (
     <ActionIcon
       variant="outline"
@@ -14,7 +14,7 @@ const DarkModeButton = () => {
       onClick={() => toggleColorScheme()}
       title="Toggle color scheme"
     >
-      {dark ? <Sun size={18} /> : <MoonStars size={18} />}
+      {dark ? <MoonOff size={20} /> : <MoonStars size={20} />}
     </ActionIcon>
   );
 };

@@ -4,22 +4,17 @@ import {
   AppShell,
   Navbar,
   Header,
-  Text,
   Burger,
   Container,
-  Tabs,
   MediaQuery,
-  useMantineTheme,
-  UnstyledButton,
-  Group,
-  ThemeIcon
+  useMantineTheme
 } from "@mantine/core";
 
 import DockerConfig from "./DockerConfig";
 import DatabaseConfig from "./DatabaseConfig";
 import DarkModeButton from "./DarkModeButton";
 import StartupConfig from "./StartupConfig";
-import { BrandDocker } from "tabler-icons-react";
+import NavbarButtons from "./NavbarButtons";
 
 const AppLayout = () => {
   const [opened, setOpened] = useState(false);
@@ -27,7 +22,7 @@ const AppLayout = () => {
   const navigate = useNavigate();
   const endpoints = { 0: "/", 1: "/database", 2: "/startup" };
 
-  const urlChange = (index: number) => {
+  const urlNavigation = (index: number) => {
     return navigate(endpoints[index]);
   };
 
@@ -45,41 +40,8 @@ const AppLayout = () => {
       asideOffsetBreakpoint="sm"
       fixed
       navbar={
-        <Navbar
-          p="md"
-          hiddenBreakpoint="xl"
-          hidden={!opened}
-          width={{ sm: 0, lg: 0 }}
-        >
-          {/**
-           * Move this its own component
-           */}
-          <UnstyledButton
-            sx={theme => ({
-              display: "block",
-              width: "100%",
-              padding: theme.spacing.xs,
-              borderRadius: theme.radius.sm,
-              color:
-                theme.colorScheme === "dark"
-                  ? theme.colors.dark[0]
-                  : theme.black,
-
-              "&:hover": {
-                backgroundColor:
-                  theme.colorScheme === "dark"
-                    ? theme.colors.dark[6]
-                    : theme.colors.gray[0]
-              }
-            })}
-          >
-            <Group>
-              <ThemeIcon color="white" variant="light">
-                <BrandDocker />
-              </ThemeIcon>
-              <Text size="lg">Docker</Text>
-            </Group>
-          </UnstyledButton>
+        <Navbar p="md" hidden={!opened} width={{ base: 300 }}>
+          <NavbarButtons navigate={urlNavigation} />
         </Navbar>
       }
       header={
@@ -103,21 +65,9 @@ const AppLayout = () => {
               />
             </MediaQuery>
 
-            <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
-              <div style={{ width: "50%" }}>
-                <Tabs
-                  grow
-                  variant="pills"
-                  onTabChange={(tabIndex: number) => urlChange(tabIndex)}
-                >
-                  <Tabs.Tab label="Docker" />
-                  <Tabs.Tab label="Database" />
-                  <Tabs.Tab label="Startup" />
-                </Tabs>
-              </div>
-            </MediaQuery>
-
-            <DarkModeButton />
+            <div style={{ marginLeft: "auto", marginRight: "50px" }}>
+              <DarkModeButton />
+            </div>
           </div>
         </Header>
       }
