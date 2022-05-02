@@ -1,18 +1,19 @@
-import { createRoot } from 'react-dom/client';
-import { Provider } from 'react-redux';
+import { createRoot } from "react-dom/client";
+import { Provider } from "react-redux";
+import { HashRouter } from "react-router-dom";
+import { store } from "./store";
+import App from "./App";
+import "./themes/index.css";
 
-import store from './store';
-
-import AppShellTest from './components/Appshell';
-import { BrowserRouter } from 'react-router-dom';
-
-const rootElement = document.getElementById('root');
-if (!rootElement) throw new Error('Failed to find the root element');
+const rootElement = document.getElementById("root");
+if (!rootElement) throw new Error("Failed to find the root element");
 
 const root = createRoot(rootElement);
 
 root.render(
   <Provider store={store}>
-      <AppShellTest />
+    <HashRouter>
+      <App />
+    </HashRouter>
   </Provider>
 );
