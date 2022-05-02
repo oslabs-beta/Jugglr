@@ -1,18 +1,17 @@
 const fs = require('fs');
 const copyFrom = require('pg-copy-streams').from
 const path = require('path');
-const env = require('../../.env')
 const { Pool } = require('pg')
 
 require('dotenv').config();
 console.log(process.env.PGDATABASE);
 
 const pool = new Pool({
-  user: env.PGUSER,
-  host: env.PGHOST,
-  database: env.PGDATABASE,
-  password: env.PGPASSWORD,
-  port: env.PGPORT,
+  user: process.env.PGUSER,
+  host: process.env.PGHOST,
+  database: process.env.PGDATABASE,
+  password: process.env.PGPASSWORD,
+  port: process.env.PGPORT,
 });
 
 console.log('pool', pool);
