@@ -24,6 +24,7 @@
     "@types/pg": "^8.6.5",
     "@types/pg-copy-streams": "^1.2.1",
     "dockerode": "^3.3.1",
+    "dotenv": "^16.0.0",
     "electron": "^18.1.0",
     "pg": "^8.7.3",
     "pg-copy-streams": "^6.0.2",
