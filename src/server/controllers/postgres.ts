@@ -1,10 +1,9 @@
 const fs = require('fs');
 const copyFrom = require('pg-copy-streams').from
 const path = require('path');
-const { Pool } = require('pg')
 
-require('dotenv').config();
-console.log(process.env.PGDATABASE);
+require('dotenv/config');
+const { Pool } = require('pg')
 
 const pool = new Pool({
   user: process.env.PGUSER,
@@ -15,6 +14,7 @@ const pool = new Pool({
 });
 
 pool.on('error', (err, _client) => {
+  
   console.error('Unexpected error on idle client', err) // your callback here
   return err;
 });
@@ -22,11 +22,17 @@ pool.on('error', (err, _client) => {
 const uploadData = async (table, sqlSchema) => {
   try {  
     const string = `COPY ${table} FROM STDIN DELIMITERS ',' CSV HEADER`
-    await pool.connect((_err, done) => {
+    await pool.connect((_err, client, done) => {
       const csvCopyString = copyFrom(string)
-      const stream = pool.query(csvCopyString);
+      const params = [table];
+      const stream = client.query(csvCopyString, params);
       const fileStream = fs.createReadStream(sqlSchema);
       fileStream.on('error', (error) => {
+        console.log('filestream error!', error)
+        done();
+        return error;
+      });
+      stream.on('error', (error) => {
         console.log('filestream error!', error)
         done();
         return error;
@@ -48,3 +54,4 @@ module.exports = {
   }, 
   uploadData
 };
+
