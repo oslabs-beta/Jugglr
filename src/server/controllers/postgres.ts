@@ -1,11 +1,6 @@
 const fs = require('fs');
 const copyFrom = require('pg-copy-streams').from
 const path = require('path');
-<<<<<<< HEAD
-require('dotenv').config();
-=======
-
->>>>>>> dev
 const { Pool } = require('pg')
 
 require('dotenv').config();
@@ -16,27 +11,14 @@ const pool = new Pool({
   host: process.env.PGHOST,
   database: process.env.PGDATABASE,
   password: process.env.PGPASSWORD,
-<<<<<<< HEAD
-  port: process.env.PGPORT,
-});
-
-console.log('pool', pool);
-
-const connect = async () => { 
-  console.log('pool', pool)
-  const status = await pool.connect() 
-  return status;
-};
-connect();
-=======
   port: process.env.DBPORT,
 });
 
 pool.on('error', (err, _client) => {
+  
   console.error('Unexpected error on idle client', err) // your callback here
   return err;
 });
->>>>>>> dev
 
 const uploadData = async (table, sqlSchema) => {
   try {  

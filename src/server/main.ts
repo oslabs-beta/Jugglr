@@ -3,6 +3,8 @@ const { BrowserWindow, app, ipcMain } = require("electron");
 const mpath = require("path");
 const selectorModule = require('./controllers/fileController');
 const { uploadData: psUploadData} = require('./controllers/postgres')
+const dockController = require('./controllers/dockerController')
+
 
 try {
   require("electron-reloader")(module);
@@ -42,16 +44,7 @@ ipcMain.handle("open", async () => {
   }
 });
 
-ipcMain.handle("dir", async()=>{
-  try {
-    
-    const result = await selectorModule.openDir();
-    return result;
-  }
-  catch (err) {
-    console.log(err);
-  }
-})
+
 
 ipcMain.handle("uploadData", async (table, sqlSchema) => {
   console.log('upload main')

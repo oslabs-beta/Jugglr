@@ -10,11 +10,11 @@ const Create = () => {
     const [schemaPath, setSchemaPath] = useState("");
     const [tablePath, setTablePath] = useState("")
     const [rootPath, setRootDirectory] = useState("")
-    const [host,setHost] = useState('localhost')
-    const [user,setUser] = useState('postgres')//env.User
-    const [database, setDatabase] = useState('postgres')//env.database
-    const [password,setPassword] = useState('postgres')//env.password
-    const [port,setPort] = useState(5432) //env.port
+    // const [host,setHost] = useState('localhost')
+    // const [user,setUser] = useState('postgres')//env.User
+    // const [database, setDatabase] = useState('postgres')//env.database
+    // const [password,setPassword] = useState('postgres')//env.password
+    // const [port,setPort] = useState(5432) //env.port
   
     const schemaEmpty = schemaPath === "" ? true : false
     const tableEmpty = tablePath === "" ? true : false
