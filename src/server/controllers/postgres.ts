@@ -1,25 +1,27 @@
 const fs = require('fs');
 const copyFrom = require('pg-copy-streams').from
 const path = require('path');
-const env = require('../../.env')
+require('dotenv').config();
 const { Pool } = require('pg')
 
 const pool = new Pool({
-  user: env.PGUSER,
-  host: env.PGHOST,
-  database: env.PGDATABASE,
-  password: env.PGPASSWORD,
-  port: env.PGPORT,
+  user: process.env.PGUSER,
+  host: process.env.PGHOST,
+  database: process.env.PGDATABASE,
+  password: process.env.PGPASSWORD,
+  port: process.env.PGPORT,
 });
 
 const connect = async () => { 
+  console.log('pool', pool)
   const status = await pool.connect() 
   return status;
 };
 connect();
 
-const uploadData = async (table, sqlSchema) => {
-  
+
+ const uploadData = async (table, sqlSchema) => {
+  console.log('upload postgres')
   const csvCopyString = copyFrom(`COPY $1 FROM STDIN DELIMITERS ',' CSV HEADER`)
   const params = [table];
   const stream = await pool.query(csvCopyString, params);
