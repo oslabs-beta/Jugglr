@@ -57,7 +57,7 @@ const dockerController = {
 
   // runNewContainer: 
   // port hardcoded atm
-  construnNewContainer: async  (image, containerName) => {
+  createContainer: async  (image, containerName) => {
     const docker = new Docker({socketPath: '/var/run/docker.sock'});
     const result = await docker.createContainer({ 
       Image: `${image}`, 

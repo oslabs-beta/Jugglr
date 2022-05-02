@@ -33,41 +33,125 @@ function createWindow() {
 app.whenReady().then(createWindow);
 
 ipcMain.handle("open", async () => {
-  
   try {
-   
     const result = await selectorModule.openFile();
     return result;
   }
   catch (err) {
     console.log(err);
+    return err;
   }
 });
 
-
+ipcMain.handle("dir", async()=>{
+  try {
+    const result = await selectorModule.openDir();
+    return result;
+  }
+  catch (err) {
+    console.log(err);
+    return err;
+  }
+})
 
 ipcMain.handle("uploadData", async (table, sqlSchema) => {
-  console.log('upload main')
- 
   try {
     const result = await psUploadData(table, sqlSchema);
     return result;
   }
   catch (err) {
     console.log(err);
+    return err;
   }
 });
 
-ipcMain.handle("dir", async()=>{
+ipcMain.handle("createDockerfile", async (dockerfile) => {
   try {
-    
-    const result = await selectorModule.openDir();
+    const result = await dockController.createDockerfile(dockerfile);
     return result;
   }
   catch (err) {
     console.log(err);
+    return err;
   }
-})
+});
+
+ipcMain.handle("buildImage", async (dockerfile) => {
+  try {
+    const result = await dockController.buildImage(dockerfile);
+    return result;
+  }
+  catch (err) {
+    console.log(err);
+    return err;
+  }
+});
+
+ipcMain.handle("runContainer", async (imageName, containerName, port) => {
+  try {
+    const result = await dockController.run(imageName, containerName, port);
+    return result;
+  }
+  catch (err) {
+    console.log(err);
+    return err;
+  }
+});
+
+ipcMain.handle("startContainer", async (containerId) => {
+  try {
+    const result = await dockController.startContainer(containerId);
+    return result;
+  }
+  catch (err) {
+    console.log(err);
+    return err;
+  }
+});
+
+ipcMain.handle("stopContainer", async (containerId) => {
+  try {
+    const result = await dockController.stopContainer(containerId);
+    return result;
+  }
+  catch (err) {
+    console.log(err);
+    return err;
+  }
+});
+
+ipcMain.handle("removeContainer", async (containerId) => {
+  try {
+    const result = await dockController.removeContainer(containerId);
+    return result;
+  }
+  catch (err) {
+    console.log(err);
+    return err;
+  }
+});
+
+ipcMain.handle("getContainersList", async () => {
+  try {
+    const result = await dockController.getContainersList();
+    return result;
+  }
+  catch (err) {
+    console.log(err);
+    return err;
+  }
+});
+
+ipcMain.handle("getImagesList", async () => {
+  try {
+    const result = await dockController.getImagesList();
+    return result;
+  }
+  catch (err) {
+    console.log(err);
+    return err;
+  }
+});
 
 app.on("window-all-closed", () => {
   if (process.platform != "darwin") {
