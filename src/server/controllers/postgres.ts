@@ -13,6 +13,7 @@ const pool = new Pool({
 });
 
 pool.on('error', (err, _client) => {
+  
   console.error('Unexpected error on idle client', err) // your callback here
   return err;
 });
