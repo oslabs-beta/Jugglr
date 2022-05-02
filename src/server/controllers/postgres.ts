@@ -4,6 +4,9 @@ const path = require('path');
 require('dotenv').config();
 const { Pool } = require('pg')
 
+require('dotenv').config();
+console.log(process.env.PGDATABASE);
+
 const pool = new Pool({
   user: process.env.PGUSER,
   host: process.env.PGHOST,
@@ -12,6 +15,8 @@ const pool = new Pool({
   port: process.env.PGPORT,
 });
 
+console.log('pool', pool);
+
 const connect = async () => { 
   console.log('pool', pool)
   const status = await pool.connect() 
@@ -19,9 +24,8 @@ const connect = async () => {
 };
 connect();
 
-
- const uploadData = async (table, sqlSchema) => {
-  console.log('upload postgres')
+const uploadData = async (table, sqlSchema) => {
+  const status = await pool.connect()
   const csvCopyString = copyFrom(`COPY $1 FROM STDIN DELIMITERS ',' CSV HEADER`)
   const params = [table];
   const stream = await pool.query(csvCopyString, params);
