@@ -4,6 +4,9 @@ const path = require('path');
 
 const { Pool } = require('pg')
 
+require('dotenv').config();
+console.log(process.env.PGDATABASE);
+
 const pool = new Pool({
   user: process.env.PGUSER,
   host: process.env.PGHOST,
@@ -20,17 +23,11 @@ pool.on('error', (err, _client) => {
 const uploadData = async (table, sqlSchema) => {
   try {  
     const string = `COPY ${table} FROM STDIN DELIMITERS ',' CSV HEADER`
-    await pool.connect((_err, client, done) => {
+    await pool.connect((_err, done) => {
       const csvCopyString = copyFrom(string)
-      const params = [table];
-      const stream = client.query(csvCopyString, params);
+      const stream = pool.query(csvCopyString);
       const fileStream = fs.createReadStream(sqlSchema);
       fileStream.on('error', (error) => {
-        console.log('filestream error!', error)
-        done();
-        return error;
-      });
-      stream.on('error', (error) => {
         console.log('filestream error!', error)
         done();
         return error;

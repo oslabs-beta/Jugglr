@@ -1,6 +1,6 @@
 const Docker = require('dockerode');
 const path = require('path');
-const { buildImage, runImage, run } = require('../src/server/controllers/dockerController');
+const { buildImage, run } = require('../src/server/controllers/dockerController');
 const tfs = require('fs')
 jest.setTimeout(20000);
 console.log(process.env.ROOTDIR, process.env.PGPASSWORD)
