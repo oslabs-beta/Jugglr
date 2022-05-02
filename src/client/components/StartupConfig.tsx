@@ -1,14 +1,15 @@
-import { Space, Box, Title, Paper, Button, TextInput } from "@mantine/core";
+import { Space, Box, Title, Paper, Button, TextInput, Select } from "@mantine/core";
 import FileSearchButton from "../containers/FileSearchButton";
-import { selectFile,uploadTableData} from "../utility/fileExplorer";
-import { useState } from "react";
+import { grabImages, selectFile,uploadTableData} from "../utility/fileExplorer";
+import { useEffect, useState } from "react";
 import { useAppSelector } from "../utility/hooks.types";
 import { useForm } from "@mantine/hooks";
 
 const Startup = () => {
 
-
-  const [ message, setMessage ] = useState("");
+  const [imageList, setImageList] = useState<string[]>([''])
+  const [ message, setMessage ] = useState<string>("");
+  
   const setFieldType = (field: any) => {
     return (value: string) => {
       form.setFieldValue(field, value);
@@ -21,6 +22,16 @@ const Startup = () => {
     }
   });
 
+  // useEffect( () => {
+  //   const grabImages = async (): Promise<string[]> => {
+  //     console.log('grab Docker Images')
+  //     const response = await dockController.getImages()
+  //       console.log('exiting grabImages')
+        
+  //   }
+  //   setImageList(response)
+  // },[])
+  
   
   console.log(form.values.tableName,form.values.tablePath)
   console.log(message)
@@ -28,6 +39,8 @@ const Startup = () => {
   return (
     <>
     <Box>
+
+    <Select  style={{width:"80%"}}  placeholder="select image" label="Image" data={[...imageList]} />
     <TextInput
           required
           disabled

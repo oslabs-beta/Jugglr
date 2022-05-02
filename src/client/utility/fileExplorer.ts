@@ -1,3 +1,5 @@
+import { getLeadingCommentRanges } from "typescript";
+
 /**
  * Action helpers moved here for time being...
  */
@@ -19,4 +21,12 @@ export const uploadTableData = async (table:string, schema:string) :Promise<stri
   const response = await psUploadData.uploadData(table,schema)
   console.log('exiting uploadTableData')
   return response;
+
+}
+
+export const grabImages = async (): Promise<string[]> => {
+  console.log('grab Docker Images')
+  const response = await dockController.getImages()
+    console.log('exiting grabImages')
+    return response
 }
