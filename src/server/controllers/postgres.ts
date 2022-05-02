@@ -1,10 +1,6 @@
 const fs = require('fs');
 const copyFrom = require('pg-copy-streams').from
 const path = require('path');
-<<<<<<< HEAD
-
-=======
->>>>>>> 815778e (safe)
 const { Pool } = require('pg')
 
 require('dotenv').config();
@@ -15,11 +11,7 @@ const pool = new Pool({
   host: process.env.PGHOST,
   database: process.env.PGDATABASE,
   password: process.env.PGPASSWORD,
-<<<<<<< HEAD
-  port: process.env.DBPORT,
-=======
   port: process.env.PGPORT,
->>>>>>> 815778e (safe)
 });
 
 pool.on('error', (err, _client) => {
