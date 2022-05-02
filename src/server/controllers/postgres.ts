@@ -14,37 +14,31 @@ const pool = new Pool({
   port: process.env.PGPORT,
 });
 
-console.log('pool', pool);
-
-const connect = async () => { 
-  const status = await pool.connect() 
-  return status;
-};
-connect();
+pool.on('error', (err, _client) => {
+  console.error('Unexpected error on idle client', err) // your callback here
+  return err;
+});
 
 const uploadData = async (table, sqlSchema) => {
-  const status = await pool.connect()
-  const csvCopyString = copyFrom(`COPY $1 FROM STDIN DELIMITERS ',' CSV HEADER`)
-  const params = [table];
-  const stream = await pool.query(csvCopyString, params);
-  const fileStream = await fs.createReadStream(path.resolve(__dirname, sqlSchema));
-    
-  // fileStream.on('open', (stream) => {
-  //   console.log('open!', stream);
-  // })
-  // fileStream.on('ready', (stream) => {  console.log('ready!', stream);
-  // });
-  // fileStream.on('close', (stream) => {
-  //   console.log('closed!', stream);
-  // });
-
-  fileStream.on('error', (stream) => {
-    console.log('filestream error!', stream)
-    return stream;
-  });
-
-  const result = await fileStream.pipe(stream);
-  return result;
+  try {  
+    const string = `COPY ${table} FROM STDIN DELIMITERS ',' CSV HEADER`
+    await pool.connect((_err, done) => {
+      const csvCopyString = copyFrom(string)
+      const stream = pool.query(csvCopyString);
+      const fileStream = fs.createReadStream(sqlSchema);
+      fileStream.on('error', (error) => {
+        console.log('filestream error!', error)
+        done();
+        return error;
+      });
+      fileStream.pipe(stream);
+      fileStream.on('end', done);
+      return stream;
+    })
+  }
+  catch (error) {
+    return `error in data upload, ${error}`
+  }
 }
 
 module.exports = {
