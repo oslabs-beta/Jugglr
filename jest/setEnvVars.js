@@ -1,0 +1,11 @@
+const path = require('path');
+process.env.PGDATABASE = "postgres"
+process.env.PGUSER = "postgres"
+process.env.PGPASSWORD = "postgres"
+process.env.DBPORT = "5432"
+process.env.ROOTDIR = path.resolve(__dirname, "../")
+process.env.DOCKDIR = path.resolve(__dirname, "../__tests__/data")
+process.env.TESTIMAGE = 'test:test';
+process.env.TESTSCHEMA = 'starwars_postgres_create.sql'
+process.env.TESTCONTAINER = "testcontainer"
+process.env.PGCOMMAND = 'postgres'

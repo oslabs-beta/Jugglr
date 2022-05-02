@@ -68,7 +68,7 @@ export default {
 
   // An array of directory names to be searched recursively up from the requiring module's location
   moduleDirectories: [
-    "node_modules", "<rootDir>", "<rootDir>/src"
+    "node_modules", "<rootDir>", "<rootDir>/src", "<rootDir>/__tests__"
   ],
 
   // An array of file extensions your modules use
@@ -91,6 +91,7 @@ export default {
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1',
   },
+  
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
   // moduleNameMapper: {},
 
@@ -125,7 +126,7 @@ export default {
   // restoreMocks: false,
 
   // The root directory that Jest should scan for tests and modules within
-  rootDir: path.join(__dirname,"__tests__"),
+  rootDir: path.join(__dirname),
   // "/Users/miriam/codesmith/Jugglr",
 
   // A list of paths to directories that Jest should use to search for files in
@@ -137,7 +138,7 @@ export default {
   // runner: "jest-runner",
 
   // The paths to modules that run some code to configure or set up the testing environment before each test
-  // setupFiles: [],
+   setupFiles: ["<rootDir>/jest/setEnvVars.js", 'dotenv/config'],
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
   // setupFilesAfterEnv: [],
