@@ -1,6 +1,7 @@
 const Docker = require('dockerode');
 const lpath = require('path');
 const lfs = require('fs');
+jest.setTimeout(20000);
 
 const buildImage = async (image, schema, dirname=process.env.DOCKDIR) => {
   try {

@@ -1,4 +1,3 @@
-
 const fs = require('fs');
 const copyFrom = require('pg-copy-streams').from
 const path = require('path');
@@ -10,7 +9,7 @@ const pool = new Pool({
   host: process.env.PGHOST,
   database: process.env.PGDATABASE,
   password: process.env.PGPASSWORD,
-  port: process.env.PGPORT,
+  port: process.env.DBPORT,
 });
 
 pool.on('error', (err, _client) => {
@@ -20,25 +19,30 @@ pool.on('error', (err, _client) => {
 
 const uploadData = async (table, sqlSchema) => {
   try {  
-    await pool.connect()
-    const csvCopyString = copyFrom(`COPY $1 FROM STDIN DELIMITERS ',' CSV HEADER`)
-    const params = [table];
-    const stream = await pool.query(csvCopyString, params);
-    const fileStream = await fs.createReadStream(path.resolve(__dirname, sqlSchema));
-
-    fileStream.on('error', (error) => {
-      console.log('filestream error!', error)
-      stream.release();
-      return error;
-    });
-    const result = await fileStream.pipe(stream);
-    stream.release();
-    return result;
+    const string = `COPY ${table} FROM STDIN DELIMITERS ',' CSV HEADER`
+    await pool.connect((_err, client, done) => {
+      const csvCopyString = copyFrom(string)
+      const params = [table];
+      const stream = client.query(csvCopyString, params);
+      const fileStream = fs.createReadStream(sqlSchema);
+      fileStream.on('error', (error) => {
+        console.log('filestream error!', error)
+        done();
+        return error;
+      });
+      stream.on('error', (error) => {
+        console.log('filestream error!', error)
+        done();
+        return error;
+      });
+      fileStream.pipe(stream);
+      fileStream.on('end', done);
+      return stream;
+    })
   }
   catch (error) {
     return `error in data upload, ${error}`
   }
-  
 }
 
 module.exports = {
