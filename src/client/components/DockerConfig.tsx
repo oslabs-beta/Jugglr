@@ -12,7 +12,9 @@ import {
   Title
 } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
+import { SetStateAction, useState } from "react";
 import { FileSearch } from "tabler-icons-react";
+import { selectProjectRootDirectory } from "../utility/fileExplorer";
 
 import { useAppSelector } from "../utility/hooks.types";
 
@@ -25,12 +27,17 @@ const DockerConfig = () => {
       imageName: image
     }
   });
+
   const rightSectionButton = (
     <Button
       variant="subtle"
       size="sm"
       mr={25}
       style={{ borderRadius: "0 5px 5px 0" }}
+      onClick={ async () => {
+        const response: any = await selectProjectRootDirectory();
+        form.setFieldValue("project", response);
+      }}
     >
       <FileSearch />
     </Button>
