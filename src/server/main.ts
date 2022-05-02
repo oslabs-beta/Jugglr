@@ -50,6 +50,17 @@ ipcMain.handle("uploadData", async (table, sqlSchema) => {
   }
 });
 
+ipcMain.handle("dir", async()=>{
+  try {
+    
+    const result = await selectorModule.openDir();
+    return result;
+  }
+  catch (err) {
+    console.log(err);
+  }
+})
+
 app.on("window-all-closed", () => {
   if (process.platform != "darwin") {
     app.quit();

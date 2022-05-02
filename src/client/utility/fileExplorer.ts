@@ -1,9 +1,20 @@
 /**
  * Action helpers moved here for time being...
  */
-export const handleClick = async () => {
+ const selectSchemaFile = async () :Promise<void> => {
   const response = await selectorModule.openFile();
   console.log("Electron's Response:", response);
-  // setPath(response);
-  console.log("New Path:", path);
+  return response;
+};
+
+export const selectProjectRootDirectory = async () :Promise<void>=> {
+  const response = await selectorModule.openDir();
+  console.log("Electron's Response:", response);
+  return response;
+};
+
+const selectTableFile = async () :Promise<void> => {
+  const response = await selectorModule.openFile();
+  console.log("Electron's Response:", response);
+  return response;  
 };

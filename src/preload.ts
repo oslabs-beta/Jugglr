@@ -5,6 +5,12 @@ contextBridge.exposeInMainWorld("selectorModule", {
   openFile: async () => {
     const response = await ipcRenderer.invoke("open");
     return response;
+  },
+
+  openDir: async ()=> {
+    
+    const response = await ipcRenderer.invoke("dir");
+    return response;
   }
 });
 
