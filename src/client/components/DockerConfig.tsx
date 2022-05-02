@@ -12,10 +12,9 @@ import {
   Title
 } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
-import { SetStateAction, useState } from "react";
-import { FileSearch } from "tabler-icons-react";
-import { selectProjectRootDirectory } from "../utility/fileExplorer";
 
+import FileSearchButton from "../containers/FileSearchButton";
+import { selectProjectRootDirectory } from "../utility/fileExplorer";
 import { useAppSelector } from "../utility/hooks.types";
 
 const DockerConfig = () => {
@@ -28,20 +27,11 @@ const DockerConfig = () => {
     }
   });
 
-  const rightSectionButton = (
-    <Button
-      variant="subtle"
-      size="sm"
-      mr={25}
-      style={{ borderRadius: "0 5px 5px 0" }}
-      onClick={ async () => {
-        const response: any = await selectProjectRootDirectory();
-        form.setFieldValue("project", response);
-      }}
-    >
-      <FileSearch />
-    </Button>
-  );
+  const setFieldType = (field: any) => {
+    return (value: string) => {
+      form.setFieldValue(field, value);
+    };
+  };
 
   return (
     <Box sx={{ maxWidth: 500 }} mx="auto">
@@ -55,18 +45,31 @@ const DockerConfig = () => {
       <form onSubmit={form.onSubmit(values => console.log(values))}>
         <TextInput
           required
+          disabled
           label="Project"
           placeholder="Project folder path"
           {...form.getInputProps("project")}
-          rightSection={rightSectionButton}
+          rightSection={
+            <FileSearchButton
+              setField={setFieldType("project")}
+              setPath={selectProjectRootDirectory}
+            />
+          }
         />
         <Space h="sm" />
 
         <TextInput
           required
+          disabled
           label="Schema"
           placeholder="Schema file path"
           {...form.getInputProps("schema")}
+          rightSection={
+            <FileSearchButton
+              setField={setFieldType("schema")}
+              setPath={selectProjectRootDirectory}
+            />
+          }
         />
         <Space h="sm" />
 
