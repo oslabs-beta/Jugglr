@@ -24,20 +24,20 @@ const Startup = () => {
     }
   });
 
-  // useEffect( () => {
-  //   console.log('start')
-  //   const grabImages = async (): Promise<void> => {
-  //     console.log('grab Docker Images')
-  //     const response = await dockController.getImagesList()
-  //       console.log('exiting grabImages')
-  //       setImageList(response)
-  //   }
+  useEffect( () => {
+    console.log('start')
+    const grabImages = async (): Promise<void> => {
+      console.log('grab Docker Images')
+      const response = await dockController.getImagesList()
+        console.log('exiting grabImages')
+        setImageList(response)
+    }
    
-  //   grabImages().catch(console.error);
-  //   console.log(imageList)
+    grabImages().catch(console.error);
+    console.log(imageList)
     
    
-  // },[])
+  },[])
   
   
   console.log(form.values.tableName,form.values.tablePath)
