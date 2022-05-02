@@ -102,20 +102,21 @@ const dockerController = {
     return result;
   },
 
-
-
-  getContainersList: async () => {
-    const docker = await new Docker({socketPath: '/var/run/docker.sock'});
-    const list = await docker.listContainers(function (err, containers) {
-      // console.log('List all containers', containers);
-      console.log('err', err);
-      console.log(containers);
-      return containers;
-    });
+  getImagesList: async () => {
+    const docker = await new Docker({socketPath: '/var/run/docker.sock'})
+    const list = await docker.listImages()
+    .then(list => { return list })
     return list;
+   
   },
 
-
+  getContainersList: async () => {
+    const docker = await new Docker({socketPath: '/var/run/docker.sock'})
+    const list = await docker.listContainers()
+    .then(list => { return list })
+    return list;
+   
+  },
 
   stopAllContainers: async ()=> {
     const docker = await new Docker({socketPath: '/var/run/docker.sock'});
@@ -167,6 +168,25 @@ const dockerController = {
         return containerId.id;
     })
     return result;
+    },
+
+    formatOutput: async(list) => {
+      try{
+        console.log(list, typeof list)
+        const formatted = list.map(object => {
+          console.log(object)
+          const id = object.Id;
+          const containers = object.Containers;
+          const repoTags = object.RepoTags;
+          return { id: id, containers: containers, repoTags: repoTags}
+        })
+        console.log(formatted)
+        return formatted;
+      }
+      catch (err) {
+        console.log(err);
+        return err;
+      }
     }
 }
 
