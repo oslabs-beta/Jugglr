@@ -6,7 +6,7 @@ const FileSearchButton = ({ setField,  setPath}) => {
 
   return (
     <Button
-      variant="outline"
+      variant="subtle"
       size="sm"
       mr={25}
       style={{ borderRadius: "0 5px 5px 0" }}

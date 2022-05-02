@@ -15,3 +15,8 @@ export const selectTableFile = async () :Promise<void> => {
   const response = await selectorModule.openFile();
   return response;  
 };
+
+export const createDockerFile = async (filePath, fileContent) => {
+  const response = await dockerController.createContainer(filePath, fileContent);
+  return response;
+}

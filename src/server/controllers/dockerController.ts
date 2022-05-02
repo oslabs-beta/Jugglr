@@ -43,12 +43,13 @@ const dockerController = {
   ////frontend:: user clicks 'Generate Docker File' button. 
     //onClick(?) calls the dockerController.createDockerfile function, passing in pathDockerfile and dockerfileContents
   createDockerfile: async function (filePath, fileContent) {
-    const result = await fs.writeFile(filePath, fileContent, { flag: "wx" }, (err) => {
-      if (err) { console.log(err);}
-      else { console.log('Dockerfile created successfully')}
-      //will error out if any Dockerfile already present in folder
-    });
-    return result;
+    console.log(filePath, fileContent);
+    // const result = await fs.writeFile(filePath, fileContent, { flag: "wx" }, (err) => {
+    //   if (err) { console.log(err);}
+    //   else { console.log('Dockerfile created successfully')}
+    //   //will error out if any Dockerfile already present in folder
+    // });
+    // return result;
   }, 
   
   //// frontend:: user enters container name and port, and clicks 'Run New Container' button

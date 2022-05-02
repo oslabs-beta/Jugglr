@@ -1,5 +1,6 @@
 /**
  * Application uses Mantine form hook as part of application state flow.
+ * useState is used under the hood, and values can be retrieved.
  * ref: https://mantine.dev/form/use-form/
  */
 import {
@@ -18,7 +19,11 @@ import { useForm } from "@mantine/hooks";
 import { EyeOff, EyeCheck } from "tabler-icons-react";
 
 import FileSearchButton from "../containers/FileSearchButton";
-import { selectProjectRootDirectory } from "../utility/fileExplorer";
+import {
+  selectProjectRootDirectory,
+  selectSchemaFile,
+  createDockerFile
+} from "../utility/fileExplorer";
 
 const DockerConfig = () => {
   const form = useForm({
@@ -29,12 +34,14 @@ const DockerConfig = () => {
       databaseName: "",
       databaseUser: "",
       databasePass: "",
-      databasePort: ""
+      databasePort: 5432
     }
   });
 
   /**
-   *
+   * Closure for passing setFieldValue hook
+   * Child components are designated specific fields
+   * where they can modify useForm state
    * @param {string} field
    * @returns {Function -> void}
    */
@@ -56,10 +63,13 @@ const DockerConfig = () => {
       {/**
        * onSubmit function is incomplete
        */}
-      <form onSubmit={form.onSubmit(values => console.log(values))}>
+      <form
+        onSubmit={form.onSubmit(values =>
+          createDockerFile(values.project, values)
+        )}
+      >
         <TextInput
           required
-          disabled
           label="Project Root"
           placeholder="Project folder path"
           {...form.getInputProps("project")}
@@ -74,14 +84,13 @@ const DockerConfig = () => {
 
         <TextInput
           required
-          disabled
           label="Schema File"
           placeholder="Schema file path"
           {...form.getInputProps("schema")}
           rightSection={
             <FileSearchButton
               setField={setFieldType("schema")}
-              setPath={selectProjectRootDirectory}
+              setPath={selectSchemaFile}
             />
           }
         />
@@ -132,7 +141,6 @@ const DockerConfig = () => {
             required
             hideControls
             label="Port"
-            defaultValue={5432}
             min={1}
             max={9999}
             placeholder="Database port"
