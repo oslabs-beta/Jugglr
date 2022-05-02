@@ -5,9 +5,7 @@ export const envConfigSlice = createSlice({
   initialState: {
     rootDir: "",
     schema: "",
-    image: "",
-    tablePath: "",
-    tableName: ""
+    image: ""
   },
   reducers: {
     setEnvConfig: (state, action) => {
@@ -16,8 +14,6 @@ export const envConfigSlice = createSlice({
   }
 });
 
-
-//exporting so all components have access to action creators
 export const { setEnvConfig } = envConfigSlice.actions;
-//exporting for the store
+
 export default envConfigSlice.reducer;

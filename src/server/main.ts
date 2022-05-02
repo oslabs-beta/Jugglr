@@ -55,7 +55,6 @@ ipcMain.handle("dir", async()=>{
 })
 
 ipcMain.handle("uploadData", async (table, sqlSchema) => {
-  console.log('uploadData main!')
   try {
     const result = await psUploadData(table, sqlSchema);
     return result;
