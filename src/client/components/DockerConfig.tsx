@@ -55,6 +55,7 @@ const DockerConfig = () => {
       <form onSubmit={form.onSubmit(values => console.log(values))}>
         <TextInput
           required
+          disabled
           label="Project"
           placeholder="Project folder path"
           {...form.getInputProps("project")}
