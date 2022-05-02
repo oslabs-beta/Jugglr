@@ -2,6 +2,7 @@
  * For a detailed explanation regarding each configuration property and type check, visit:
  * https://jestjs.io/docs/configuration
  */
+const path = require("path")
 
 export default {
   // All imported modules in your tests should be mocked automatically
@@ -79,6 +80,7 @@ export default {
     "json",
     "node"
   ],
+  verbose: true,
   extensionsToTreatAsEsm: ['.ts'],
   globals: {
     'ts-jest': {
@@ -123,7 +125,8 @@ export default {
   // restoreMocks: false,
 
   // The root directory that Jest should scan for tests and modules within
-  rootDir: "/Users/miriam/codesmith/Jugglr",
+  rootDir: path.join(__dirname,"__tests__"),
+  // "/Users/miriam/codesmith/Jugglr",
 
   // A list of paths to directories that Jest should use to search for files in
   // roots: [

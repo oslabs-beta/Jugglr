@@ -13,6 +13,7 @@
     "noUnusedParameters": true,                      
     "skipLibCheck": true,
     "moduleResolution": "node",
+    "outDir": "./build",
     "lib": ["DOM","es6"]
   },
   "include": ["src/**/*"],

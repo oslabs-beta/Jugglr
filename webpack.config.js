@@ -1,4 +1,6 @@
 const path = require("path");
+const webpack = require('webpack')
+const HtmlWebpackPlugin = require("html-webpack-plugin")
 
 module.exports = {
   mode: "development",
@@ -9,7 +11,7 @@ module.exports = {
     rules: [
       {
         test: /\.tsx?$/,
-        use: "ts-loader",
+        loader: "ts-loader",
         exclude: /node_modules/
       },
       {
@@ -51,5 +53,10 @@ module.exports = {
   output: {
     filename: "app.js",
     path: path.resolve(__dirname, "build")
-  }
+  },plugins: [
+    new HtmlWebpackPlugin({
+      title: 'Development',
+      template: path.resolve(__dirname, "./index.html"),
+     }),
+  ]
 };
