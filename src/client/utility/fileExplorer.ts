@@ -24,9 +24,15 @@ export const uploadTableData = async (table:string, schema:string) :Promise<stri
 
 }
 
-export const grabImages = async (): Promise<string[]> => {
-  console.log('grab Docker Images')
-  const response = await dockController.getImages()
-    console.log('exiting grabImages')
-    return response
-}
+// export const runNewContainer = async (image:string, containerName:string, port:string): Promise<string> => {
+
+//   console.log('runNewContainer')
+  
+// }
+
+// export const grabImages = async (): Promise<string[]> => {
+//   console.log('grab Docker Images')
+//   const response = await dockController.getImagesList()
+//     console.log('exiting grabImages')
+//     return response
+// }

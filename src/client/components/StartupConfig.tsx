@@ -1,13 +1,13 @@
 import { Space, Box, Title, Paper, Button, TextInput, Select } from "@mantine/core";
 import FileSearchButton from "../containers/FileSearchButton";
-import { grabImages, selectFile, uploadTableData} from "../utility/fileExplorer";
+import { selectFile, uploadTableData} from "../utility/fileExplorer";
 import { useEffect, useState } from "react";
 import { useAppSelector } from "../utility/hooks.types";
 import { useForm } from "@mantine/hooks";
 
 const Startup = () => {
 
-  const [imageList, setImageList] = useState<string[]>([''])
+  const [imageList, setImageList] = useState<any>([])
   const [ message, setMessage ] = useState<string>("");
   
   const setFieldType = (field: any) => {
@@ -18,29 +18,57 @@ const Startup = () => {
   const form = useForm({
     initialValues: {
       tablePath: "",
-      tableName: ""
+      tableName: "",
+      containerName:"",
+      port:"5432"
     }
   });
 
   // useEffect( () => {
-  //   const grabImages = async (): Promise<string[]> => {
+  //   console.log('start')
+  //   const grabImages = async (): Promise<void> => {
   //     console.log('grab Docker Images')
-  //     const response = await dockController.getImages()
+  //     const response = await dockController.getImagesList()
   //       console.log('exiting grabImages')
-        
+  //       setImageList(response)
   //   }
-  //   setImageList(response)
+   
+  //   grabImages().catch(console.error);
+  //   console.log(imageList)
+    
+   
   // },[])
   
   
   console.log(form.values.tableName,form.values.tablePath)
   console.log(message)
-  
+  console.log('il',imageList)
   return (
     <>
     <Box>
+    <Select  style={{width:"80%"}}  placeholder="select image" label="Image" data={imageList} />
+    <TextInput
+          required
+          
+          label="Container Name"
+          placeholder="Container Name"
+          {...form.getInputProps("containerName")}
+         
+        />
 
-    <Select  style={{width:"80%"}}  placeholder="select image" label="Image" data={[...imageList]} />
+
+<TextInput
+          required
+          
+          label="Port"
+          placeholder="Port"
+          {...form.getInputProps("port")}
+         
+        />
+
+ 
+    <Button onClick={async ()=>setMessage(await uploadTableData(form.values.tableName,form.values.tablePath))}>Run New Container</Button>
+
     <TextInput
           required
           disabled

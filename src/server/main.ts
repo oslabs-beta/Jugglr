@@ -131,7 +131,7 @@ ipcMain.handle("removeContainer", async (containerId) => {
   }
 });
 
-ipcMain.handle("getContainersList", async () => {
+ipcMain.handle("getContainers", async () => {
   try {
     const result = await dockController.getContainersList();
     return result;
@@ -142,7 +142,7 @@ ipcMain.handle("getContainersList", async () => {
   }
 });
 
-ipcMain.handle("getImagesList", async () => {
+ipcMain.handle("getImages", async () => {
   try {
     const result = await dockController.getImagesList();
     const list = result.forEach(object => {
