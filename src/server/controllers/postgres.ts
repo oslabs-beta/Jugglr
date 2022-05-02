@@ -2,19 +2,15 @@
 const fs = require('fs');
 const copyFrom = require('pg-copy-streams').from
 const path = require('path');
-const PGDATABASE = process.env.PGDATABASE || "postgres"
-const PGUSER = process.env.PGUSER || "postgres"
-const PGPASSWORD = process.env.PGPASSWORD || "postgres"
-const PGPORT = process.env.DBPORT || 5432
-const PGHOST = process.env.PGHOST || "localhost"
+
 const { Pool } = require('pg')
 
 const pool = new Pool({
-  user: PGUSER,
-  host: PGHOST,
-  database: PGDATABASE,
-  password: PGPASSWORD,
-  port: PGPORT,
+  user: process.env.PGUSER,
+  host: process.env.PGHOST,
+  database: process.env.PGDATABASE,
+  password: process.env.PGPASSWORD,
+  port: process.env.PGPORT,
 });
 
 pool.on('error', (err, _client) => {

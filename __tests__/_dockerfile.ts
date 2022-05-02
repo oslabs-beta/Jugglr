@@ -2,12 +2,14 @@ const Docker = require('dockerode');
 const path = require('path');
 const { buildImage, runImage, run } = require('../src/server/controllers/dockerController');
 const tfs = require('fs')
-jest.setTimeout(20000)
+jest.setTimeout(20000);
+console.log(process.env.ROOTDIR, process.env.PGPASSWORD)
+const dataDir = path.resolve(`${process.env.ROOTDIR}`, '__tests__/data')
 
 describe ("Dockerfile Create", () => {
   describe('create image', () => {
     it('builds an image from the Dockerfile', async () => {
-      const result = await buildImage();
+      const result = await buildImage('test:test','starwars_postgres_create.sql', dataDir);
       expect(result).toEqual('success');
     })
   }),
@@ -15,7 +17,7 @@ describe ("Dockerfile Create", () => {
     it ('creates an image', async () => {
       await new Promise(resolve => setTimeout(resolve, 2000));
       const docker = await new Docker();
-      const container = await run();
+      const container = await run("test:test", 'testcontainer');
       container.on('container', async function (container) {
         const containerId = await docker.getContainer(container.id);
         console.log(containerId.id);
@@ -23,8 +25,7 @@ describe ("Dockerfile Create", () => {
         expect(containerId).not.toThrowError
       })
       await new Promise(resolve => setTimeout(resolve, 10000));
-      const dirname = path.resolve(__dirname, '../src/server/data');
-      const id = tfs.readFileSync(`${dirname}/container.txt`, "utf8")
+      const id = tfs.readFileSync(`${process.env.DOCKDIR}/container.txt`, "utf8")
       console.log(id)
       expect(id).toBeDefined;
     })

@@ -16,6 +16,6 @@
     "outDir": "./build",
     "lib": ["DOM","es6"]
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "src/.env"],
   "exclude": ["__tests__/**/*"]
 }

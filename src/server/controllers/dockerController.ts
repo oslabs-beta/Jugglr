@@ -2,17 +2,7 @@ const Docker = require('dockerode');
 const lpath = require('path');
 const lfs = require('fs');
 
-const mPGDATABASE = process.env.PGDATABASE || "postgres"
-const mPGUSER = process.env.PGUSER || "postgres"
-const mPGPASSWORD = process.env.PGPASSWORD || "postgres"
-const mPGPORT = process.env.DBPORT || 5432
-const dirname = lpath.resolve(__dirname, '../data');
-const image = 'test:test';
-const schema = 'starwars_postgres_create.sql';
-const containerNm = "testcontainer";
-const command = 'postgres';
-
-const buildImage = async () => {
+const buildImage = async (image, schema, dirname=process.env.DOCKDIR) => {
   try {
     const dockerode = await  new Docker();
     const result = await dockerode.buildImage({
@@ -28,40 +18,34 @@ const buildImage = async () => {
 }
 
 
-const run = async () => {
+const run = async (image, containerName, port="5432") => {
   console.log('Starting Postgres container...');
   const streams = [
     process.stdout,
     process.stderr
   ];
+  port = `${port}/tcp`
   const docker = await  new Docker();
   const result = await docker.run(image, ['postgres'], streams, {
-    Env: [`POSTGRES_PASSWORD=${mPGPASSWORD}`], WorkingDir: dirname, name: containerNm, PortBindings: {
-      "5432/tcp": [ { "HostPort": "5432" } ]}, Tty: false}, (err, _data, _rawContainer) => {
+    Env: [`POSTGRES_PASSWORD=${process.env.PGPASSWORD}`], WorkingDir: process.env.ROOTDIR, name: containerName, PortBindings: {
+      "5432/tcp" : [ { "HostPort": "5432" } ]}, Tty: false}, (err, _data, _rawContainer) => {
         if (err) { console.log("err", err)} })
     .on('container', async function (container) {
       console.log('Postgres started');
       const containerId = await docker.getContainer(container.id);
       console.log(containerId.id)
-      lfs.writeFileSync(`${dirname}/container.txt`, containerId.id, "utf8")
+      lfs.writeFileSync(`${process.env.DOCKDIR}/container.txt`, containerId.id, "utf8")
       return containerId.id;
   })
   return result;
   }
 
-
-
-
-
-
-
-
-const runImage = async () => {
+const runImage = async (image, containerName) => {
   try {
    
     const docker = await  new Docker();
     const result = await docker.run(image, ['postgres'], [process.stdout, process.stderr], {
-      Env: [`POSTGRES_PASSWORD=${mPGPASSWORD}`], WorkingDir: dirname, name: containerNm, PortBindings: {
+      Env: [`POSTGRES_PASSWORD=${process.env.PGPASSWORD}`], WorkingDir: process.env.ROOTDIR, name: containerName, PortBindings: {
         "5432/tcp": [ { "HostPort": "5432" } ]}, Tty: false}, () => {
           console.log("start")
         }, (_err, stream) => {
