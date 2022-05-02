@@ -1,6 +1,5 @@
-import {MantineProvider, Text, AppShell, Navbar, useMantineTheme} from '@mantine/core'
-// import { useState } from "react";
-// import { selectCount } from "../reducers/counterSlice";
+import {MantineProvider, Center, Text, Button, Paper, AppShell, Navbar,Header, Footer, useMantineTheme} from '@mantine/core'
+import { useState } from "react";
 import { HashRouter, Link, Route, Routes } from 'react-router-dom';
 // import Home from './Home'
 import Create from './Create'
