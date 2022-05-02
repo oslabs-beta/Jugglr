@@ -1,7 +1,7 @@
 /**
  * Action helpers moved here for time being...
  */
- const selectSchemaFile = async () :Promise<void> => {
+export const selectSchemaFile = async () :Promise<void> => {
   const response = await selectorModule.openFile();
   return response;
 };
@@ -11,7 +11,7 @@ export const selectProjectRootDirectory = async () :Promise<void>=> {
   return response;
 };
 
-const selectTableFile = async () :Promise<void> => {
+export const selectTableFile = async () :Promise<void> => {
   const response = await selectorModule.openFile();
   return response;  
 };

@@ -41,7 +41,10 @@ const DockerConfig = () => {
         </Title>
       </Paper>
       <Space h={50} />
-
+      
+      {/**
+       * onSubmit function is incomplete
+       */}
       <form onSubmit={form.onSubmit(values => console.log(values))}>
         <TextInput
           required
