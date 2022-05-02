@@ -20,6 +20,7 @@ import StartupConfig from "./StartupConfig";
 import NavbarButtons from "./NavbarButtons";
 import BurgerIcon from "../containers/BurgerIcon";
 
+
 const AppLayout = () => {
   const [opened, setOpened] = useState(false);
   const theme = useMantineTheme();
