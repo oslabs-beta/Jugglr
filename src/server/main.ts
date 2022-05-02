@@ -131,10 +131,17 @@ ipcMain.handle("removeContainer", async (containerId) => {
   }
 });
 
-ipcMain.handle("getContainersList", async () => {
+ipcMain.handle("getContainers", async () => {
   try {
     const result = await dockController.getContainersList();
-    return result;
+    const formatted = result.map(object => {
+      const id = object.Id;
+      const names = object.Names;
+      const image = object.Image;
+      const imageId = object.ImageID
+      return { id, names, image, imageId }
+    })
+     return formatted;
   }
   catch (err) {
     console.log(err);
@@ -142,14 +149,16 @@ ipcMain.handle("getContainersList", async () => {
   }
 });
 
-ipcMain.handle("getImagesList", async () => {
+ipcMain.handle("getImages", async () => {
   try {
-    const result = await dockController.getImagesList();
-    const list = result.forEach(object => {
-      return { id: object.Id, containers: object.Containers, repoTags: object.RepoTags}
-    })
-    console.log(list)
-    return list;
+   const result = await dockController.getImagesList();
+   const formatted = result.map(object => {
+    const id = object.Id;
+    const containers = object.Containers;
+    const repoTags = object.RepoTags;
+    return { id: id, containers: containers, repoTags: repoTags}
+  })
+   return formatted;
   }
   catch (err) {
     console.log(err);
