@@ -15,7 +15,6 @@ import {
 } from "@mantine/core";
 
 import DockerConfig from "./DockerConfig";
-import DatabaseConfig from "./DatabaseConfig";
 import DarkModeButton from "./DarkModeButton";
 import StartupConfig from "./StartupConfig";
 import NavbarButtons from "./NavbarButtons";
@@ -26,7 +25,7 @@ const AppLayout = () => {
   const theme = useMantineTheme();
   const isSmallView = useMediaQuery("(min-width: 993px");
   const navigate = useNavigate();
-  const endpoints = { 0: "/", 1: "/database", 2: "/startup" };
+  const endpoints = { 0: "/", 1: "/startup" };
 
   /**
    * function created to give NavBarButtons pseudo-ordering
@@ -85,7 +84,6 @@ const AppLayout = () => {
       <Container>
         <Routes>
           <Route path="/" element={<DockerConfig />} />
-          <Route path="/database" element={<DatabaseConfig />} />
           <Route path="/startup" element={<StartupConfig />} />
         </Routes>
       </Container>

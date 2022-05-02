@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { UnstyledButton, Text, Group, ThemeIcon } from "@mantine/core";
-import { BrandDocker, CloudStorm, Database } from "tabler-icons-react";
+import { BrandDocker, CloudStorm } from "tabler-icons-react";
 
 const NavbarButtons = ({ navigate }) => {
   const buttonStyles = theme => {
@@ -36,18 +36,6 @@ const NavbarButtons = ({ navigate }) => {
 
       <UnstyledButton
         onClick={() => navigate(1)}
-        sx={theme => buttonStyles(theme)}
-      >
-        <Group>
-          <ThemeIcon variant="light" style={{ background: "none" }}>
-            <Database />
-          </ThemeIcon>
-          <Text size="md">Database</Text>
-        </Group>
-      </UnstyledButton>
-
-      <UnstyledButton
-        onClick={() => navigate(2)}
         sx={theme => buttonStyles(theme)}
       >
         <Group>
