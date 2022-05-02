@@ -20,7 +20,6 @@ pool.on('error', (err, _client) => {
 });
 
 const uploadData = async (table, sqlSchema) => {
-  console.log('uploadData Postgres')
   try {  
     const string = `COPY ${table} FROM STDIN DELIMITERS ',' CSV HEADER`
     await pool.connect((_err, client, done) => {

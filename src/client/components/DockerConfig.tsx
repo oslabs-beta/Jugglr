@@ -18,7 +18,6 @@ import { selectProjectRootDirectory } from "../utility/fileExplorer";
 import { useAppSelector } from "../utility/hooks.types";
 
 const DockerConfig = () => {
-  //grabbing state
   const { rootDir, schema, image } = useAppSelector(state => state.envConfig);
   const form = useForm({
     initialValues: {

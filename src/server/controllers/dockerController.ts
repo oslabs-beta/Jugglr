@@ -101,20 +101,21 @@ const dockerController = {
     return result;
   },
 
-
-
-  getContainersList: async () => {
-    const docker = await new Docker({socketPath: '/var/run/docker.sock'});
-    const list = await docker.listContainers(function (err, containers) {
-      // console.log('List all containers', containers);
-      console.log('err', err);
-      console.log(containers);
-      return containers;
-    });
+  getImagesList: async () => {
+    const docker = await new Docker({socketPath: '/var/run/docker.sock'})
+    const list = await docker.listImages()
+    .then(list => { return list })
     return list;
+   
   },
 
-
+  getContainersList: async () => {
+    const docker = await new Docker({socketPath: '/var/run/docker.sock'})
+    const list = await docker.listContainers()
+    .then(list => { return list })
+    return list;
+   
+  },
 
   stopAllContainers: async ()=> {
     const docker = await new Docker({socketPath: '/var/run/docker.sock'});

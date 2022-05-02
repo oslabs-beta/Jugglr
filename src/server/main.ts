@@ -55,7 +55,6 @@ ipcMain.handle("dir", async()=>{
 })
 
 ipcMain.handle("uploadData", async (table, sqlSchema) => {
-  console.log('uploadData main!')
   try {
     const result = await psUploadData(table, sqlSchema);
     return result;
@@ -146,7 +145,11 @@ ipcMain.handle("getContainersList", async () => {
 ipcMain.handle("getImagesList", async () => {
   try {
     const result = await dockController.getImagesList();
-    return result;
+    const list = result.forEach(object => {
+      return { id: object.Id, containers: object.Containers, repoTags: object.RepoTags}
+    })
+    console.log(list)
+    return list;
   }
   catch (err) {
     console.log(err);

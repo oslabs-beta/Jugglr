@@ -1,6 +1,6 @@
 const Docker = require('dockerode');
 const path = require('path');
-const { buildImage, run } = require('../src/server/controllers/dockerController');
+const { buildImage, run, getContainersList , getImagesList} = require('../src/server/controllers/dockerController');
 const tfs = require('fs')
 jest.setTimeout(20000);
 console.log(process.env.ROOTDIR, process.env.PGPASSWORD)
@@ -29,13 +29,20 @@ describe ("Dockerfile Create", () => {
       console.log(id)
       expect(id).toBeDefined;
     })
+  }),
+  describe ('getContainersList', () => {
+    it ('gets a list of containers', async () => {
+      const list = await getContainersList();
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      expect(list).toHaveProperty([0])
+    })
+  }),
+  describe ('getImagesList', () => {
+    it ('gets a list of images', async () => {
+      const list = await getImagesList();
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      console.log(list)
+      expect(list).toHaveProperty([0])
+    })
   })
-      //
-      // runImage('test:test');
-      // await new Promise(resolve => setTimeout(resolve, 15000));
-      // console.log("result", result)
-      // await result.on('container', (data) => { return data.remove() })
-      // await result.on('end', (data) => {console.log('end', data.release())})
-      // expect(result).toBeDefined;
-      // expect(result).not.toThrowError;
 })

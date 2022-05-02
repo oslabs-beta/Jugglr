@@ -1,6 +1,6 @@
 import { Space, Box, Title, Paper, Button, TextInput, Select } from "@mantine/core";
 import FileSearchButton from "../containers/FileSearchButton";
-import { grabImages, selectFile,uploadTableData} from "../utility/fileExplorer";
+import { grabImages, selectFile, uploadTableData} from "../utility/fileExplorer";
 import { useEffect, useState } from "react";
 import { useAppSelector } from "../utility/hooks.types";
 import { useForm } from "@mantine/hooks";
@@ -76,9 +76,6 @@ const Startup = () => {
         </Title>
       </Paper>
       <Space h={50} />
-
-
-
 
       <div
         style={{
