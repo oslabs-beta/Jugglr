@@ -9,41 +9,36 @@ const Docker = require('dockerode');
 ////frontend:: 
 ////frontend:: user selecting a project directory (rootDir) will invoke file.mkJugglr function. 
 //For e.g., invoke file.mkJugglr() when passing path data to rootDir variable?
-const rootDir = lpath.join(process.env.ROOTDIR);
   //users will select their own sql schema file
   //note: can't use abs path for sql file in Dockerfile
   //for our team: after creating Jugglr folder, drag and drop starwars_postgres_create.sql into it
 
-const pathDockerfile =  process.env.DOCKDIR;
-const dockerfileContents = 
-`FROM postgres:latest 
-ENV POSTGRES_USER ${process.env.PGUSER} 
-ENV POSTGRES_PASSWORD ${process.env.PGPASSWORD} 
-ENV POSTGRES_DB ${process.env.PGDATABASE} 
-WORKDIR ${rootDir}
-COPY starwars_postgres_create.sql /docker-entrypoint-initdb.d/ `
-
-
-
-
-const file = {
-  //Creates Jugglr folder inside rootDir. Also checks if Jugglr already exists in rootDir
-  mkJugglr: function () {
-    fs.mkdir(lpath.join(rootDir, 'jugglr'), (err) => {
-      if (err) {
-        return console.log('jugglr folder already exists', err); 
-      }
-      console.log('jugglr folder created successfully!');
-    });
-  },
-    
-};
-
 const dockerController = {
   ////frontend:: user clicks 'Generate Docker File' button. 
     //onClick(?) calls the dockerController.createDockerfile function, passing in pathDockerfile and dockerfileContents
-  createDockerfile: async function (filePath, fileContent) {
-    const result = await fs.writeFile(filePath, fileContent, { flag: "wx" }, (err) => {
+  createDockerfile: async (dockerfile) => {
+    const { from, user, host, database, password, port, rootDir, schema } = dockerfile;
+   
+    process.env.ROOTDIR = rootDir;
+    process.env.DOCKDIR = lpath.resolve(rootDir, 'jugglr');
+    process.env.PGDATABASE = database;
+    process.env.PGPASSWORD = password;
+    process.env.PGUSER = user;
+    process.env.DBPORT = port || '5432';
+    const From = from || 'postgres:latest'
+    const dockerfileContents = 
+    `FROM ${From} 
+    ENV POSTGRES_USER ${process.env.PGUSER} 
+    ENV POSTGRES_PASSWORD ${process.env.PGPASSWORD} 
+    ENV POSTGRES_DB ${process.env.PGDATABASE} 
+    WORKDIR ${process.env.ROOTDIR}
+    COPY ${schema} /docker-entrypoint-initdb.d/ `
+
+    if (!lfs.existsSync(process.env.DOCKDIR)){
+      lfs.mkdirSync(process.env.DOCKDIR);
+    } 
+    const dFile = lpath.resolve(process.env.DOCKDIR, 'Dockerfile')
+    const result = lfs.writeFileSync(dFile, dockerfileContents, { flag: "w" }, (err) => {
       if (err) { console.log(err);}
       else { console.log('Dockerfile created successfully')}
       //will error out if any Dockerfile already present in folder
@@ -102,9 +97,11 @@ const dockerController = {
   },
 
   getImagesList: async () => {
+    console.log('images dockController')
     const docker = await new Docker({socketPath: '/var/run/docker.sock'})
     const list = await docker.listImages()
-    .then(list => { return list })
+    .then(list => {  return list })
+    console.log('outer',list)
     return list;
    
   },

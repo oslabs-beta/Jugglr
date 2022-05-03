@@ -32,7 +32,7 @@ function createWindow() {
 
 app.whenReady().then(createWindow);
 
-ipcMain.handle("open", async () => {
+ipcMain.handle("open", async (_event) => {
   try {
     const result = await selectorModule.openFile();
     return result;
@@ -43,7 +43,7 @@ ipcMain.handle("open", async () => {
   }
 });
 
-ipcMain.handle("dir", async()=>{
+ipcMain.handle("dir", async(_event)=>{
   try {
     const result = await selectorModule.openDir();
     return result;
@@ -54,8 +54,10 @@ ipcMain.handle("dir", async()=>{
   }
 })
 
-ipcMain.handle("uploadData", async (table, sqlSchema) => {
+
+ipcMain.handle("uploadData", async (_event, table, sqlSchema) => {
   try {
+    console.log('here', table, sqlSchema)
     const result = await psUploadData(table, sqlSchema);
     return result;
   }
@@ -65,7 +67,8 @@ ipcMain.handle("uploadData", async (table, sqlSchema) => {
   }
 });
 
-ipcMain.handle("createDockerfile", async (dockerfile) => {
+
+ipcMain.handle("createDockerfile", async (_event, dockerfile) => {
   try {
     const result = await dockController.createDockerfile(dockerfile);
     return result;
@@ -76,7 +79,7 @@ ipcMain.handle("createDockerfile", async (dockerfile) => {
   }
 });
 
-ipcMain.handle("buildImage", async (dockerfile) => {
+ipcMain.handle("buildImage", async (_event, dockerfile) => {
   try {
     const result = await dockController.buildImage(dockerfile);
     return result;
@@ -87,7 +90,8 @@ ipcMain.handle("buildImage", async (dockerfile) => {
   }
 });
 
-ipcMain.handle("runContainer", async (imageName, containerName, port) => {
+
+ipcMain.handle("runContainer", async (_event, imageName, containerName, port) => {
   try {
     const result = await dockController.run(imageName, containerName, port);
     return result;
@@ -98,7 +102,7 @@ ipcMain.handle("runContainer", async (imageName, containerName, port) => {
   }
 });
 
-ipcMain.handle("startContainer", async (containerId) => {
+ipcMain.handle("startContainer", async (_event, containerId) => {
   try {
     const result = await dockController.startContainer(containerId);
     return result;
@@ -109,7 +113,7 @@ ipcMain.handle("startContainer", async (containerId) => {
   }
 });
 
-ipcMain.handle("stopContainer", async (containerId) => {
+ipcMain.handle("stopContainer", async (_event, containerId) => {
   try {
     const result = await dockController.stopContainer(containerId);
     return result;
@@ -120,7 +124,8 @@ ipcMain.handle("stopContainer", async (containerId) => {
   }
 });
 
-ipcMain.handle("removeContainer", async (containerId) => {
+
+ipcMain.handle("removeContainer", async (_event, containerId) => {
   try {
     const result = await dockController.removeContainer(containerId);
     return result;
@@ -131,7 +136,7 @@ ipcMain.handle("removeContainer", async (containerId) => {
   }
 });
 
-ipcMain.handle("getContainers", async () => {
+ipcMain.handle("getContainers", async (_event) => {
   try {
     const result = await dockController.getContainersList();
     const formatted = result.map(object => {
@@ -149,7 +154,7 @@ ipcMain.handle("getContainers", async () => {
   }
 });
 
-ipcMain.handle("getImages", async () => {
+ipcMain.handle("getImages", async (_event) => {
   try {
    const result = await dockController.getImagesList();
    const formatted = result.map(object => {
