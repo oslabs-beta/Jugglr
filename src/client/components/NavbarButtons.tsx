@@ -2,29 +2,27 @@ import PropTypes from "prop-types";
 import { UnstyledButton, Text, Group, ThemeIcon } from "@mantine/core";
 import { BrandDocker, CloudStorm } from "tabler-icons-react";
 
-const NavbarButtons = ({ navigate }) => {
-  const buttonStyles = theme => {
-    return {
-      display: "block",
-      width: "100%",
-      padding: theme.spacing.xs,
-      borderRadius: theme.radius.sm,
-      color: theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
+import { navButtonTheme } from "../themes/themeFunctions";
 
-      "&:hover": {
-        backgroundColor:
-          theme.colorScheme === "dark"
-            ? theme.colors.dark[6]
-            : theme.colors.gray[0]
-      }
-    };
-  };
+const NavbarButtons = ({ navigate }) => {
 
   return (
     <>
       <UnstyledButton
         onClick={() => navigate(0)}
-        sx={theme => buttonStyles(theme)}
+        sx={theme => navButtonTheme(theme)}
+      >
+        <Group>
+          <ThemeIcon variant="light" style={{ background: "none" }}>
+            <BrandDocker />
+          </ThemeIcon>
+          <Text size="md">Project</Text>
+        </Group>
+      </UnstyledButton>
+
+      <UnstyledButton
+        onClick={() => navigate(1)}
+        sx={theme => navButtonTheme(theme)}
       >
         <Group>
           <ThemeIcon variant="light" style={{ background: "none" }}>
@@ -35,8 +33,8 @@ const NavbarButtons = ({ navigate }) => {
       </UnstyledButton>
 
       <UnstyledButton
-        onClick={() => navigate(1)}
-        sx={theme => buttonStyles(theme)}
+        onClick={() => navigate(2)}
+        sx={theme => navButtonTheme(theme)}
       >
         <Group>
           <ThemeIcon variant="light" style={{ background: "none" }}>

@@ -20,12 +20,18 @@ import { EyeOff, EyeCheck } from "tabler-icons-react";
 
 import FileSearchButton from "../containers/FileSearchButton";
 import {
-  selectProjectRootDirectory,
   selectFile,
   setDockerFile
 } from "../utility/fileExplorer";
+import { useAppSelector } from "../utility/hooks.types";
 
 const DockerConfig = () => {
+  const { from, user, host, database, password, port, rootDir, schema } = useAppSelector(state => state.envConfig)
+  /**
+   * shape does match DockerFile type
+   * remove rootDir, modify DockerFile type
+   * ProjectConfig is setting rootDir
+   */
   const form = useForm({
     initialValues: {
       from: "postgres:latest",
@@ -34,8 +40,8 @@ const DockerConfig = () => {
       database: "postgres",
       password: "postgres",
       port: 5432,
-      rootDir: "rootDir",
-      schema: "schemaPath"
+      rootDir: rootDir,
+      schema: ""
     }
   });
 
@@ -61,25 +67,9 @@ const DockerConfig = () => {
       </Paper>
       <Space h={50} />
 
-      {/**
-       * onSubmit function is incomplete
-       */}
       <form
         onSubmit={form.onSubmit(values => console.log(setDockerFile(values)))}
       >
-        <TextInput
-          required
-          label="Project Root"
-          placeholder="Project folder path"
-          {...form.getInputProps("rootDir")}
-          rightSection={
-            <FileSearchButton
-              setField={setFieldType("rootDir")}
-              setPath={selectProjectRootDirectory}
-            />
-          }
-        />
-        <Space h="sm" />
 
         <TextInput
           required

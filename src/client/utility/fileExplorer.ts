@@ -48,7 +48,7 @@ export const setDockerFile = async (values: DockerFile) => {
 }
 
 export const setProjectRoot = async (values: EnvConfig) => {
-  return await selectorModule.setProjectRoot(values);
+  return await selectorModule.setProjectRoot(values.rootDir);
 }
 
 export const destructureImageList = (arr:[]): string[] => {
