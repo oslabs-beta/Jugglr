@@ -1,20 +1,43 @@
 const Docker = require('dockerode');
 const path = require('path');
-const { buildImage, run, getContainersList , getImagesList, formatOutput} = require('../src/server/controllers/dockerController');
+const { createDockerfile, buildImage, run, getContainersList , getImagesList} = require('../src/server/controllers/dockerController');
 const tfs = require('fs')
 jest.setTimeout(20000);
 console.log(process.env.ROOTDIR, process.env.PGPASSWORD)
 const dataDir = path.resolve(`${process.env.ROOTDIR}`, '__tests__/data')
 
 describe ("Dockerfile Create", () => {
+  describe('create dockerfile', () => {
+    it ('creates a Dockerfile if none exists', async () => {
+      const Dockerfile = {
+        from: 'postgres:latest' ,
+        user: 'postgres' ,
+        host: 'localhost' ,
+        database: 'postgres' ,
+        password: 'postgres' ,
+        port:  '5432',
+        rootDir: process.env.ROOTDIR,
+        schema: path.resolve(process.env.DOCKDIR, 'starwars_postgres.create.sql')
+      };
+      const result = await createDockerfile(Dockerfile)
+      .then(() => {
+        const dFile = path.resolve(process.env.DOCKDIR, 'Dockerfile');
+        tfs.access(dFile, (err) => {
+            console.log(`Dockerfile ${err ? 'does not exist' : 'exists'}`);
+        });
+      });
+      await new Promise(resolve => setTimeout(resolve, 10000));
+      expect(result).not.toThrowError;
+    })
+  }),
   describe('create image', () => {
-    xit('builds an image from the Dockerfile', async () => {
+    it('builds an image from the Dockerfile', async () => {
       const result = await buildImage('test:test','starwars_postgres_create.sql', dataDir);
       expect(result).toEqual('success');
     })
   }),
   describe ('run image', () => {
-    xit ('creates an image', async () => {
+    it ('creates an image', async () => {
       await new Promise(resolve => setTimeout(resolve, 2000));
       const docker = await new Docker();
       const container = await run("test:test", 'testcontainer');
@@ -31,24 +54,28 @@ describe ("Dockerfile Create", () => {
     })
   }),
   describe ('getContainersList', () => {
-    xit ('gets a list of containers', async () => {
+    it ('gets a list of containers', async () => {
       const list = await getContainersList();
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      expect(list).toHaveProperty([0])
+      const formatted = list.map(object => {
+        const id = object.Id;
+        const names = object.Names;
+        const image = object.Image;
+        const imageId = object.ImageID
+        return { id, names, image, imageId }
+      })
+      expect(formatted).toBeInstanceOf(Array)
     })
   }),
   describe ('getImagesList', () => {
     it ('gets a list of images', async () => {
-      const result = getImagesList()
-      .then(list => {
-        expect(list).toHaveProperty([0])
-        const formatted = formatOutput(list);
-        console.log(formatted);
-        return formatted;
+      const list = await getImagesList()
+      const formatted = list.map(object => {
+        const id = object.Id;
+        const containers = object.Containers;
+        const repoTags = object.RepoTags;
+        return { id: id, containers: containers, repoTags: repoTags}
       })
-      .then(formatted => { return Promise.resolve(formatted)})
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      expect(result).toBeInstanceOf(Array)
+      expect(formatted).toBeInstanceOf(Array)
       
     })
   })
