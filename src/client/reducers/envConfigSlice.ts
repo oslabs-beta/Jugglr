@@ -4,12 +4,19 @@ export const envConfigSlice = createSlice({
   name: "envConfig",
   initialState: {
     rootDir: "",
-    schema: "",
-    image: ""
+    image: "",
+    container: "",
+    from: "postgres:latest",
+    user: "postgres",
+    host: "localhost",
+    database: "postgres",
+    password: "postgres",
+    port: 5432,
+    schema: ""
   },
   reducers: {
     setEnvConfig: (state, action) => {
-      state[action.type] = action.payload;
+      return { ...state, ...action.payload };
     }
   }
 });

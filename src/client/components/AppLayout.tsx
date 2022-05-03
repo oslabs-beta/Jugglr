@@ -19,6 +19,7 @@ import DarkModeButton from "./DarkModeButton";
 import StartupConfig from "./StartupConfig";
 import NavbarButtons from "./NavbarButtons";
 import BurgerIcon from "../containers/BurgerIcon";
+import ProjectConfig from "./ProjectConfig";
 
 
 const AppLayout = () => {
@@ -26,7 +27,7 @@ const AppLayout = () => {
   const theme = useMantineTheme();
   const isSmallView = useMediaQuery("(min-width: 993px");
   const navigate = useNavigate();
-  const endpoints = { 0: "/", 1: "/startup" };
+  const endpoints = { 0: "/", 1: "/docker", 2: "/startup" };
 
   /**
    * function created to give NavBarButtons pseudo-ordering
@@ -84,7 +85,8 @@ const AppLayout = () => {
     >
       <Container>
         <Routes>
-          <Route path="/" element={<DockerConfig />} />
+          <Route path="/" element={<ProjectConfig />} />
+          <Route path="/docker" element={<DockerConfig />} />
           <Route path="/startup" element={<StartupConfig />} />
         </Routes>
       </Container>
