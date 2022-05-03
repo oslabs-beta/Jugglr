@@ -1,15 +1,15 @@
 import { Space, Box, Title, Paper, Button, TextInput, NativeSelect } from "@mantine/core";
 import FileSearchButton from "../containers/FileSearchButton";
-import { selectFile, uploadTableData,destructureImageList, runNewContainer} from "../utility/fileExplorer";
-import { useEffect, useState } from "react";
+import { selectFile, uploadTableData,destructureImageList, runNewContainer, destructureContainerList, destructureContainerId, startContainer, stopContainer} from "../utility/fileExplorer";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useForm } from "@mantine/hooks";
-import { setConstantValue } from "typescript";
+
 
 const Startup = () => {
 
   const [imageList, setImageList] = useState<string[]>([""])
-  const [imageValue, setImageValue] = useState<string>('')
-  const [ message, setMessage ] = useState<string>("");
+  const [containerNames, setContainerList] = useState<string[]>([""]);
+  const [containerIdObject,setContainerIdObject] = useState ({})
   
   const setFieldType = (field: any) => {
     return (value: string) => {
@@ -20,8 +20,6 @@ const Startup = () => {
     initialValues: {
       tablePath: "",
       tableName: "",
-      
-      
     }
   });
   const form1 = useForm({
@@ -29,24 +27,41 @@ const Startup = () => {
       imageValue:"",
       containerName:"",
       port:"5432"
-
+    }
+  })
+  const form2 = useForm({
+    initialValues: {
+      containerName:"",
+      
     }
   })
 
   useEffect( () => {
     console.log('start')
     const grabImages = async (): Promise<void> => {
-    const response = await dockController.getImagesList()
-    const newList:string[] = destructureImageList(response)
-    setImageList(newList)
+    const images = await dockController.getImagesList()
+    const containers = await dockController.getContainersList()
+    console.log(containers)
+    const iList:string[] = destructureImageList(images)
+    const cList:string[] = destructureContainerList(containers)
+    const cObject = destructureContainerId(containers)
+    setContainerIdObject(cObject)
+    setContainerList(cList)
+    setImageList(iList)
     }
    
     grabImages().catch(console.error);
    
   },[])
+  const setNameAndId = async (event: ChangeEvent<HTMLSelectElement> ):Promise<void> => {
+    form2.setFieldValue('containerName', event.currentTarget.value)
+    // form2.setFieldValue('id', containerIdObject[form2.values.containerName])
+  }
+  // console.log('containers',containerNames)
+  // console.log('id', containerIdObject)
+  console.log('form2', form2.values)
+  console.log(containerIdObject[form2.values.containerName])
 
-
-  console.log(form1.values)
   
  
   return (
@@ -96,7 +111,7 @@ const Startup = () => {
 
          <Button type="submit">Load Table Data</Button>
          </form>
-
+         
     </Box>
 
     <Box sx={{ maxWidth: "100%" }} mx="auto">
@@ -106,6 +121,8 @@ const Startup = () => {
         </Title>
       </Paper>
       <Space h={50} />
+        <form>
+        <NativeSelect  required style={{width:"80%"}}  placeholder="select Container" label="container" data={containerNames} onChange={(event)=> setNameAndId(event)} />
 
       <div
         style={{
@@ -116,11 +133,11 @@ const Startup = () => {
         }}
       >
         <div style={{ width: "30%" }}>
-          <Button fullWidth>Start</Button>
+          <Button fullWidth onClick={()=>{startContainer(containerIdObject[form2.values.containerName])}}>Start</Button>
         </div>
 
         <div style={{ width: "30%" }}>
-          <Button fullWidth>Stop</Button>
+          <Button fullWidth onClick={()=>{stopContainer(containerIdObject[form2.values.containerName])}}>Stop</Button>
         </div>
 
         <div style={{ width: "30%" }}>
@@ -129,6 +146,7 @@ const Startup = () => {
           </Button>
         </div>
       </div>
+      </form>
     </Box>
     </>
   );
