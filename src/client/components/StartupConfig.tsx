@@ -1,12 +1,14 @@
-import { Space, Box, Title, Paper, Button, TextInput, Select } from "@mantine/core";
+import { Space, Box, Title, Paper, Button, TextInput, NativeSelect } from "@mantine/core";
 import FileSearchButton from "../containers/FileSearchButton";
-import { selectFile, uploadTableData,destructureImageList} from "../utility/fileExplorer";
+import { selectFile, uploadTableData,destructureImageList, runNewContainer} from "../utility/fileExplorer";
 import { useEffect, useState } from "react";
 import { useForm } from "@mantine/hooks";
+import { setConstantValue } from "typescript";
 
 const Startup = () => {
 
-  const [imageList, setImageList] = useState<string[]>([])
+  const [imageList, setImageList] = useState<string[]>([""])
+  const [imageValue, setImageValue] = useState<string>('')
   const [ message, setMessage ] = useState<string>("");
   
   const setFieldType = (field: any) => {
@@ -18,47 +20,58 @@ const Startup = () => {
     initialValues: {
       tablePath: "",
       tableName: "",
-      containerName:"",
-      port:"5432"
+      
+      
     }
   });
+  const form1 = useForm({
+    initialValues: {
+      imageValue:"",
+      containerName:"",
+      port:"5432"
+
+    }
+  })
 
   useEffect( () => {
     console.log('start')
     const grabImages = async (): Promise<void> => {
     const response = await dockController.getImagesList()
-    const newList = destructureImageList(response)
+    const newList:string[] = destructureImageList(response)
     setImageList(newList)
     }
    
     grabImages().catch(console.error);
    
   },[])
-  
+
+
+  console.log(form1.values)
   
  
   return (
     <>
     <Box>
-    <Select  style={{width:"80%"}}  placeholder="select image" label="Image" data={imageList} />
+      <form onSubmit={form1.onSubmit((values)=> runNewContainer(values))}>
+    <NativeSelect  required style={{width:"80%"}}  placeholder="select image" label="Image" data={imageList} onChange={(event)=> form1.setFieldValue('imageValue', event.currentTarget.value)} />
     <TextInput
           required
           label="Container Name"
           placeholder="Container Name"
-          {...form.getInputProps("containerName")}  
+          {...form1.getInputProps("containerName")}  
         />
-
 
 <TextInput
           required
           label="Port"
           placeholder="Port"
-          {...form.getInputProps("port")}
+          {...form1.getInputProps("port")}
         />
 
  
-    {/* <Button onClick={async ()=>setMessage(await uploadTableData( ))}>Run New Container</Button> */}
-
+    <Button type="submit">Run New Container</Button>
+    </form>
+    <form onSubmit={form.onSubmit((values)=> uploadTableData(values))}>
     <TextInput
           required
           disabled
@@ -81,8 +94,8 @@ const Startup = () => {
          
         />
 
-         <Button onClick={async ()=>setMessage(await uploadTableData(form.values.tableName,form.values.tablePath))}>Load Table Data</Button>
-        
+         <Button type="submit">Load Table Data</Button>
+         </form>
 
     </Box>
 

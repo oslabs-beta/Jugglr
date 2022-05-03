@@ -13,13 +13,19 @@ export const selectProjectRootDirectory = async () :Promise<void>=> {
   return response;
 };
 
-export const uploadTableData = async (table:string, schema:string) :Promise<string>  => {
-  if(table==="" || schema===""){ 
+interface table {
+  tablePath: string
+  tableName: string
+}
+export const uploadTableData = async (values:table) :Promise<string>  => {
+  const tablePath= values.tablePath
+  const tableName=values.tableName
+  if(tablePath==="" || tableName===""){ 
     return "Please fill out all required fields"
   }
-  console.log(table,schema)
-  const response = await psUploadData.uploadData(table,schema)
- 
+  
+  const response = await psUploadData.uploadData(tableName,tablePath)
+ console.log(response);
   return response;
 
 
@@ -42,7 +48,7 @@ export const setDockerFile = async (values: DockerFile) => {
 
 export const destructureImageList = (arr:[]): string[] => {
   
-  const newImageList :string[] = []
+  const newImageList :string[] = ['']
   arr.forEach((ele)=>{
     const curTag: image = ele['repoTags']
     if(curTag!==null){
@@ -55,10 +61,17 @@ export const destructureImageList = (arr:[]): string[] => {
   
   return newImageList
 }
-
-// export const runNewContainer = async (image:string, containerName:string, port:string): Promise<string> => {
-//   const response = await 
-//   console.log('runNewContainer')
-//   return 
-// }
+interface newContainer {
+  imageValue: string
+  containerName: string
+  port: string
+}
+export const runNewContainer = async (values:newContainer): Promise<string | string> => {
+  const imageValue = values.imageValue
+  const containerName = values.containerName
+  const port = values.port 
+  const response = await dockController.runContainer(imageValue,containerName,port)
+  return response
+   
+}
 
