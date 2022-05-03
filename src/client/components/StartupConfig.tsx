@@ -140,11 +140,11 @@ const Startup = () => {
           <Button fullWidth onClick={()=>{stopContainer(containerIdObject[form2.values.containerName])}}>Stop</Button>
         </div>
 
-        <div style={{ width: "30%" }}>
+        {/* <div style={{ width: "30%" }}>
           <Button fullWidth variant="outline">
             Remove
-          </Button>
-        </div>
+          </Button> */}
+        {/* </div> */}
       </div>
       </form>
     </Box>

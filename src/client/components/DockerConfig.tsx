@@ -34,8 +34,8 @@ const DockerConfig = () => {
       database: "postgres",
       password: "postgres",
       port: 5432,
-      rootDir: "rootDir",
-      schema: "schemaPath"
+      rootDir: "",
+      schema: ""
     }
   });
 
