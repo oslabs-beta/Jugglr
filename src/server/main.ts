@@ -82,6 +82,7 @@ ipcMain.handle("uploadData", async (_event, table, sqlSchema) => {
 ipcMain.handle("createDockerfile", async (_event, dockerfile) => {
   try {
     const result = await dockController.createDockerfile(dockerfile);
+    console.log(result);
     return result;
   }
   catch (err) {
@@ -116,6 +117,7 @@ ipcMain.handle("runContainer", async (_event, imageName, containerName,port) => 
 ipcMain.handle("startContainer", async (_event, containerId) => {
   try {
     const result = await dockController.startContainer(containerId);
+    console.log('startcontainer', result);
     return result;
   }
   catch (err) {
@@ -127,6 +129,7 @@ ipcMain.handle("startContainer", async (_event, containerId) => {
 ipcMain.handle("stopContainer", async (_event, containerId) => {
   try {
     const result = await dockController.stopContainer(containerId);
+    console.log('stopcontainer', result);
     return result;
   }
   catch (err) {
