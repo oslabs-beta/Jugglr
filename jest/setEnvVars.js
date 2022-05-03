@@ -1,8 +1,8 @@
 const path = require('path');
-process.env.PGDATABASE = "postgres"
-process.env.PGUSER = "postgres"
-process.env.PGPASSWORD = "postgres"
-process.env.DBPORT = "5432"
+process.env.POSTGRES_DB = "postgres"
+process.env.POSTGRES_USER = "postgres"
+process.env.POSTGRES_PASSWORD = "postgres"
+process.env.POSTGRES_PORT = "5432"
 process.env.ROOTDIR = path.resolve(__dirname, "../")
 process.env.DOCKDIR = path.resolve(__dirname, "../__tests__/data")
 process.env.TESTIMAGE = 'test:test';

@@ -54,6 +54,17 @@ ipcMain.handle("dir", async(_event)=>{
   }
 })
 
+ipcMain.handle("setProjectRoot", async(_event, rootdir)=>{
+  try {
+    const result = await selectorModule.setProjectRoot(rootdir);
+    return result;
+  }
+  catch (err) {
+    console.log(err);
+    return err;
+  }
+})
+
 
 ipcMain.handle("uploadData", async (_event, table, sqlSchema) => {
   try {

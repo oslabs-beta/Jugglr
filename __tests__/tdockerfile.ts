@@ -3,7 +3,7 @@ const path = require('path');
 const { createDockerfile, buildImage, run, getContainersList , getImagesList} = require('../src/server/controllers/dockerController');
 const tfs = require('fs')
 jest.setTimeout(20000);
-console.log(process.env.ROOTDIR, process.env.PGPASSWORD)
+console.log(process.env.ROOTDIR, process.env.POSTGRES_PASSWORD)
 const dataDir = path.resolve(`${process.env.ROOTDIR}`, '__tests__/data')
 
 describe ("Dockerfile Create", () => {

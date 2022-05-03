@@ -1,4 +1,3 @@
-import { ipcMain } from "electron";
 
 const fileController = require('../src/server/controllers/fileController.ts');
 const dockerController = require('../src/server/controllers/dockerController')
@@ -11,7 +10,7 @@ jest.mock('electron', () => ({
 describe ("Server Routes", () => {
   describe('open', () => {
     // promise resolves. See https://jestjs.io/docs/en/asynchronous
-    xit('calls the open dialog function', async () => {
+    it('calls the open dialog function', async () => {
       const response = await fileController.openFile();
       console.log(typeof response)
       expect(response).toEqual('This is a file')
