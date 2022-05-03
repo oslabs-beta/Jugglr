@@ -91,9 +91,9 @@ ipcMain.handle("buildImage", async (_event, dockerfile) => {
 });
 
 
-ipcMain.handle("runContainer", async (_event, imageName, containerName, port) => {
+ipcMain.handle("runContainer", async (_event, imageName, containerName,port) => {
   try {
-    const result = await dockController.run(imageName, containerName, port);
+    const result = await dockController.run(imageName, containerName,port);
     return result;
   }
   catch (err) {
