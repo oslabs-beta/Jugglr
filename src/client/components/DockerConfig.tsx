@@ -21,20 +21,21 @@ import { EyeOff, EyeCheck } from "tabler-icons-react";
 import FileSearchButton from "../containers/FileSearchButton";
 import {
   selectProjectRootDirectory,
-  selectSchemaFile,
-  createDockerFile
+  selectFile,
+  setDockerFile
 } from "../utility/fileExplorer";
 
 const DockerConfig = () => {
   const form = useForm({
     initialValues: {
-      project: "",
-      schema: "",
-      imageName: "",
-      databaseName: "",
-      databaseUser: "",
-      databasePass: "",
-      databasePort: 5432
+      from: "postgres:latest",
+      user: "postgres",
+      host: "localhost",
+      database: "postgres",
+      password: "postgres",
+      port: 5432,
+      rootDir: "rootDir",
+      schema: "schemaPath"
     }
   });
 
@@ -64,18 +65,16 @@ const DockerConfig = () => {
        * onSubmit function is incomplete
        */}
       <form
-        onSubmit={form.onSubmit(values =>
-          createDockerFile(values.project, values)
-        )}
+        onSubmit={form.onSubmit(values => console.log(setDockerFile(values)))}
       >
         <TextInput
           required
           label="Project Root"
           placeholder="Project folder path"
-          {...form.getInputProps("project")}
+          {...form.getInputProps("rootDir")}
           rightSection={
             <FileSearchButton
-              setField={setFieldType("project")}
+              setField={setFieldType("rootDir")}
               setPath={selectProjectRootDirectory}
             />
           }
@@ -90,7 +89,7 @@ const DockerConfig = () => {
           rightSection={
             <FileSearchButton
               setField={setFieldType("schema")}
-              setPath={selectSchemaFile}
+              setPath={selectFile}
             />
           }
         />
@@ -100,7 +99,7 @@ const DockerConfig = () => {
           required
           label="Database Name"
           placeholder="Specify name of database"
-          {...form.getInputProps("databaseName")}
+          {...form.getInputProps("database")}
         />
         <Space h="sm" />
 
@@ -110,7 +109,7 @@ const DockerConfig = () => {
               required
               label="Database Username"
               placeholder="Username"
-              {...form.getInputProps("databaseUser")}
+              {...form.getInputProps("user")}
             />
           </Grid.Col>
 
@@ -122,7 +121,7 @@ const DockerConfig = () => {
               visibilityToggleIcon={({ reveal, size }) =>
                 reveal ? <EyeOff size={size} /> : <EyeCheck size={size} />
               }
-              {...form.getInputProps("databasePass")}
+              {...form.getInputProps("password")}
             />
           </Grid.Col>
         </Grid>
@@ -132,11 +131,11 @@ const DockerConfig = () => {
           required
           label="Image Name"
           placeholder="Docker image name"
-          {...form.getInputProps("imageName")}
+          {...form.getInputProps("from")}
         />
         <Space h="sm" />
 
-        <div style={{ width: "25%" }}>
+        <div style={{ display: "flex", gap: "15px", width: "55%" }}>
           <NumberInput
             required
             hideControls
@@ -144,7 +143,14 @@ const DockerConfig = () => {
             min={1}
             max={9999}
             placeholder="Database port"
-            {...form.getInputProps("databasePort")}
+            {...form.getInputProps("port")}
+          />
+
+          <TextInput
+            required
+            label="Host"
+            placeholder="Host name"
+            {...form.getInputProps("host")}
           />
         </div>
         <Space h="sm" />

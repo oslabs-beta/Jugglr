@@ -1,4 +1,5 @@
 import { getLeadingCommentRanges } from "typescript";
+import { DockerFile } from "../../types";
 
 /**
  * Action helpers moved here for time being...
@@ -29,4 +30,12 @@ export const grabImages = async (): Promise<string[]> => {
   const response = await dockController.getImages()
     console.log('exiting grabImages')
     return response
+}
+
+/**
+ * Added these to test DockerController
+ */
+export const setDockerFile = (values: DockerFile) => {
+  const response = dockController.createDockerfile(values);
+  return response;
 }

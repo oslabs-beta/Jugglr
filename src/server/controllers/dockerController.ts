@@ -43,14 +43,13 @@ const dockerController = {
   ////frontend:: user clicks 'Generate Docker File' button. 
     //onClick(?) calls the dockerController.createDockerfile function, passing in pathDockerfile and dockerfileContents
   createDockerfile: async function (filePath, fileContent) {
-    console.log(filePath, fileContent);
-    // const result = await fs.writeFile(filePath, fileContent, { flag: "wx" }, (err) => {
-    //   if (err) { console.log(err);}
-    //   else { console.log('Dockerfile created successfully')}
-    //   //will error out if any Dockerfile already present in folder
-    // });
-    // return result;
-  }, 
+    const result = await fs.writeFile(filePath, fileContent, { flag: "wx" }, (err) => {
+      if (err) { console.log(err);}
+      else { console.log('Dockerfile created successfully')}
+      //will error out if any Dockerfile already present in folder
+    });
+    return result;
+  },
   
   //// frontend:: user enters container name and port, and clicks 'Run New Container' button
     //onClick: transfer input field info to variables containerName and containerPort 
@@ -168,25 +167,6 @@ const dockerController = {
         return containerId.id;
     })
     return result;
-    },
-
-    formatOutput: async(list) => {
-      try{
-        console.log(list, typeof list)
-        const formatted = list.map(object => {
-          console.log(object)
-          const id = object.Id;
-          const containers = object.Containers;
-          const repoTags = object.RepoTags;
-          return { id: id, containers: containers, repoTags: repoTags}
-        })
-        console.log(formatted)
-        return formatted;
-      }
-      catch (err) {
-        console.log(err);
-        return err;
-      }
     }
 }
 
