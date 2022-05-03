@@ -1,4 +1,4 @@
-import { DockerFile } from "../../types";
+import { DockerFile, EnvConfig } from "../../types";
 
 /**
  * Action helpers moved here for time being...
@@ -39,11 +39,16 @@ interface image {
 }
 
 /**
- * Added these to test DockerController
+ * Call electron to create a DockerFile with given details
+ * @param {DockerFile} values
+ * @returns 
  */
 export const setDockerFile = async (values: DockerFile) => {
-  const response = await dockController.createDockerfile(values);
-  return response;
+  return await dockController.createDockerfile(values);
+}
+
+export const setProjectRoot = async (values: EnvConfig) => {
+  return await selectorModule.setProjectRoot(values);
 }
 
 export const destructureImageList = (arr:[]): string[] => {
