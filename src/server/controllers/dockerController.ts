@@ -44,7 +44,7 @@ const dockerController = {
       //will error out if any Dockerfile already present in folder
     });
     return result;
-  }, 
+  },
   
   //// frontend:: user enters container name and port, and clicks 'Run New Container' button
     //onClick: transfer input field info to variables containerName and containerPort 

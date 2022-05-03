@@ -6,7 +6,7 @@ export type EnvConfig = {
   container?: string
 }
 
-export type Dockerfile = {
+export type DockerFile = {
   from: string | 'postgres:latest' ,
   user: string | 'postgres' ,
   host: string | 'localhost' ,
