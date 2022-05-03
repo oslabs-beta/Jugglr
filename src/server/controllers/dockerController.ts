@@ -144,7 +144,7 @@ const dockerController = {
   },
   
   
-  run: async (image, containerName, port="5432") => {
+  runContainer: async (image, containerName, port="5432") => {
     console.log('Starting Postgres container...');
     const streams = [
       process.stdout,
