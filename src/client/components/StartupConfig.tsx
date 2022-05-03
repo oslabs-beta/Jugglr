@@ -2,12 +2,11 @@ import { Space, Box, Title, Paper, Button, TextInput, Select } from "@mantine/co
 import FileSearchButton from "../containers/FileSearchButton";
 import { selectFile, uploadTableData,destructureImageList} from "../utility/fileExplorer";
 import { useEffect, useState } from "react";
-import { useAppSelector } from "../utility/hooks.types";
 import { useForm } from "@mantine/hooks";
 
 const Startup = () => {
 
-  const [imageList, setImageList] = useState<any>([])
+  const [imageList, setImageList] = useState<string[]>([])
   const [ message, setMessage ] = useState<string>("");
   
   const setFieldType = (field: any) => {
@@ -27,14 +26,9 @@ const Startup = () => {
   useEffect( () => {
     console.log('start')
     const grabImages = async (): Promise<void> => {
-      console.log('grab Docker Images')
-      const response = await dockController.getImagesList()
-        console.log(response)
-        const newList = destructureImageList(response)
-        console.log(newList)
-        setImageList(newList)
-       
-       
+    const response = await dockController.getImagesList()
+    const newList = destructureImageList(response)
+    setImageList(newList)
     }
    
     grabImages().catch(console.error);
@@ -49,21 +43,17 @@ const Startup = () => {
     <Select  style={{width:"80%"}}  placeholder="select image" label="Image" data={imageList} />
     <TextInput
           required
-          
           label="Container Name"
           placeholder="Container Name"
-          {...form.getInputProps("containerName")}
-         
+          {...form.getInputProps("containerName")}  
         />
 
 
 <TextInput
           required
-          
           label="Port"
           placeholder="Port"
           {...form.getInputProps("port")}
-         
         />
 
  
@@ -85,14 +75,13 @@ const Startup = () => {
         
         <TextInput
           required
-          
           label="Table Name"
           placeholder="Table Name"
           {...form.getInputProps("tableName")}
          
         />
 
-            <Button onClick={async ()=>setMessage(await uploadTableData(form.values.tableName,form.values.tablePath))}>Load Table Data</Button>
+         <Button onClick={async ()=>setMessage(await uploadTableData(form.values.tableName,form.values.tablePath))}>Load Table Data</Button>
         
 
     </Box>
