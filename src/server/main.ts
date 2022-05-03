@@ -4,7 +4,7 @@ const mpath = require("path");
 const selectorModule = require('./controllers/fileController');
 const { uploadData: psUploadData} = require('./controllers/postgres')
 const dockController = require('./controllers/dockerController')
-
+require('dotenv/config');
 
 try {
   require("electron-reloader")(module);
