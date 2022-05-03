@@ -111,6 +111,7 @@ export const runNewContainer = async (values:newContainer): Promise<string | str
   const containerName = values.containerName
   const port = values.port 
   const response = await dockController.runContainer(imageValue,containerName,port)
+  console.log('response',response);
   return response
    
 }

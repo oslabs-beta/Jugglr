@@ -10,6 +10,7 @@ const Startup = () => {
   const [imageList, setImageList] = useState<string[]>([""])
   const [containerNames, setContainerList] = useState<string[]>([""]);
   const [containerIdObject,setContainerIdObject] = useState ({})
+  const [refresh, setRefresh] = useState<boolean>(false)
   
   const setFieldType = (field: any) => {
     return (value: string) => {
@@ -32,7 +33,6 @@ const Startup = () => {
   const form2 = useForm({
     initialValues: {
       containerName:"",
-      
     }
   })
 
@@ -59,8 +59,7 @@ const Startup = () => {
   }
   // console.log('containers',containerNames)
   // console.log('id', containerIdObject)
-  console.log('form2', form2.values)
-  console.log(containerIdObject[form2.values.containerName])
+
 
   
  
