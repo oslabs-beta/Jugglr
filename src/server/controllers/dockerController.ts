@@ -105,7 +105,7 @@ const dockerController = {
     console.log('images dockController')
     const docker = await new Docker({socketPath: '/var/run/docker.sock'})
     const list = await docker.listImages()
-    .then(list => { console.log(list); return list })
+    .then(list => {  return list })
     console.log('outer',list)
     return list;
    

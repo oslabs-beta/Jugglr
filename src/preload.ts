@@ -40,7 +40,6 @@ contextBridge.exposeInMainWorld("dockController", {
     return await ipcRenderer.invoke('getContainers')
   },
   getImagesList: async () => {
-    console.log('images preload')
     return await ipcRenderer.invoke('getImages')
   }
 })

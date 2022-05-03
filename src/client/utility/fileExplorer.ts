@@ -13,13 +13,12 @@ export const selectProjectRootDirectory = async () :Promise<void>=> {
 };
 
 export const uploadTableData = async (table:string, schema:string) :Promise<string>  => {
-  console.log('entered uploadTableData')
   if(table==="" || schema===""){ 
     return "Please fill out all required fields"
   }
   console.log(table,schema)
   const response = await psUploadData.uploadData(table,schema)
-  console.log('exiting uploadTableData')
+ 
   return response;
 
 
@@ -33,7 +32,7 @@ interface image {
 }
 
 export const destructureImageList = (arr:[]): string[] => {
-  console.log('destructure')
+  
   const newImageList :string[] = []
   arr.forEach((ele)=>{
     const curTag: image = ele['repoTags']
@@ -49,14 +48,8 @@ export const destructureImageList = (arr:[]): string[] => {
 }
 
 // export const runNewContainer = async (image:string, containerName:string, port:string): Promise<string> => {
-
+//   const response = await 
 //   console.log('runNewContainer')
-  
+//   return 
 // }
 
-// export const grabImages = async (): Promise<string[]> => {
-//   console.log('grab Docker Images')
-//   const response = await dockController.getImagesList()
-//     console.log('exiting grabImages')
-//     return response
-// }
