@@ -21,16 +21,16 @@ const dockerController = {
    
     process.env.ROOTDIR = rootDir;
     process.env.DOCKDIR = lpath.resolve(rootDir, 'jugglr');
-    process.env.PGDATABASE = database;
-    process.env.PGPASSWORD = password;
-    process.env.PGUSER = user;
-    process.env.DBPORT = port || '5432';
+    process.env.POSTGRES_DB = database;
+    process.env.POSTGRES_PASSWORD = password;
+    process.env.POSTGRES_USER = user;
+    process.env.POSTGRES_PORT = port || '5432';
     const From = from || 'postgres:latest'
     const dockerfileContents = 
     `FROM ${From} 
-    ENV POSTGRES_USER ${process.env.PGUSER} 
-    ENV POSTGRES_PASSWORD ${process.env.PGPASSWORD} 
-    ENV POSTGRES_DB ${process.env.PGDATABASE} 
+    ENV POSTGRES_USER ${process.env.POSTGRES_USER} 
+    ENV POSTGRES_PASSWORD ${process.env.POSTGRES_PASSWORD} 
+    ENV POSTGRES_DB ${process.env.POSTGRES_DB} 
     WORKDIR ${process.env.ROOTDIR}
     COPY ${schema} /docker-entrypoint-initdb.d/ `
 
@@ -152,7 +152,7 @@ const dockerController = {
     port = `${port}/tcp`
     const docker = await  new Docker();
     const result = await docker.run(image, ['postgres'], streams, {
-      Env: [`POSTGRES_PASSWORD=${process.env.PGPASSWORD}`], WorkingDir: process.env.ROOTDIR, name: containerName, PortBindings: {
+      Env: [`POSTGRES_PASSWORD=${process.env.POSTGRES_PASSWORD}`], WorkingDir: process.env.ROOTDIR, name: containerName, PortBindings: {
         "5432/tcp" : [ { "HostPort": "5432" } ]}, Tty: false}, (err, _data, _rawContainer) => {
           if (err) { console.log("err", err)} })
       .on('container', async function (container) {

@@ -12,7 +12,13 @@ contextBridge.exposeInMainWorld("selectorModule", {
     
     const response = await ipcRenderer.invoke("dir");
     return response;
-  }
+  },
+
+  setProjectRoot: async ()=> {
+    
+    const response = await ipcRenderer.invoke("setProjectRoot");
+    return response;
+  },
 
 });
 
