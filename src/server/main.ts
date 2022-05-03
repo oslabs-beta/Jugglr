@@ -54,6 +54,7 @@ ipcMain.handle("dir", async(_event)=>{
   }
 })
 
+
 ipcMain.handle("uploadData", async (_event, table, sqlSchema) => {
   try {
     console.log('here', table, sqlSchema)
@@ -65,6 +66,7 @@ ipcMain.handle("uploadData", async (_event, table, sqlSchema) => {
     return err;
   }
 });
+
 
 ipcMain.handle("createDockerfile", async (_event, dockerfile) => {
   try {
@@ -87,6 +89,7 @@ ipcMain.handle("buildImage", async (_event, dockerfile) => {
     return err;
   }
 });
+
 
 ipcMain.handle("runContainer", async (_event, imageName, containerName, port) => {
   try {
@@ -120,6 +123,7 @@ ipcMain.handle("stopContainer", async (_event, containerId) => {
     return err;
   }
 });
+
 
 ipcMain.handle("removeContainer", async (_event, containerId) => {
   try {
