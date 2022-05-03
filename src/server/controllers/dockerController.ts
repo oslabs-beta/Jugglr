@@ -38,12 +38,15 @@ const dockerController = {
       lfs.mkdirSync(process.env.DOCKDIR);
     } 
     const dFile = lpath.resolve(process.env.DOCKDIR, 'Dockerfile')
-    const result = lfs.writeFileSync(dFile, dockerfileContents, { flag: "w" }, (err) => {
-      if (err) { console.log(err);}
-      else { console.log('Dockerfile created successfully')}
-      //will error out if any Dockerfile already present in folder
-    });
-    return result;
+    try {
+      lfs.writeFileSync(dFile, dockerfileContents, { flag: "w" });
+    } catch (err) {
+      console.log(err);
+      return false;
+    } 
+    console.log('Dockerfile successfully created');
+    return true;
+
   },
   
   //// frontend:: user enters container name and port, and clicks 'Run New Container' button
@@ -75,7 +78,9 @@ const dockerController = {
     const selectedContainer = await docker.getContainer(containerId);
     await selectedContainer.start(function (err, data) {
       console.log('err', err, 'data', data);
+      if (err !== null) { return false }
     });
+    return true;
   },
 
 
@@ -85,7 +90,9 @@ const dockerController = {
     const selectedContainer = await docker.getContainer(`${containerId}`);
     await selectedContainer.stop(function (err, data) {
       console.log('err', err, 'data', data);
+      if (err !== null) { return false }
     });
+    return true;
   },
 
   
@@ -97,7 +104,6 @@ const dockerController = {
   },
 
   getImagesList: async () => {
-    console.log('images dockController')
     const docker = await new Docker({socketPath: '/var/run/docker.sock'})
     const list = await docker.listImages()
     .then(list => {  return list })

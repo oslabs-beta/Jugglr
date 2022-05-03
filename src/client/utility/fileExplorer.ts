@@ -66,6 +66,46 @@ export const destructureImageList = (arr:[]): string[] => {
   
   return newImageList
 }
+
+interface container {
+  id: string
+  image: string
+  imageId:string
+  names: string
+}
+export const destructureContainerList = (arr:container[]):string[] => {
+  
+  const newContainerList:string[] = ['']
+
+  arr.forEach((ele)=>{
+  
+    const curContainer: string = ele['names'][0]
+    
+    const containerName: string = curContainer.substring(curContainer.indexOf("/")+1);
+    newContainerList.push(containerName);
+    
+  }
+  )
+  
+  return newContainerList
+}
+
+export const destructureContainerId = (arr:container[]) => {
+  
+  const containerIdObj = {}
+
+  arr.forEach((ele)=>{
+  
+    const curContainer: string = ele['names'][0]
+    const containerName: string = curContainer.substring(curContainer.indexOf("/")+1);
+    const curId: string = ele['id']
+    containerIdObj[containerName] = curId
+    
+  }
+  )
+  
+  return containerIdObj
+}
 interface newContainer {
   imageValue: string
   containerName: string
@@ -78,5 +118,19 @@ export const runNewContainer = async (values:newContainer): Promise<string | str
   const response = await dockController.runContainer(imageValue,containerName,port)
   return response
    
+}
+
+ 
+
+export const startContainer = async(containerId:string): Promise<void> => {
+await dockController.startContainer(containerId)
+//no response being sent from the backend
+
+}
+
+export const stopContainer = async(containerId:string):Promise<void> => {
+await dockController.stopContainer(containerId)
+//no response being sent from the backend
+ 
 }
 
