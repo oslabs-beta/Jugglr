@@ -35,8 +35,8 @@ interface image {
 /**
  * Added these to test DockerController
  */
-export const setDockerFile = (values: DockerFile) => {
-  const response = dockController.createDockerfile(values);
+export const setDockerFile = async (values: DockerFile) => {
+  const response = await dockController.createDockerfile(values);
   return response;
 }
 

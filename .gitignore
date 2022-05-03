@@ -1,4 +1,5 @@
 node_modules
 build
+jugglr
 .env
 .DS_Store
