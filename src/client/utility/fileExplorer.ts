@@ -1,3 +1,4 @@
+import { DockerFile } from "../../types";
 
 /**
  * Action helpers moved here for time being...
@@ -35,6 +36,14 @@ interface image {
   constainers: number
   repoTags: string[]
   id: string
+}
+
+/**
+ * Added these to test DockerController
+ */
+export const setDockerFile = async (values: DockerFile) => {
+  const response = await dockController.createDockerfile(values);
+  return response;
 }
 
 export const destructureImageList = (arr:[]): string[] => {

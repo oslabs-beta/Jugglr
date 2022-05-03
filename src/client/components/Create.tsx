@@ -1,7 +1,7 @@
 import {Button, TextInput, Modal,Tooltip, Text, Center} from '@mantine/core'
 import { useState } from 'react';
 import {AlertCircle} from 'tabler-icons-react'
-import { Dockerfile } from '../../types'
+import { DockerFile } from '../../types'
 
 const Create = () => {
     
@@ -19,7 +19,7 @@ const Create = () => {
     const schemaEmpty = schemaPath === "" ? true : false
     const tableEmpty = tablePath === "" ? true : false
     const rootEmpty = rootPath === "" ? true : false
-    const dockerFileValues: Dockerfile = {
+    const dockerFileValues: DockerFile = {
       from:  'postgres:latest',
       user:  'postgres',
       host: 'localhost',
@@ -67,7 +67,7 @@ const Create = () => {
         const response = await psUploadData.uploadData(table,Schema)
       }
 
-      const createDockerFile = async (dockerFileValues: Dockerfile): Promise<void> => {
+      const createDockerFile = async (dockerFileValues: DockerFile): Promise<void> => {
         console.log(dockerFileValues)
         // const response = await dockerController.createDockerFile()
       }
