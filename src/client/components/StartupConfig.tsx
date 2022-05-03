@@ -1,6 +1,6 @@
 import { Space, Box, Title, Paper, Button, TextInput, Select } from "@mantine/core";
 import FileSearchButton from "../containers/FileSearchButton";
-import { selectFile, uploadTableData} from "../utility/fileExplorer";
+import { selectFile, uploadTableData,destructureImageList} from "../utility/fileExplorer";
 import { useEffect, useState } from "react";
 import { useAppSelector } from "../utility/hooks.types";
 import { useForm } from "@mantine/hooks";
@@ -29,20 +29,20 @@ const Startup = () => {
     const grabImages = async (): Promise<void> => {
       console.log('grab Docker Images')
       const response = await dockController.getImagesList()
-        console.log('exiting grabImages')
-        setImageList(response)
+        console.log(response)
+        const newList = destructureImageList(response)
+        console.log(newList)
+        setImageList(newList)
+       
+       
     }
    
     grabImages().catch(console.error);
-    console.log(imageList)
-    
    
   },[])
   
   
-  console.log(form.values.tableName,form.values.tablePath)
-  console.log(message)
-  console.log('il',imageList)
+ 
   return (
     <>
     <Box>
@@ -67,7 +67,7 @@ const Startup = () => {
         />
 
  
-    <Button onClick={async ()=>setMessage(await uploadTableData(form.values.tableName,form.values.tablePath))}>Run New Container</Button>
+    {/* <Button onClick={async ()=>setMessage(await uploadTableData( ))}>Run New Container</Button> */}
 
     <TextInput
           required

@@ -54,7 +54,10 @@ ipcMain.handle("dir", async()=>{
   }
 })
 
-ipcMain.handle("uploadData", async (table, sqlSchema) => {
+ipcMain.handle("uploadData", async (_, table, sqlSchema) => {
+  console.log('path',sqlSchema)
+  console.log('tablename', table)
+  
   try {
     const result = await psUploadData(table, sqlSchema);
     return result;
@@ -65,7 +68,7 @@ ipcMain.handle("uploadData", async (table, sqlSchema) => {
   }
 });
 
-ipcMain.handle("createDockerfile", async (dockerfile) => {
+ipcMain.handle("createDockerfile", async (_, dockerfile) => {
   try {
     const result = await dockController.createDockerfile(dockerfile);
     return result;
@@ -76,7 +79,7 @@ ipcMain.handle("createDockerfile", async (dockerfile) => {
   }
 });
 
-ipcMain.handle("buildImage", async (dockerfile) => {
+ipcMain.handle("buildImage", async (_, dockerfile) => {
   try {
     const result = await dockController.buildImage(dockerfile);
     return result;
@@ -87,7 +90,7 @@ ipcMain.handle("buildImage", async (dockerfile) => {
   }
 });
 
-ipcMain.handle("runContainer", async (imageName, containerName, port) => {
+ipcMain.handle("runContainer", async (_, imageName, containerName, port) => {
   try {
     const result = await dockController.run(imageName, containerName, port);
     return result;
@@ -109,7 +112,7 @@ ipcMain.handle("startContainer", async (containerId) => {
   }
 });
 
-ipcMain.handle("stopContainer", async (containerId) => {
+ipcMain.handle("stopContainer", async (_, containerId) => {
   try {
     const result = await dockController.stopContainer(containerId);
     return result;
@@ -120,7 +123,7 @@ ipcMain.handle("stopContainer", async (containerId) => {
   }
 });
 
-ipcMain.handle("removeContainer", async (containerId) => {
+ipcMain.handle("removeContainer", async (_, containerId) => {
   try {
     const result = await dockController.removeContainer(containerId);
     return result;

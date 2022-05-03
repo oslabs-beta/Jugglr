@@ -49,6 +49,7 @@ contextBridge.exposeInMainWorld("psUploadData", {
   
   uploadData: async (table,sqlSchema) => {
     console.log('upload preload!')
+    console.log(table,sqlSchema)
     const response = await ipcRenderer.invoke("uploadData", table, sqlSchema);
     return response;
   }
