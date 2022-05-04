@@ -141,12 +141,12 @@ const dockerController = {
           context: dirname,
           src: ['Dockerfile', schema]
         }, {t: image} )
-      return "success";
-    }
-    catch (err) {
+    } catch (err) {
       console.log(err); 
-      return err;
+      return false;
     }
+    console.log('Image created successfully');
+    return true;
   },
   
   

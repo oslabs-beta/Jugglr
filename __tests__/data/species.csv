@@ -1,0 +1,38 @@
+name,classification,average_height,average_lifespan,hair_colors,skin_colors,eye_colors,language,homeworld_id
+Hutt,gastropod,300,1000,n/a,"green, brown, tan","yellow, red",Huttese,24
+Yoda's species,mammal,66,900,"brown, white","green, yellow","brown, green, yellow",Galactic basic,28
+Trandoshan,reptile,200,unknown,none,"brown, green","yellow, orange",Dosh,29
+Mon Calamari,amphibian,160,unknown,none,"red, blue, brown, magenta",yellow,Mon Calamarian,31
+Ewok,mammal,100,unknown,"white, brown, black",brown,"orange, brown",Ewokese,7
+Sullustan,mammal,180,unknown,none,pale,black,Sullutese,33
+Neimodian,unknown,180,unknown,none,"grey, green","red, pink",Neimoidia,18
+Gungan,amphibian,190,unknown,none,"brown, green",orange,Gungan basic,8
+Toydarian,mammal,120,91,none,"blue, green, grey",yellow,Toydarian,34
+Dug,mammal,100,unknown,none,"brown, purple, grey, red","yellow, blue",Dugese,35
+Twi'lek,mammals,200,unknown,none,"orange, yellow, blue, green, pink, purple, tan","blue, brown, orange, pink",Twi'leki,37
+Aleena,reptile,80,79,none,"blue, gray",unknown,Aleena,38
+Vulptereen,unknown,100,unknown,none,grey,yellow,vulpterish,39
+Xexto,unknown,125,unknown,none,"grey, yellow, purple",black,Xextese,40
+Toong,unknown,200,unknown,none,"grey, green, yellow",orange,Tundan,41
+Cerean,mammal,200,unknown,"red, blond, black, white",pale pink,hazel,Cerean,43
+Nautolan,amphibian,180,70,none,"green, blue, brown, red",black,Nautila,44
+Zabrak,mammal,180,unknown,black,"pale, brown, red, orange, yellow","brown, orange",Zabraki,45
+Tholothian,mammal,unknown,unknown,unknown,dark,"blue, indigo",unknown,46
+Iktotchi,unknown,180,unknown,none,pink,orange,Iktotchese,47
+Quermian,mammal,240,86,none,white,yellow,Quermian,48
+Kel Dor,unknown,180,70,none,"peach, orange, red","black, silver",Kel Dor,49
+Chagrian,amphibian,190,unknown,none,blue,blue,Chagria,50
+Geonosian,insectoid,178,unknown,none,"green, brown","green, hazel",Geonosian,11
+Mirialan,mammal,180,unknown,"black, brown","yellow, green","blue, green, red, yellow, brown, orange",Mirialan,51
+Clawdite,reptilian,180,70,none,"green, yellow",yellow,Clawdite,54
+Besalisk,amphibian,178,75,none,brown,yellow,besalisk,55
+Kaminoan,amphibian,220,80,none,"grey, blue",black,Kaminoan,10
+Skakoan,mammal,unknown,unknown,none,"grey, green",unknown,Skakoan,56
+Muun,mammal,190,100,none,"grey, white",black,Muun,57
+Togruta,mammal,180,94,none,"red, white, orange, yellow, green, blue","red, orange, yellow, green, blue, black",Togruti,58
+Kaleesh,reptile,170,80,none,"brown, orange, tan",yellow,Kaleesh,59
+Pau'an,mammal,190,700,none,grey,black,Utapese,12
+Wookiee,mammal,210,400,"black, brown",gray,"blue, green, yellow, brown, golden, red",Shyriiwook,14
+Droid,artificial,n/a,indefinite,n/a,n/a,n/a,n/a,
+Human,mammal,180,120,"blonde, brown, black, red","caucasian, black, asian, hispanic","brown, blue, green, hazel, grey, amber",Galactic Basic,9
+Rodian,sentient,170,unknown,n/a,"green, blue",black,Galactic Basic,23

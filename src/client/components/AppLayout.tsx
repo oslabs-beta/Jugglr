@@ -20,6 +20,8 @@ import StartupConfig from "./StartupConfig";
 import NavbarButtons from "./NavbarButtons";
 import BurgerIcon from "../containers/BurgerIcon";
 import ProjectConfig from "./ProjectConfig";
+import ContainerConfig from "./RunConfig"
+import LoadDataConfig from "./LoadDataConfig"
 
 
 const AppLayout = () => {
@@ -27,7 +29,7 @@ const AppLayout = () => {
   const theme = useMantineTheme();
   const isSmallView = useMediaQuery("(min-width: 993px");
   const navigate = useNavigate();
-  const endpoints = { 0: "/", 1: "/docker", 2: "/startup" };
+  const endpoints = { 0: "/", 1: "/docker", 2: "/startup" ,3:"/run", 4:"/loadData" };
 
   /**
    * function created to give NavBarButtons pseudo-ordering
@@ -88,6 +90,8 @@ const AppLayout = () => {
           <Route path="/" element={<ProjectConfig />} />
           <Route path="/docker" element={<DockerConfig />} />
           <Route path="/startup" element={<StartupConfig />} />
+          <Route path="/run" element={<ContainerConfig/>}/>
+          <Route path="/loadData" element={<LoadDataConfig/>}/>
         </Routes>
       </Container>
     </AppShell>
