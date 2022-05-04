@@ -7,8 +7,7 @@ import {
   Grid,
   PasswordInput,
   Group,
-  Button,
-  NumberInput
+  Button
 } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
 import { EyeOff, EyeCheck } from "tabler-icons-react";
@@ -33,9 +32,7 @@ const DatabaseConfig = () => {
       user: reduxState.user,
       database: reduxState.database,
       password: reduxState.password,
-      schema: reduxState.schema,
-      host: reduxState.host,
-      port: parseInt(reduxState.port) // always toString state's port value
+      schema: reduxState.schema
     }
   });
 
