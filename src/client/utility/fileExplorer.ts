@@ -1,4 +1,4 @@
-import { DockerFile, EnvConfig } from "../../types";
+import { DockerFile, EnvConfig, LoadTable } from "../../types";
 
 /**
  * Action helpers moved here for time being...
@@ -13,13 +13,12 @@ export const selectProjectRootDirectory = async () :Promise<void>=> {
   return response;
 };
 
-interface table {
-  tablePath: string
-  tableName: string
-}
-export const uploadTableData = async (values:table) :Promise<string>  => {
+
+export const uploadTableData = async (values:LoadTable) :Promise<string>  => {
   const tablePath= values.tablePath
   const tableName=values.tableName
+  console.log(tablePath)
+  console.log('tn',tableName)
   if(tablePath==="" || tableName===""){ 
     return "Please fill out all required fields"
   }
@@ -57,7 +56,6 @@ export const destructureImageList = (arr:[]): string[] => {
   arr.forEach((ele)=>{
     const curTag: image = ele['repoTags']
     if(curTag!==null){
-   
     const string: string = curTag[0].substring(0,curTag[0].lastIndexOf(":"));
     newImageList.push(string);
     
@@ -80,7 +78,6 @@ export const destructureContainerList = (arr:container[]):string[] => {
   arr.forEach((ele)=>{
   
     const curContainer: string = ele['names'][0]
-    
     const containerName: string = curContainer.substring(curContainer.indexOf("/")+1);
     newContainerList.push(containerName);
     

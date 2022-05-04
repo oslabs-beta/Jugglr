@@ -2,41 +2,59 @@ import { Space, Box, Title, Paper, Button, TextInput, NativeSelect } from "@mant
 import {  destructureContainerList, destructureContainerId, startContainer, stopContainer} from "../utility/fileExplorer";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useForm } from "@mantine/hooks";
+import { useAppSelector, useAppDispatch } from "../utility/hooks.types";
+import { RunDocker } from "../../types";
+import { setEnvConfig } from "../reducers/envConfigSlice";
 
 
 
 const Run = () => {
-
-    const [containerNames, setContainerList] = useState<string[]>([""]);
-    const [containerIdObject,setContainerIdObject] = useState ({})
+  const { container, containerIdObject, containerNames } = useAppSelector(state => state.envConfig)
+  const dispatch = useAppDispatch();
+    // const [containerNames, setContainerList] = useState<string[]>([""]);
+    // const [containerIdObject,setContainerIdObject] = useState ({})
     
     const form2 = useForm({
       initialValues: {
-        containerName:"",
+        container:container,
+        containerIdObject:containerIdObject,
+        containerNames:containerNames,
       }
     })
   
     useEffect( () => {
-      const grabImages = async (): Promise<void> => {
+      const grabContainer = async (): Promise<void> => {
       const containers = await dockController.getContainersList()
+      console.log('effect',containers)
       const cList:string[] = destructureContainerList(containers)
       const cObject = destructureContainerId(containers)
-      setContainerIdObject(cObject)
-      setContainerList(cList)
+      form2.setFieldValue('containerIdObject',cObject)
+      form2.setFieldValue('containerNames', cList)
       }
      
-      grabImages().catch(console.error);
+      grabContainer().catch(console.error);
      
-    },[])
+    },[container])
     const setNameAndId = async (event: ChangeEvent<HTMLSelectElement> ):Promise<void> => {
-      form2.setFieldValue('containerName', event.currentTarget.value)
+      form2.setFieldValue('container', event.currentTarget.value)
       // form2.setFieldValue('id', containerIdObject[form2.values.containerName])
     }
+    // console.log(form2.values)
     
   
-  
+    const setStateAndCall = (values: string,action:'start' | 'stop') => {
+      if(action==='start'){
+        startContainer(values)
+      } else {
+        stopContainer(values)
+      }
+      dispatch(setEnvConfig(form2.values));
+
+    }
     
-   
+  //  console.log(form2.values.containerNames, 'state', containerNames)
+  //  console.log(form2.values.containerIdObject, 'state', containerIdObject)
+  //  console.log(form2.values.container,'state', container)
     return (
       <>
       <Box>
@@ -50,7 +68,7 @@ const Run = () => {
           <form style={{position:"absolute",left:"18%", width:"80%"}}>
             
              
-          <NativeSelect  required  style={{width:"80%"}} placeholder="select Container" label="Select A Container" data={containerNames} onChange={(event)=> setNameAndId(event)} />
+          <NativeSelect  required  style={{width:"80%"}} placeholder="select Container" label="Select A Container" data={form2.values.containerNames} onChange={(event)=> setNameAndId(event)} />
               
         
           <div style={{position:"relative",}}>
@@ -65,11 +83,11 @@ const Run = () => {
           }}
         >
           <div style={{ width: "30%" }}>
-            <Button fullWidth onClick={()=>{startContainer(containerIdObject[form2.values.containerName])}}>Start Container</Button>
+            <Button fullWidth onClick={()=>{setStateAndCall(form2.values.containerIdObject[form2.values.container],'start')}}>Start Container</Button>
           </div>
   
           <div style={{ width: "30%" }}>
-            <Button fullWidth onClick={()=>{stopContainer(containerIdObject[form2.values.containerName])}}>Stop Container</Button>
+            <Button fullWidth onClick={()=>{setStateAndCall(form2.values.containerIdObject[form2.values.container],'stop')}}>Stop Container</Button>
           </div>
   
           {/* <div style={{ width: "30%" }}>
