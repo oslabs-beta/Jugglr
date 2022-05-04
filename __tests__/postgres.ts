@@ -6,7 +6,7 @@ describe ("Upload data", () => {
   describe('upload data to Postgres Table', () => {
     it('loads data to table successfully', async () => {
       const dataDir = mpath.join(__dirname, 'data')
-      const result = await pg.uploadData('people', `${dataDir}/people.csv`)
+      const result = await pg.uploadData(`species(name, classification, average_height, average_lifespan, hair_colors, skin_colors, eye_colors, language, homeworld_id)`, `${dataDir}/species.csv`)
       await new Promise(resolve => setTimeout(resolve, 10000));
       expect(result).toBeTruthy
     })
@@ -18,7 +18,7 @@ describe ("Upload data", () => {
       delete process.env.POSTGRES_PASSWORD;
       delete process.env.POSTGRES_PORT;
       const dataDir = mpath.join(__dirname, 'data')
-      const result = await pg.uploadData('people', `${dataDir}/people.csv`)
+      const result = await pg.uploadData('species', `${dataDir}/species.csv`)
       expect(result).toBe('Error: missing required database information')
     })
   })

@@ -13,7 +13,7 @@ const NavbarButtons = ({ navigate }) => {
   return (
     <>
       <UnstyledButton
-        onClick={() => navigate(1)}
+        onClick={() => navigate(0)}
         sx={theme => navButtonTheme(theme)}
       >
         <Group>
@@ -25,7 +25,7 @@ const NavbarButtons = ({ navigate }) => {
       </UnstyledButton>
 
       <UnstyledButton
-        onClick={() => navigate(2)}
+        onClick={() => navigate(1)}
         sx={theme => navButtonTheme(theme)}
       >
         <Group>
@@ -37,6 +37,19 @@ const NavbarButtons = ({ navigate }) => {
       </UnstyledButton>
 
       <UnstyledButton
+        onClick={() => navigate(2)}
+        sx={theme => navButtonTheme(theme)}
+      >
+        <Group>
+          <ThemeIcon variant="light" style={{ background: "none" }}>
+            <CloudStorm />
+          </ThemeIcon>
+          <Text size="md">Startup</Text>
+        </Group>
+      </UnstyledButton>
+
+
+      <UnstyledButton
         onClick={() => navigate(3)}
         sx={theme => navButtonTheme(theme)}
       >
@@ -44,7 +57,7 @@ const NavbarButtons = ({ navigate }) => {
           <ThemeIcon variant="light" style={{ background: "none" }}>
             <BrandDocker />
           </ThemeIcon>
-          <Text size="md">Docker</Text>
+          <Text size="md">Docker Run</Text>
         </Group>
       </UnstyledButton>
 
@@ -54,9 +67,9 @@ const NavbarButtons = ({ navigate }) => {
       >
         <Group>
           <ThemeIcon variant="light" style={{ background: "none" }}>
-            <CloudStorm />
+          <CloudStorm />
           </ThemeIcon>
-          <Text size="md">Startup</Text>
+          <Text size="md">Load Data</Text>
         </Group>
       </UnstyledButton>
     </>
