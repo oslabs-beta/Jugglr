@@ -91,7 +91,6 @@ ipcMain.handle("createDockerfile", async (_event, dockerfile) => {
 ipcMain.handle("buildImage", async (_event, dockerfile) => {
   try {
     const result = await dockController.buildImage(dockerfile);
-    console.log(result);
     return result;
   }
   catch (err) {

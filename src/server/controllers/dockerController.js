@@ -134,7 +134,8 @@ const dockerController = {
   // getVolumes: function () {},
   // getRunCommand: function (rootDir, imageName, containerName) {}
 
-  buildImage:  async (image, schema, dirname) => {
+  buildImage:  async (image) => {
+    console.log('controller',image)
     try {
       const dockerode = await  new Docker();
       const result = await dockerode.buildImage({

@@ -81,7 +81,6 @@ export const destructureContainerList = (arr:container[]):string[] => {
   const newContainerList:string[] = ['']
 
   arr.forEach((ele)=>{
-  
     const curContainer: string = ele['names'][0]
     const containerName: string = curContainer.substring(curContainer.indexOf("/")+1);
     newContainerList.push(containerName);
@@ -109,19 +108,24 @@ export const destructureContainerId = (arr:container[]) => {
   return containerIdObj
 }
 interface newContainer {
-  imageValue: string
-  containerName: string
+  selectedImage: string
+  container: string
   port: string
 }
 export const runNewContainer = async (values:newContainer): Promise<string | string> => {
-  const imageValue = values.imageValue
-  const containerName = values.containerName
-  const port = values.port 
+  const imageValue = values.selectedImage
+  const containerName = values.container
+  const port = values.port+'' 
+  
+  
   const response = await dockController.runContainer(imageValue,containerName,port)
   return response
    
 }
-
+export const buildImage = async (image:string) => {
+  
+  return await dockController.buildImage(image);
+}
  
 
 export const startContainer = async(containerId:string): Promise<void> => {
