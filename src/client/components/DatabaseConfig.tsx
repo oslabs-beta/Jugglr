@@ -31,7 +31,7 @@ const DatabaseConfig = () => {
       user: reduxState.user,
       database: reduxState.database,
       password: reduxState.password,
-      schema: reduxState.schema,
+      schema: reduxState.schema
     }
   });
 
