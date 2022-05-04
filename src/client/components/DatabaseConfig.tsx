@@ -1,32 +1,28 @@
-/**
- * Application uses Mantine form hook as part of application state flow.
- * useState is used under the hood, and values can be retrieved.
- * ref: https://mantine.dev/form/use-form/
- */
 import {
   Box,
-  Button,
-  Grid,
-  Group,
-  NumberInput,
-  Paper,
-  PasswordInput,
   Space,
+  Paper,
+  Title,
   TextInput,
-  Title
+  Grid,
+  PasswordInput,
+  Group,
+  Button,
+  NumberInput
 } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
 import { EyeOff, EyeCheck } from "tabler-icons-react";
 
 import FileSearchButton from "../containers/FileSearchButton";
-import {
-  selectFile,
-  setDockerFile
-} from "../utility/fileExplorer";
-import { useAppSelector } from "../utility/hooks.types";
+import { setEnvConfig } from "../reducers/envConfigSlice";
+import { selectFile, setDockerFile } from "../utility/fileExplorer";
+import { useAppDispatch, useAppSelector } from "../utility/hooks.types";
 
-const DockerConfig = () => {
-  const { from, user, host, database, password, port, rootDir, schema } = useAppSelector(state => state.envConfig)
+const DatabaseConfig = () => {
+  const { user, database, password, schema, host, port } = useAppSelector(
+    state => state.envConfig
+  );
+  const dispatch = useAppDispatch();
   /**
    * shape does match DockerFile type
    * remove rootDir, modify DockerFile type
@@ -34,14 +30,12 @@ const DockerConfig = () => {
    */
   const form = useForm({
     initialValues: {
-      from: "postgres:latest",
-      user: "postgres",
-      host: "localhost",
-      database: "postgres",
-      password: "postgres",
-      port: 5432,
-      rootDir: rootDir,
-      schema: ""
+      user: user,
+      database: database,
+      password: password,
+      schema: schema,
+      host: host,
+      port: port
     }
   });
 
@@ -58,19 +52,27 @@ const DockerConfig = () => {
     };
   };
 
+  /**
+   * unfinished, potentially call buildImage
+   * @param {object} values
+   * @returns {void}
+   */
+   const setStateAndCall = async values => {
+    dispatch(setEnvConfig(values));
+    console.log(values);
+    await setDockerFile(values);
+  };
+
   return (
     <Box sx={{ maxWidth: 500 }} mx="auto">
       <Paper style={{ background: "none" }}>
         <Title order={1} align="center" mt={20}>
-          Docker Configuration
+          Database Configuration
         </Title>
       </Paper>
       <Space h={50} />
 
-      <form
-        onSubmit={form.onSubmit(values => console.log(setDockerFile(values)))}
-      >
-
+      <form onSubmit={form.onSubmit(values => setStateAndCall(values))}>
         <TextInput
           required
           label="Schema File"
@@ -117,22 +119,14 @@ const DockerConfig = () => {
         </Grid>
         <Space h="sm" />
 
-        <TextInput
-          required
-          label="Image Name"
-          placeholder="Docker image name"
-          {...form.getInputProps("from")}
-        />
-        <Space h="sm" />
-
-        <div style={{ display: "flex", gap: "15px", width: "55%" }}>
+        <div style={{ display: "flex", gap: "15px", width: "48.5%" }}>
           <NumberInput
             required
             hideControls
             label="Port"
             min={1}
             max={9999}
-            placeholder="Database port"
+            placeholder="Port number"
             {...form.getInputProps("port")}
           />
 
@@ -153,4 +147,4 @@ const DockerConfig = () => {
   );
 };
 
-export default DockerConfig;
+export default DatabaseConfig;

@@ -14,7 +14,8 @@
     "skipLibCheck": true,
     "moduleResolution": "node",
     "outDir": "./build",
-    "lib": ["DOM","es6"]
+    "lib": ["DOM","es6"],
+    "checkJs": false
   },
   "include": ["src/**/*", "src/.env"],
   "exclude": ["__tests__/**/*"]

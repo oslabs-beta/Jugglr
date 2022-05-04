@@ -14,10 +14,8 @@ contextBridge.exposeInMainWorld("selectorModule", {
     return response;
   },
 
-  setProjectRoot: async ()=> {
-    
-    const response = await ipcRenderer.invoke("setProjectRoot");
-    return response;
+  setProjectRoot: async (rootdir: string)=> {
+    return await ipcRenderer.invoke("setProjectRoot", rootdir);
   },
 
 });

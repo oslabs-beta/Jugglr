@@ -19,7 +19,7 @@ import FileSearchButton from "../containers/FileSearchButton";
 import { setEnvConfig } from "../reducers/envConfigSlice";
 import {
   selectProjectRootDirectory,
-  setProjectRoot
+  setProjectDirectory
 } from "../utility/fileExplorer";
 import { useAppDispatch, useAppSelector } from "../utility/hooks.types";
 
@@ -47,8 +47,8 @@ const ProjectConfig = () => {
 
   const setStateAndCall = (values: EnvConfig) => {
     dispatch(setEnvConfig(values));
-    setProjectRoot(values);
-  }
+    setProjectDirectory(values);
+  };
 
   return (
     <Box sx={{ maxWidth: 500 }} mx="auto">
@@ -59,9 +59,7 @@ const ProjectConfig = () => {
       </Paper>
       <Space h={50} />
 
-      <form
-        onSubmit={form.onSubmit(values => setStateAndCall(values))}
-      >
+      <form onSubmit={form.onSubmit(values => setStateAndCall(values))}>
         <TextInput
           required
           label="Project Root"

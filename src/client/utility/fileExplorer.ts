@@ -46,7 +46,7 @@ export const setDockerFile = async (values: DockerFile) => {
   return await dockController.createDockerfile(values);
 }
 
-export const setProjectRoot = async (values: EnvConfig) => {
+export const setProjectDirectory = async (values: EnvConfig) => {
   return await selectorModule.setProjectRoot(values.rootDir);
 }
 
