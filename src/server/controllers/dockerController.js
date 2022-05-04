@@ -156,11 +156,11 @@ const dockerController = {
       process.stdout,
       process.stderr
     ];
-    port = `${port}/tcp`
+   // port = `${port}/tcp`
     const docker = await  new Docker();
     const result = await docker.run(image, ['postgres'], streams, {
-      Env: [`POSTGRES_PASSWORD=${process.env.POSTGRES_PASSWORD}`], WorkingDir: process.env.ROOTDIR, name: containerName, PortBindings: {
-        "5432/tcp" : [ { "HostPort": "5432" } ]}, Tty: false}, (err, _data, _rawContainer) => {
+      Env: [`POSTGRES_PASSWORD=${process.env.POSTGRES_PASSWORD}`], WorkingDir: process.env.ROOTDIR, name: containerName, 
+      PortBindings: { [`${port}/tcp`] : {} }, Tty: false}, (err, _data, _rawContainer) => {
           if (err) { console.log("err", err)} })
       .on('container', async function (container) {
         console.log('Postgres started');

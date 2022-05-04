@@ -33,11 +33,11 @@ describe ("Dockerfile Create", () => {
   describe('create image', () => {
     it('builds an image from the Dockerfile', async () => {
       const result = await buildImage('new','starwars_postgres_create.sql', dataDir);
-      expect(result).toEqual('success');
+      expect(result).toEqual(true);
     })
   }),
   describe ('run image', () => {
-    it ('creates an image', async () => {
+    it ('creates a container and runs it', async () => {
       await new Promise(resolve => setTimeout(resolve, 2000));
       const docker = await new Docker();
       const container = await run("new:latest", 'testC');
