@@ -22,7 +22,6 @@ contextBridge.exposeInMainWorld("selectorModule", {
 
 contextBridge.exposeInMainWorld("dockController", {
   createDockerfile: async (dockerfile) => {
-    
     return await ipcRenderer.invoke('createDockerfile', dockerfile);
   },
   buildImage: async(dockerfile) => {

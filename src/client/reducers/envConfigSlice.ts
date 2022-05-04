@@ -18,9 +18,6 @@ export const envConfigSlice = createSlice({
     dropDownImage:[""],
     containerIdObject:{},
     containerNames:[""]
-    
-    
-
   },
   reducers: {
     setEnvConfig: (state, action) => {
