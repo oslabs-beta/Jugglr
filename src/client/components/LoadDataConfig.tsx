@@ -2,10 +2,14 @@ import { Space, Box, Title, Paper, Button, TextInput } from "@mantine/core";
 import FileSearchButton from "../containers/FileSearchButton";
 import { selectFile, uploadTableData} from "../utility/fileExplorer";
 import { useForm } from "@mantine/hooks";
+import { useAppSelector,useAppDispatch} from "../utility/hooks.types";
+import { LoadTable } from "../../types";
+import { setEnvConfig } from "../reducers/envConfigSlice";
 
 
 const LoadData = () => {
-
+  const { tablePath, tableName } = useAppSelector(state => state.envConfig)
+  const dispatch = useAppDispatch();
   const setFieldType = (field: any) => {
     return (value: string) => {
       form.setFieldValue(field, value);
@@ -15,12 +19,16 @@ const LoadData = () => {
   
   const form = useForm({
     initialValues: {
-      tablePath: "",
-      tableName: "",
+      tablePath: tablePath,
+      tableName: tableName
     }
   });
   
- 
+  const setStateAndCall = (values: LoadTable) => {
+    dispatch(setEnvConfig(values));
+    uploadTableData(values)
+  }
+
   return (
     <>
      <Paper style={{ background: "none" }}>
@@ -31,7 +39,7 @@ const LoadData = () => {
       <Space h={50} />
     <Box>
     <div style={{position:"relative"}}>
-    <form style={{position:"absolute", left:"22%",width:"55%"}} onSubmit={form.onSubmit((values)=> uploadTableData(values))}>
+    <form style={{position:"absolute", left:"22%",width:"55%"}} onSubmit={form.onSubmit((values)=> setStateAndCall(values))}>
     <TextInput
           required
           disabled
