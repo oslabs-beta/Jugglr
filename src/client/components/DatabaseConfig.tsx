@@ -7,8 +7,7 @@ import {
   Grid,
   PasswordInput,
   Group,
-  Button,
-  NumberInput
+  Button
 } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
 import { EyeOff, EyeCheck } from "tabler-icons-react";
@@ -17,11 +16,10 @@ import FileSearchButton from "../containers/FileSearchButton";
 import { setEnvConfig } from "../reducers/envConfigSlice";
 import { selectFile, setDockerFile } from "../utility/fileExplorer";
 import { useAppDispatch, useAppSelector } from "../utility/hooks.types";
+import { dockerReadyValidation } from "../utility/validations";
 
 const DatabaseConfig = () => {
-  const reduxState = useAppSelector(
-    state => state.envConfig
-  );
+  const reduxState = useAppSelector(state => state.envConfig);
   const dispatch = useAppDispatch();
   /**
    * shape does match DockerFile type
@@ -33,9 +31,7 @@ const DatabaseConfig = () => {
       user: reduxState.user,
       database: reduxState.database,
       password: reduxState.password,
-      schema: reduxState.schema,
-      host: reduxState.host,
-      port: parseInt(reduxState.port) // always toString state's port value
+      schema: reduxState.schema
     }
   });
 
@@ -53,16 +49,19 @@ const DatabaseConfig = () => {
   };
 
   /**
-   * set Redux state and call electron to create DockerFile
+   * set Redux state, then validate required fields set,
+   * then call electron to create DockerFile
    * at given location with provided details
    * @fix onSubmit app is rerendered
    * @todo use return value to render non-blocking notification
    * @param {object} values
    * @returns {boolean}
    */
-   const setStateAndCall = async values => {
+  const setStateAndCall = async values => {
     dispatch(setEnvConfig(values));
-    return await setDockerFile(reduxState);
+    return dockerReadyValidation(reduxState)
+      ? await setDockerFile(reduxState)
+      : false;
   };
 
   return (
