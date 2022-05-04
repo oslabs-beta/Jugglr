@@ -43,6 +43,31 @@ const NavbarButtons = ({ navigate }) => {
           <Text size="md">Startup</Text>
         </Group>
       </UnstyledButton>
+
+
+      <UnstyledButton
+        onClick={() => navigate(3)}
+        sx={theme => navButtonTheme(theme)}
+      >
+        <Group>
+          <ThemeIcon variant="light" style={{ background: "none" }}>
+            <BrandDocker />
+          </ThemeIcon>
+          <Text size="md">Docker Run</Text>
+        </Group>
+      </UnstyledButton>
+
+      <UnstyledButton
+        onClick={() => navigate(4)}
+        sx={theme => navButtonTheme(theme)}
+      >
+        <Group>
+          <ThemeIcon variant="light" style={{ background: "none" }}>
+          <CloudStorm />
+          </ThemeIcon>
+          <Text size="md">Load Data</Text>
+        </Group>
+      </UnstyledButton>
     </>
   );
 };

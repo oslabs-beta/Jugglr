@@ -3,26 +3,16 @@ import FileSearchButton from "../containers/FileSearchButton";
 import { selectFile, uploadTableData,destructureImageList, runNewContainer, destructureContainerList, destructureContainerId, startContainer, stopContainer} from "../utility/fileExplorer";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useForm } from "@mantine/hooks";
+import { Direction } from "tabler-icons-react";
 
 
 const Startup = () => {
 
   const [imageList, setImageList] = useState<string[]>([""])
-  const [containerNames, setContainerList] = useState<string[]>([""]);
-  const [containerIdObject,setContainerIdObject] = useState ({})
-  const [refresh, setRefresh] = useState<boolean>(false)
+ 
   
-  const setFieldType = (field: any) => {
-    return (value: string) => {
-      form.setFieldValue(field, value);
-    };
-  };
-  const form = useForm({
-    initialValues: {
-      tablePath: "",
-      tableName: "",
-    }
-  });
+  
+  
   const form1 = useForm({
     initialValues: {
       imageValue:"",
@@ -45,8 +35,6 @@ const Startup = () => {
     const iList:string[] = destructureImageList(images)
     const cList:string[] = destructureContainerList(containers)
     const cObject = destructureContainerId(containers)
-    setContainerIdObject(cObject)
-    setContainerList(cList)
     setImageList(iList)
     }
    
@@ -57,18 +45,27 @@ const Startup = () => {
     form2.setFieldValue('containerName', event.currentTarget.value)
     // form2.setFieldValue('id', containerIdObject[form2.values.containerName])
   }
-  // console.log('containers',containerNames)
-  // console.log('id', containerIdObject)
+  
 
 
   
  
   return (
     <>
+    <Paper style={{ background: "none" }}>
+        <Title order={1} align="center" mt={20}>
+          Docker Config
+        </Title>
+      </Paper>
+      <Space h={50} />
     <Box>
-      <form onSubmit={form1.onSubmit((values)=> runNewContainer(values))}>
+      <div style={{position:"relative"}}>
+      <form style={{position:"absolute", left:"26%", width:"60%"}} onSubmit={form1.onSubmit((values)=> runNewContainer(values))}>
     <NativeSelect  required style={{width:"80%"}}  placeholder="select image" label="Image" data={imageList} onChange={(event)=> form1.setFieldValue('imageValue', event.currentTarget.value)} />
+    <div style={{width:"80%"}}>
+    <div style={{display:"flex", justifyContent:"space-between"}}>
     <TextInput
+          style={{marginTop:"5%"}}
           required
           label="Container Name"
           placeholder="Container Name"
@@ -76,77 +73,26 @@ const Startup = () => {
         />
 
 <TextInput
+          style={{marginTop:"5%"}}
           required
           label="Port"
           placeholder="Port"
           {...form1.getInputProps("port")}
         />
+</div>
+</div>
 
- 
-    <Button type="submit">Run New Container</Button>
+    <div style={{display:"flex", justifyContent:"center", width:"75%"}}>
+      <div>
+    <Button style={{top:"75%"}}type="submit">Run New Container</Button>
+    </div>
+    </div>
     </form>
-    <form onSubmit={form.onSubmit((values)=> uploadTableData(values))}>
-    <TextInput
-          required
-          disabled
-          label="Table Path"
-          placeholder="Table Path"
-          {...form.getInputProps("tablePath")}
-          rightSection={
-            <FileSearchButton
-              setField={setFieldType("tablePath")}
-              setPath={selectFile}
-            />
-          }
-        />
-        
-        <TextInput
-          required
-          label="Table Name"
-          placeholder="Table Name"
-          {...form.getInputProps("tableName")}
-         
-        />
-
-         <Button type="submit">Load Table Data</Button>
-         </form>
+    </div>
          
     </Box>
 
-    <Box sx={{ maxWidth: "100%" }} mx="auto">
-      <Paper style={{ background: "none" }}>
-        <Title order={1} align="center" mt={50}>
-          Startup Configuration
-        </Title>
-      </Paper>
-      <Space h={50} />
-        <form>
-        <NativeSelect  required style={{width:"80%"}}  placeholder="select Container" label="container" data={containerNames} onChange={(event)=> setNameAndId(event)} />
 
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-around",
-          alignItems: "center",
-          height: "30vh"
-        }}
-      >
-        <div style={{ width: "30%" }}>
-          <Button fullWidth onClick={()=>{startContainer(containerIdObject[form2.values.containerName])}}>Start</Button>
-        </div>
-
-        <div style={{ width: "30%" }}>
-          <Button fullWidth onClick={()=>{stopContainer(containerIdObject[form2.values.containerName])}}>Stop</Button>
-        </div>
-
-        {/* <div style={{ width: "30%" }}>
-          <Button fullWidth variant="outline">
-            Remove
-          </Button> */}
-        {/* </div> */}
-      </div>
-      </form>
-    </Box>
     </>
   );
 };
