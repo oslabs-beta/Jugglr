@@ -16,7 +16,7 @@ export type DockerFile = {
   host: string | 'localhost' ,
   database: string | 'postgres' ,
   password: string | 'postgres' ,
-  port: number | 5432 ,
+  port: string | "5432" ,
   rootDir: rootDir,
   schema?: schema
 }

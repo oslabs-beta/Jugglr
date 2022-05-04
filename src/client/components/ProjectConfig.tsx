@@ -62,7 +62,7 @@ const ProjectConfig = () => {
       <form onSubmit={form.onSubmit(values => setStateAndCall(values))}>
         <TextInput
           required
-          label="Project Root"
+          label="Project's Root Directory"
           placeholder="Project folder path"
           {...form.getInputProps("rootDir")}
           rightSection={
