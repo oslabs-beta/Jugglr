@@ -82,11 +82,9 @@ ipcMain.handle("uploadData", async (_event, table, sqlSchema) => {
 ipcMain.handle("createDockerfile", async (_event, dockerfile) => {
   try {
     const result = await dockController.createDockerfile(dockerfile);
-    console.log(result);
     return result;
   }
   catch (err) {
-    console.log(err);
     return err;
   }
 });

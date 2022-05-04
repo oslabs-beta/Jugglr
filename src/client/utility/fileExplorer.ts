@@ -40,12 +40,17 @@ interface image {
 /**
  * Call electron to create a DockerFile with given details
  * @param {DockerFile} values
- * @returns 
+ * @returns {boolean}
  */
 export const setDockerFile = async (values: DockerFile) => {
   return await dockController.createDockerfile(values);
 }
 
+/**
+ * call electron to set rootDir env variable
+ * @param {EnvConfig} values 
+ * @returns {boolean}
+ */
 export const setProjectDirectory = async (values: EnvConfig) => {
   return await selectorModule.setProjectRoot(values.rootDir);
 }
