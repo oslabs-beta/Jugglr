@@ -41,7 +41,9 @@ const fileController = {
       const dockerfile =  ffs.readFileSync(dockerfl).toString().split("\n");
       for (const line of dockerfile){
         const pgRegex =  /(?<=ENV )[A-Z|_]+\b/;
+        const schemaRegex = /(?<=COPY.).+(?=.\/docker-entrypoint-initdb.d\/)/
         const linetype = line.match(pgRegex);
+        const schema = line.match(schemaRegex)
         if (linetype) {
           const regex = /\b\w+(\b\s*)$/
           const val = line.match(regex);
@@ -49,7 +51,12 @@ const fileController = {
           process.env[linetype[0]] = val[0].trim();
           console.log(process.env[linetype[0]])
           console.log(process.env[linetype[0]], val[0]);
+           
+        } else if(schema) {
+          process.env.SCHEMA = schema[0];
+          console.log(process.env.SCHEMA)
         }
+        
       }
       return {
         user: `${process.env.POSTGRES_USER}`,
