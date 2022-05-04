@@ -1,9 +1,8 @@
 import { Space, Box, Title, Paper, Button, TextInput, NativeSelect } from "@mantine/core";
-import FileSearchButton from "../containers/FileSearchButton";
-import { selectFile, uploadTableData,destructureImageList, runNewContainer, destructureContainerList, destructureContainerId, startContainer, stopContainer} from "../utility/fileExplorer";
+import { destructureImageList, runNewContainer, destructureContainerList, destructureContainerId} from "../utility/fileExplorer";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useForm } from "@mantine/hooks";
-import { Direction } from "tabler-icons-react";
+
 
 
 const Startup = () => {
