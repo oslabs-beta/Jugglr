@@ -14,7 +14,6 @@ import {
   useMantineTheme
 } from "@mantine/core";
 
-import DockerConfig from "./DockerConfig";
 import DarkModeButton from "./DarkModeButton";
 import StartupConfig from "./StartupConfig";
 import NavbarButtons from "./NavbarButtons";

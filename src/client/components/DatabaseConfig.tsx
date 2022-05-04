@@ -7,18 +7,19 @@ import {
   Grid,
   PasswordInput,
   Group,
-  Button
+  Button,
+  NumberInput
 } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
 import { EyeOff, EyeCheck } from "tabler-icons-react";
 
 import FileSearchButton from "../containers/FileSearchButton";
 import { setEnvConfig } from "../reducers/envConfigSlice";
-import { selectFile } from "../utility/fileExplorer";
+import { selectFile, setDockerFile } from "../utility/fileExplorer";
 import { useAppDispatch, useAppSelector } from "../utility/hooks.types";
 
 const DatabaseConfig = () => {
-  const { user, database, password, schema } = useAppSelector(
+  const { user, database, password, schema, host, port } = useAppSelector(
     state => state.envConfig
   );
   const dispatch = useAppDispatch();
@@ -32,7 +33,9 @@ const DatabaseConfig = () => {
       user: user,
       database: database,
       password: password,
-      schema: schema
+      schema: schema,
+      host: host,
+      port: port
     }
   });
 
@@ -50,12 +53,14 @@ const DatabaseConfig = () => {
   };
 
   /**
-   * unfinished, potentially backend call occurs here
+   * unfinished, potentially call buildImage
    * @param {object} values
    * @returns {void}
    */
-  const setStateAndCall = values => {
+   const setStateAndCall = async values => {
     dispatch(setEnvConfig(values));
+    console.log(values);
+    await setDockerFile(values);
   };
 
   return (
@@ -112,6 +117,26 @@ const DatabaseConfig = () => {
             />
           </Grid.Col>
         </Grid>
+        <Space h="sm" />
+
+        <div style={{ display: "flex", gap: "15px", width: "48.5%" }}>
+          <NumberInput
+            required
+            hideControls
+            label="Port"
+            min={1}
+            max={9999}
+            placeholder="Port number"
+            {...form.getInputProps("port")}
+          />
+
+          <TextInput
+            required
+            label="Host"
+            placeholder="Host name"
+            {...form.getInputProps("host")}
+          />
+        </div>
         <Space h="sm" />
 
         <Group position="right" mt="md">
