@@ -20,14 +20,24 @@ import StartupConfig from "./StartupConfig";
 import NavbarButtons from "./NavbarButtons";
 import BurgerIcon from "../containers/BurgerIcon";
 import ProjectConfig from "./ProjectConfig";
-
+import DatabaseConfig from "./DatabaseConfig";
 
 const AppLayout = () => {
   const [opened, setOpened] = useState(false);
   const theme = useMantineTheme();
   const isSmallView = useMediaQuery("(min-width: 993px");
   const navigate = useNavigate();
-  const endpoints = { 0: "/", 1: "/docker", 2: "/startup" };
+  /**
+   * Will have to move endpoints to utility folder
+   */
+  const endpoints = {
+    1: "/",
+    2: "/database",
+    3: "/docker",
+    4: "/startup",
+    5: "/load",
+    6: "/custom"
+  };
 
   /**
    * function created to give NavBarButtons pseudo-ordering
@@ -86,6 +96,7 @@ const AppLayout = () => {
       <Container>
         <Routes>
           <Route path="/" element={<ProjectConfig />} />
+          <Route path="/database" element={<DatabaseConfig />} />
           <Route path="/docker" element={<DockerConfig />} />
           <Route path="/startup" element={<StartupConfig />} />
         </Routes>
