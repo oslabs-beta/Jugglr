@@ -3,13 +3,13 @@ import { destructureImageList, runNewContainer, buildImage} from "../utility/fil
 import {  useEffect } from "react";
 import { useForm, } from "@mantine/hooks";
 import { useAppSelector, useAppDispatch } from "../utility/hooks.types";
-import { setEnvConfig } from "../reducers/envConfigSlice";
+import { setEnvConfig, setDropDownImage } from "../reducers/envConfigSlice";
 
 
 
 const Startup = () => {
   const {  dropDownImage, port} = useAppSelector(state => state.envConfig)
-  // const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
   // const [imageList, setImageList] = useState<string[]>([""])
  
   
@@ -17,7 +17,7 @@ const Startup = () => {
     initialValues: {
       image:"",
       imageSubmitted: false,
-      dropDownImage:dropDownImage,
+      
       container:"",
       // containerCreated:false,
       selectedImage:"",
@@ -31,16 +31,27 @@ const Startup = () => {
     console.log('start')
     const grabImages = async (): Promise<void> => {
     const images = await dockController.getImagesList()
+    console.log('images',images)
     const iList:string[] = destructureImageList(images)
-    form1.setFieldValue('dropDownImage', iList)
+    console.log('ilist',iList)
+    // form1.setFieldValue('dropDownImage', iList)
+    dispatch(setDropDownImage({dropDownImage:iList}))
     form1.setFieldValue('image',"")
     // setImageList(iList)
+    
     }
    
     grabImages().catch(console.error);
    
   },[form1.values.imageSubmitted]) 
   
+  const imageCreated = () => {
+     if(form1.values.imageSubmitted===false){
+        form1.setFieldValue('imageSubmitted',true)
+      } else {
+        form1.setFieldValue('imageSubmitted',false)
+      }
+  }
   const setStateAndCall = (values, action:string) => {
     if(action==='buildImage'){
       console.log('build',values);
@@ -61,9 +72,12 @@ const Startup = () => {
 
       // }
     }
-  // dispatch(setEnvConfig(values));
+
+  
   
 }
+console.log('outerwstate',dropDownImage)
+
   return (
     <>
     <Paper style={{ background: "none" }}>
@@ -107,10 +121,10 @@ const Startup = () => {
     
       <form onSubmit={form1.onSubmit((values)=> setStateAndCall(values,'newContainer'))}>
         <Grid>
-
+     
     <Grid.Col>
     <Center>
-      <NativeSelect style={{width:"60%"}} placeholder="select image" label="Image" data={form1.values.dropDownImage} onChange={(event)=> form1.setFieldValue('selectedImage', event.currentTarget.value)} />
+      <NativeSelect style={{width:"60%"}} placeholder="select image" label="Image" data={dropDownImage} onClick= {()=>imageCreated()} onChange={(event)=> form1.setFieldValue('selectedImage', event.currentTarget.value)} />
     </Center>
     </Grid.Col>
 

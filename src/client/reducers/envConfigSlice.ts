@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+
 export const envConfigSlice = createSlice({
   name: "envConfig",
   initialState: {
@@ -22,10 +23,15 @@ export const envConfigSlice = createSlice({
   reducers: {
     setEnvConfig: (state, action) => {
       return { ...state, ...action.payload };
+    },
+    setDropDownImage: (state,action) =>{
+     
+      const {dropDownImage} = action.payload
+      return {...state, dropDownImage }
     }
   }
 });
 
-export const { setEnvConfig } = envConfigSlice.actions;
+export const { setEnvConfig, setDropDownImage } = envConfigSlice.actions;
 
 export default envConfigSlice.reducer;

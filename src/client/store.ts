@@ -4,6 +4,7 @@ import envConfigReducer from "./reducers/envConfigSlice";
 export const store = configureStore({
   reducer: {
     envConfig: envConfigReducer
+    
   }
 });
 
