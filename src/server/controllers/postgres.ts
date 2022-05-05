@@ -31,13 +31,13 @@ const uploadData = async (table, sqlSchema) => {
       const stream = client.query(csvCopyString, params);
       const fileStream = fs.createReadStream(sqlSchema);
       fileStream.on('error', (error) => {
-        console.log('filestream error!', error)
+        console.log('first filestream error!', error)
         done();
         return error;
       });
       stream.on('error', (error) => {
-        console.log('filestream error!', error)
-        done();
+        console.log('stream error!', error)
+        //done();
         return error;
       });
       fileStream.pipe(stream);

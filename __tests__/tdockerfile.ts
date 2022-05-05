@@ -17,7 +17,7 @@ describe ("Dockerfile Create", () => {
         password: 'postgres' ,
         port:  '5432',
         rootDir: process.env.ROOTDIR,
-        schema: path.resolve(process.env.DOCKDIR, 'starwars_postgres.create.sql')
+        schema: 'starwars_postgres_create.sql'
       };
       const result = await createDockerfile(Dockerfile)
       .then(() => {
@@ -31,16 +31,17 @@ describe ("Dockerfile Create", () => {
     })
   }),
   describe('create image', () => {
+    process.env.SCHEMA = `starwars_postgres_create.sql`
     it('builds an image from the Dockerfile', async () => {
-      const result = await buildImage('new','starwars_postgres_create.sql', dataDir);
+      const result = await buildImage('test:test');
       expect(result).toEqual(true);
     })
   }),
   describe ('run image', () => {
     it ('creates a container and runs it', async () => {
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise(resolve => setTimeout(resolve, 7000));
       const docker = await new Docker();
-      const container = await run("new:latest", 'testC');
+      const container = await run("test:test", 'testc');
       container.on('container', async function (container) {
         const containerId = await docker.getContainer(container.id);
         console.log(containerId.id);
