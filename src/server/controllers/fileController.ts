@@ -47,10 +47,10 @@ const fileController = {
         if (linetype) {
           const regex = /\b\w+(\b\s*)$/
           const val = line.match(regex);
-          console.log(val[0])
+          // console.log(val[0])
           process.env[linetype[0]] = val[0].trim();
-          console.log(process.env[linetype[0]])
-          console.log(process.env[linetype[0]], val[0]);
+          // console.log(process.env[linetype[0]])
+          // console.log(process.env[linetype[0]], val[0]);
            
         } else if(schema) {
           process.env.SCHEMA = schema[0];
