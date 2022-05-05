@@ -44,7 +44,7 @@ const NavbarButtons = ({ navigate }) => {
           <ThemeIcon variant="light" style={{ background: "none" }}>
             <CloudStorm />
           </ThemeIcon>
-          <Text size="md">Startup</Text>
+          <Text size="md">Docker Setup</Text>
         </Group>
       </UnstyledButton>
 

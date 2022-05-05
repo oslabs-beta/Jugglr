@@ -107,7 +107,7 @@ const dockerController = {
     const docker = await new Docker({socketPath: '/var/run/docker.sock'})
     const list = await docker.listImages()
     .then(list => {  return list })
-    console.log('outer',list)
+    //console.log('outer',list)
     return list;
    
   },
@@ -134,13 +134,24 @@ const dockerController = {
   // getVolumes: function () {},
   // getRunCommand: function (rootDir, imageName, containerName) {}
 
-  buildImage:  async (image, schema, dirname) => {
+  buildImage:  async (image) => {
+    console.log('controller',image)
     try {
+      console.log(process.env.SCHEMA)
+      const schema = process.env.SCHEMA
+      const myschema: RegExpMatchArray | null | undefined = schema?.match(/[^/]+(?!\/)+$/);
+      console.log(myschema? myschema[0] : '')
+
+      console.log(schema)
       const dockerode = await  new Docker();
-      const result = await dockerode.buildImage({
-          context: dirname,
-          src: ['Dockerfile', schema]
-        }, {t: image} )
+      const result = dockerode.buildImage({
+          context: process.env.DOCKDIR,
+          src: ['Dockerfile', myschema ? myschema[0] : '']
+        }, {t: image}, function(error, output) {
+          if (error) {
+            return console.error(error);
+          }
+          output.pipe(process.stdout) })
     } catch (err) {
       console.log(err); 
       return false;
@@ -159,8 +170,8 @@ const dockerController = {
    // port = `${port}/tcp`
     const docker = await  new Docker();
     const result = await docker.run(image, ['postgres'], streams, {
-      Env: [`POSTGRES_PASSWORD=${process.env.POSTGRES_PASSWORD}`], WorkingDir: process.env.ROOTDIR, name: containerName, 
-      PortBindings: { [`${port}/tcp`] : {} }, Tty: false}, (err, _data, _rawContainer) => {
+      Env: [`POSTGRES_PASSWORD=${process.env.POSTGRES_PASSWORD}`], WorkingDir: process.env.ROOTDIR, name: containerName, PortBindings: {
+        [`${port}/tcp`] : [ { "HostPort": `${port}` } ]}, Tty: false}, (err, _data, _rawContainer) => {
           if (err) { console.log("err", err)} })
       .on('container', async function (container) {
         console.log('Postgres started');

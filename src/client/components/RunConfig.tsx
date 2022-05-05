@@ -9,14 +9,15 @@ import { setEnvConfig } from "../reducers/envConfigSlice";
 
 
 const Run = () => {
-  const { container, containerIdObject, containerNames } = useAppSelector(state => state.envConfig)
+  const { containerIdObject, containerNames } = useAppSelector(state => state.envConfig)
   const dispatch = useAppDispatch();
     // const [containerNames, setContainerList] = useState<string[]>([""]);
     // const [containerIdObject,setContainerIdObject] = useState ({})
     
     const form2 = useForm({
       initialValues: {
-        container:container,
+        containerSelected:"",
+        buttonSelected: false,
         containerIdObject:containerIdObject,
         containerNames:containerNames,
       }
@@ -34,12 +35,11 @@ const Run = () => {
      
       grabContainer().catch(console.error);
      
-    },[container])
+    },[])
     const setNameAndId = async (event: ChangeEvent<HTMLSelectElement> ):Promise<void> => {
-      form2.setFieldValue('container', event.currentTarget.value)
+      form2.setFieldValue('containerSelected', event.currentTarget.value)
       // form2.setFieldValue('id', containerIdObject[form2.values.containerName])
     }
-    // console.log(form2.values)
     
   
     const setStateAndCall = (values: string,action:'start' | 'stop') => {
@@ -48,10 +48,19 @@ const Run = () => {
       } else {
         stopContainer(values)
       }
+      if(form2.values.buttonSelected===true){
+        form2.setFieldValue('buttonSelected',false)
+        console.log('here')
+      } else {
+        form2.setFieldValue('buttonSelected',true)
+        console.log('nooo')
+      }
       dispatch(setEnvConfig(form2.values));
+      
+      
 
     }
-    
+    console.log('out',form2.values.buttonSelected)
   //  console.log(form2.values.containerNames, 'state', containerNames)
   //  console.log(form2.values.containerIdObject, 'state', containerIdObject)
   //  console.log(form2.values.container,'state', container)
@@ -83,11 +92,11 @@ const Run = () => {
           }}
         >
           <div style={{ width: "30%" }}>
-            <Button fullWidth onClick={()=>{setStateAndCall(form2.values.containerIdObject[form2.values.container],'start')}}>Start Container</Button>
+            <Button fullWidth onClick={()=>{setStateAndCall(form2.values.containerIdObject[form2.values.containerSelected],'start')}}>Start Container</Button>
           </div>
   
           <div style={{ width: "30%" }}>
-            <Button fullWidth onClick={()=>{setStateAndCall(form2.values.containerIdObject[form2.values.container],'stop')}}>Stop Container</Button>
+            <Button fullWidth onClick={()=>{setStateAndCall(form2.values.containerIdObject[form2.values.containerSelected],'stop')}}>Stop Container</Button>
           </div>
   
           {/* <div style={{ width: "30%" }}>

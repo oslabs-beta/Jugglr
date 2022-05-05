@@ -38,11 +38,13 @@ const LoadData = () => {
       </Paper>
       <Space h={50} />
     <Box>
-    <div style={{position:"relative"}}>
-    <form style={{position:"absolute", left:"22%",width:"55%"}} onSubmit={form.onSubmit((values)=> setStateAndCall(values))}>
+    
+    <form style={{display:'flex', flexDirection:'column', alignItems:"center"}} onSubmit={form.onSubmit((values)=> setStateAndCall(values))}>
     <TextInput
+          style={{width:"60%"}}
           required
           disabled
+  
           label="Table Path"
           placeholder="Table Path"
           {...form.getInputProps("tablePath")}
@@ -55,13 +57,14 @@ const LoadData = () => {
         />
         
         <TextInput
+        style={{marginTop:"5%",width:"60%"}}
           required
           label="Table Name"
           placeholder="Table Name"
           {...form.getInputProps("tableName")}
          
         />
-         <div style={{display: "flex", justifyContent:"center"}}>
+         <div style={{marginTop:"5%",display: "flex", justifyContent:"center"}}>
          <div >
          <Button style={{top:"75%"}} type="submit">Load Table Data</Button>
          </div>
@@ -69,7 +72,7 @@ const LoadData = () => {
          
          </form>
          
-         </div>
+      
     </Box>
 
 
