@@ -107,6 +107,7 @@ const dockerController = {
     const docker = await new Docker({socketPath: '/var/run/docker.sock'})
     const list = await docker.listImages()
     .then(list => {  return list })
+    //console.log('outer',list)
     return list;
    
   },
@@ -136,12 +137,21 @@ const dockerController = {
   buildImage:  async (image) => {
     console.log('controller',image)
     try {
-      const schema = process.env.SCHEMA.match(/[^/]+(?!\/)+$/)[0]
+      console.log(process.env.SCHEMA)
+      const schema = process.env.SCHEMA
+      const myschema: RegExpMatchArray | null | undefined = schema?.match(/[^/]+(?!\/)+$/);
+      console.log(myschema? myschema[0] : '')
+
+      console.log(schema)
       const dockerode = await  new Docker();
-      const result = await dockerode.buildImage({
+      const result = dockerode.buildImage({
           context: process.env.DOCKDIR,
-          src: ['Dockerfile', schema]
-        }, {t: image} )
+          src: ['Dockerfile', myschema ? myschema[0] : '']
+        }, {t: image}, function(error, output) {
+          if (error) {
+            return console.error(error);
+          }
+          output.pipe(process.stdout) })
     } catch (err) {
       console.log(err); 
       return false;
