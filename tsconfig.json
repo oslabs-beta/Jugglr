@@ -15,7 +15,14 @@
     "moduleResolution": "node",
     "outDir": "./build",
     "lib": ["DOM","es6"],
-    "checkJs": false
+    "checkJs": false,
+  },
+  "ts-node": {
+    "transpileOnly": true,
+    "files": true,
+    "compilerOptions": {
+      "rootDir": "./"
+    }
   },
   "include": ["src/**/*", "src/.env"],
   "exclude": ["__tests__/**/*"]
