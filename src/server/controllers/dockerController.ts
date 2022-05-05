@@ -135,6 +135,7 @@ const dockerController = {
   // getRunCommand: function (rootDir, imageName, containerName) {}
 
   buildImage:  async (image) => {
+    console.log('controller',image)
     try {
       console.log(process.env.SCHEMA)
       const schema = process.env.SCHEMA

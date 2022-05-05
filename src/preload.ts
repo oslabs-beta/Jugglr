@@ -25,6 +25,7 @@ contextBridge.exposeInMainWorld("dockController", {
     return await ipcRenderer.invoke('createDockerfile', dockerfile);
   },
   buildImage: async(imageName) => {
+    console.log('preload')
     return await ipcRenderer.invoke('buildImage', imageName);
   },
   runContainer: async(imageName, containerName, port) => {
