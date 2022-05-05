@@ -11,7 +11,9 @@ import {
   Navbar,
   Header,
   Container,
-  useMantineTheme
+  useMantineTheme,
+  Title,
+  Image
 } from "@mantine/core";
 
 import DarkModeButton from "./DarkModeButton";
@@ -20,16 +22,21 @@ import NavbarButtons from "./NavbarButtons";
 import BurgerIcon from "../containers/BurgerIcon";
 import ProjectConfig from "./ProjectConfig";
 import DatabaseConfig from "./DatabaseConfig";
-import ContainerConfig from "./RunConfig"
-import LoadDataConfig from "./LoadDataConfig"
-
+import ContainerConfig from "./RunConfig";
+import LoadDataConfig from "./LoadDataConfig";
 
 const AppLayout = () => {
   const [opened, setOpened] = useState(false);
   const theme = useMantineTheme();
   const isSmallView = useMediaQuery("(min-width: 993px");
   const navigate = useNavigate();
-  const endpoints = { 0: "/", 1: "/database", 2: "/startup" ,3:"/run", 4:"/loadData" };
+  const endpoints = {
+    0: "/",
+    1: "/database",
+    2: "/startup",
+    3: "/run",
+    4: "/loadData"
+  };
 
   /**
    * function created to give NavBarButtons pseudo-ordering
@@ -78,6 +85,19 @@ const AppLayout = () => {
               setOpened={setOpened}
             />
 
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 25,
+                marginLeft: 35,
+                columnGap: 35
+              }}
+            >
+              <Image src="https://lh3.googleusercontent.com/hsWsBhpDo3Vllq4yCTpTTL7UMF-tQ_Ia0Wo3C2SDKTUTYXnnrXK1o1xedMvxZ16ADlhv-w=s96"></Image>
+              <Title>Jugglr</Title>
+            </div>
+
             <div style={{ marginLeft: "auto", marginRight: "50px" }}>
               <DarkModeButton />
             </div>
@@ -90,8 +110,8 @@ const AppLayout = () => {
           <Route path="/" element={<ProjectConfig />} />
           <Route path="/database" element={<DatabaseConfig />} />
           <Route path="/startup" element={<StartupConfig />} />
-          <Route path="/run" element={<ContainerConfig/>}/>
-          <Route path="/loadData" element={<LoadDataConfig/>}/>
+          <Route path="/run" element={<ContainerConfig />} />
+          <Route path="/loadData" element={<LoadDataConfig />} />
         </Routes>
       </Container>
     </AppShell>
