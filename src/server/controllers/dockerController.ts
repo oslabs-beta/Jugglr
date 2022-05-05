@@ -25,6 +25,8 @@ const dockerController = {
     process.env.POSTGRES_PASSWORD = password;
     process.env.POSTGRES_USER = user;
     process.env.POSTGRES_PORT = port || '5432';
+    process.env.SCHEMA = schema;
+    const relSchema = lpath.relative(process.env.ROOTDIR, schema);
     const From = from || 'postgres:latest'
     const dockerfileContents = 
     `FROM ${From} 
@@ -32,12 +34,12 @@ const dockerController = {
     ENV POSTGRES_PASSWORD ${process.env.POSTGRES_PASSWORD} 
     ENV POSTGRES_DB ${process.env.POSTGRES_DB} 
     WORKDIR ${process.env.ROOTDIR}
-    COPY ${schema} /docker-entrypoint-initdb.d/ `
+    COPY ${relSchema} /docker-entrypoint-initdb.d/ `
 
-    if (!lfs.existsSync(process.env.DOCKDIR)){
-      lfs.mkdirSync(process.env.DOCKDIR);
-    } 
-    const dFile = lpath.resolve(process.env.DOCKDIR, 'Dockerfile')
+    // if (!lfs.existsSync(process.env.DOCKDIR)){
+    //   lfs.mkdirSync(process.env.DOCKDIR);
+    // } 
+    const dFile = lpath.resolve(process.env.ROOTDIR, 'Dockerfile')
     try {
       lfs.writeFileSync(dFile, dockerfileContents, { flag: "w" });
     } catch (err) {
@@ -139,14 +141,17 @@ const dockerController = {
     try {
       console.log(process.env.SCHEMA)
       const schema = process.env.SCHEMA
-      const myschema: RegExpMatchArray | null | undefined = schema?.match(/[^/]+(?!\/)+$/);
-      console.log(myschema? myschema[0] : '')
-
-      console.log(schema)
+      // let myschema: RegExpMatchArray | null | undefined | string = schema?.match(/[^/]+(?!\/)+$/);
+      // console.log(myschema? myschema[0] : '')
+      // myschema = myschema ? myschema[0] : '';
+      // myschema = '../' + myschema;
+      // console.log(schema)
+      const relSchema = lpath.relative(process.env.ROOTDIR, schema);
+      console.log("relative path: ",relSchema);
       const dockerode = await  new Docker();
       const result = dockerode.buildImage({
-          context: process.env.DOCKDIR,
-          src: ['Dockerfile', myschema ? myschema[0] : '']
+          context: process.env.ROOTDIR,
+          src: ['Dockerfile', relSchema]
         }, {t: image}, function(error, output) {
           if (error) {
             return console.error(error);
@@ -177,7 +182,7 @@ const dockerController = {
         console.log('Postgres started');
         const containerId = await docker.getContainer(container.id);
         console.log(containerId.id)
-        lfs.writeFileSync(`${process.env.DOCKDIR}/container.txt`, containerId.id, "utf8")
+        //lfs.writeFileSync(`${process.env.DOCKDIR}/container.txt`, containerId.id, "utf8")
         return containerId.id;
     })
     return result;
