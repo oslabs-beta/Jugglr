@@ -107,7 +107,6 @@ const dockerController = {
     const docker = await new Docker({socketPath: '/var/run/docker.sock'})
     const list = await docker.listImages()
     .then(list => {  return list })
-    console.log('outer',list)
     return list;
    
   },
@@ -135,6 +134,7 @@ const dockerController = {
   // getRunCommand: function (rootDir, imageName, containerName) {}
 
   buildImage:  async (image) => {
+    console.log('controller',image)
     try {
       const schema = process.env.SCHEMA.match(/[^/]+(?!\/)+$/)[0]
       const dockerode = await  new Docker();

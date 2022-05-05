@@ -123,7 +123,7 @@ export const runNewContainer = async (values:newContainer): Promise<string | str
    
 }
 export const buildImage = async (image:string) => {
-  
+
   return await dockController.buildImage(image);
 }
  
