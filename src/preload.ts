@@ -1,5 +1,5 @@
 const { contextBridge, ipcRenderer } = require("electron");
-// import { Dockerfile } from './types';
+import { container, DockerFile, image } from './types';
 
 contextBridge.exposeInMainWorld("selectorModule", {
   openFile: async () => {
@@ -21,38 +21,35 @@ contextBridge.exposeInMainWorld("selectorModule", {
 });
 
 contextBridge.exposeInMainWorld("dockController", {
-  createDockerfile: async (dockerfile) => {
+  createDockerfile: async (dockerfile:DockerFile) => {
     return await ipcRenderer.invoke('createDockerfile', dockerfile);
   },
-  buildImage: async(imageName) => {
+  buildImage: async(imageName:string) => {
     console.log('preload')
     return await ipcRenderer.invoke('buildImage', imageName);
   },
-  runContainer: async(imageName, containerName, port) => {
+  runContainer: async(imageName: string, containerName:string, port:string) => {
     return await ipcRenderer.invoke('runContainer', imageName, containerName, port)
   }, 
-  startContainer: async (containerId) => {
+  startContainer: async (containerId:string):Promise<void> => {
     return await ipcRenderer.invoke('startContainer', containerId)
   },
-  stopContainer: async (containerId) => {
+  stopContainer: async (containerId:string):Promise<void> => {
     return await ipcRenderer.invoke('stopContainer', containerId)
   },
-  removeContainer: async (containerId) => {
+  removeContainer: async (containerId:string):Promise<void> => {
     return await ipcRenderer.invoke('removeContainer', containerId)
   },
-  getContainersList: async () => {
+  getContainersList: async ():Promise<container[]>  => {
     return await ipcRenderer.invoke('getContainers')
   },
-  getImagesList: async () => {
+  getImagesList: async ():Promise<image[]> => {
     return await ipcRenderer.invoke('getImages')
   }
 })
 
 contextBridge.exposeInMainWorld("psUploadData", {
-  
-  uploadData: async (table,sqlSchema) => {
-    console.log('upload preload!')
-    console.log(table,sqlSchema)
+  uploadData: async (table:string,sqlSchema:string) => {
     const response = await ipcRenderer.invoke("uploadData", table, sqlSchema);
     return response;
   }

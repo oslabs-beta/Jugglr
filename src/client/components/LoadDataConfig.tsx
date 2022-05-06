@@ -10,7 +10,7 @@ import { setEnvConfig } from "../reducers/envConfigSlice";
 const LoadData = () => {
   const { tablePath, tableName } = useAppSelector(state => state.envConfig)
   const dispatch = useAppDispatch();
-  const setFieldType = (field: any) => {
+  const setFieldType = (field:"tablePath") => {
     return (value: string) => {
       form.setFieldValue(field, value);
     };
@@ -20,14 +20,17 @@ const LoadData = () => {
   const form = useForm({
     initialValues: {
       tablePath: tablePath,
-      tableName: tableName
+      tableName: tableName,
+      message:''
     }
   });
   
-  const setStateAndCall = (values: LoadTable) => {
+  const setStateAndCall = async (values: LoadTable) => {
     dispatch(setEnvConfig(values));
-    uploadTableData(values)
+    const response = await uploadTableData(values)
+    form.setFieldValue('message',response)
   }
+  console.log(form.values.message)
 
   return (
     <>
@@ -39,7 +42,7 @@ const LoadData = () => {
       <Space h={50} />
     <Box>
     
-    <form style={{display:'flex', flexDirection:'column', alignItems:"center"}} onSubmit={form.onSubmit((values)=> setStateAndCall(values))}>
+    <form  style={{display:'flex', flexDirection:'column', alignItems:"center"}} onSubmit={form.onSubmit((values)=> setStateAndCall(values))}>
     <TextInput
           style={{width:"60%"}}
           required
@@ -62,6 +65,7 @@ const LoadData = () => {
           label="Table Name"
           placeholder="Table Name"
           {...form.getInputProps("tableName")}
+          
          
         />
          <div style={{marginTop:"5%",display: "flex", justifyContent:"center"}}>
@@ -71,7 +75,7 @@ const LoadData = () => {
          </div>
          
          </form>
-         
+         {form.values.message}
       
     </Box>
 

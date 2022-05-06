@@ -4,10 +4,11 @@ import {  useEffect } from "react";
 import { useForm, } from "@mantine/hooks";
 import { useAppSelector, useAppDispatch } from "../utility/hooks.types";
 import { setDropDownImage } from "../reducers/envConfigSlice";
+import { image, StartUpObj } from "../../types";
 
 
 
-const Startup = () => {
+const Startup = ():JSX.Element => {
   const {  dropDownImage, port} = useAppSelector(state => state.envConfig)
   const dispatch = useAppDispatch();
   // const [imageList, setImageList] = useState<string[]>([""])
@@ -17,12 +18,9 @@ const Startup = () => {
     initialValues: {
       image:"",
       imageSubmitted: false,
-      
       container:"",
-      // containerCreated:false,
       selectedImage:"",
       port:port,
-
     }
   })
  
@@ -30,10 +28,9 @@ const Startup = () => {
   useEffect( () => {
     console.log('start')
     const grabImages = async (): Promise<void> => {
-    const images = await dockController.getImagesList()
-    console.log('images',images)
+    const images:image[] = await dockController.getImagesList()
     const iList:string[] = destructureImageList(images)
-    console.log('ilist',iList)
+    // console.log('ilist',iList)
     // form1.setFieldValue('dropDownImage', iList)
     dispatch(setDropDownImage({dropDownImage:iList}))
     form1.setFieldValue('image',"")
@@ -45,32 +42,26 @@ const Startup = () => {
    
   },[form1.values.imageSubmitted]) 
   
-  const imageCreated = () => {
+  const imageCreated = ():void => {
      if(form1.values.imageSubmitted===false){
         form1.setFieldValue('imageSubmitted',true)
       } else {
         form1.setFieldValue('imageSubmitted',false)
       }
   }
-  const setStateAndCall = (values, action:string) => {
+  const setStateAndCall = (values:StartUpObj, action:string) => {
     if(action==='buildImage'){
-      console.log('build',values);
+      // console.log('build',values);
       
       buildImage(values.image)
-      if(form1.values.imageSubmitted===false){
-        form1.setFieldValue('imageSubmitted',true)
-      } else {
-        form1.setFieldValue('imageSubmitted',false)
-      }
+      // if(form1.values.imageSubmitted===false){
+      //   form1.setFieldValue('imageSubmitted',true)
+      // } else {
+      //   form1.setFieldValue('imageSubmitted',false)
+      // }
       
     } else {
       runNewContainer(values)
-      // if(form1.values.containerCreated===true){
-      //   form1.setFieldValue('containerCreated',false)
-      // } else {
-      //   form1.setFieldValue('containerCreated',true)
-
-      // }
     }
 
   
