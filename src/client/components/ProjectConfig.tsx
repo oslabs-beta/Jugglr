@@ -45,7 +45,12 @@ const ProjectConfig = () => {
     };
   };
 
-  const setStateAndCall = (values: EnvConfig) => {
+  /**
+   * update Redux state and call backend with given directory
+   * @param {EnvConfig} values 
+   * @returns {void}
+   */
+  const setStateAndCall = (values: EnvConfig): void => {
     dispatch(setEnvConfig(values));
     setProjectDirectory(values);
   };

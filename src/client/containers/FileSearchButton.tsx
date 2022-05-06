@@ -1,8 +1,8 @@
-import { Button } from "@mantine/core";
 import PropTypes from "prop-types";
+import { Button } from "@mantine/core";
 import { FileSearch } from "tabler-icons-react";
 
-const FileSearchButton = ({ setField,  setPath}) => {
+const FileSearchButton = ({ setField, setPath }) => {
 
   return (
     <Button
@@ -10,7 +10,7 @@ const FileSearchButton = ({ setField,  setPath}) => {
       size="sm"
       mr={25}
       style={{ borderRadius: "0 5px 5px 0" }}
-      onClick={ async () => {
+      onClick={async () => {
         const response: any = await setPath();
         setField(response);
       }}
@@ -18,11 +18,11 @@ const FileSearchButton = ({ setField,  setPath}) => {
       <FileSearch />
     </Button>
   );
-}
+};
 
 FileSearchButton.propTypes = {
   setField: PropTypes.func,
   setPath: PropTypes.func
-}
+};
 
 export default FileSearchButton;

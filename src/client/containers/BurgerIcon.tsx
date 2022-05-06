@@ -9,7 +9,7 @@ const BurgerIcon = ({ opened, setOpened, color, isSmallView }) => {
     <Burger
       hidden={isSmallView}
       opened={opened}
-      onClick={() => setOpened(o => !o)}
+      onClick={() => setOpened((o: boolean) => !o)}
       size="sm"
       color={color}
       mr="xl"

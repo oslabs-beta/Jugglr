@@ -1,3 +1,6 @@
+/**
+ * ref: https://mantine.dev/theming/dark-theme/
+ */
 import { ActionIcon, useMantineColorScheme } from "@mantine/core";
 import { useHotkeys } from "@mantine/hooks";
 import { MoonOff, MoonStars } from "tabler-icons-react";
