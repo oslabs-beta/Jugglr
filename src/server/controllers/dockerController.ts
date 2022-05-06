@@ -117,12 +117,12 @@ const dockerController = {
     try {
       console.log(process.env.SCHEMA)
       const schema = process.env.SCHEMA
-      const relSchema = lpath.relative(process.env.ROOTDIR, schema);
+      const relSchema = lpath.relative(process.env.DOCKDIR, schema);
       console.log("relative path: ",relSchema);
       const dockerode = await  new Docker();
       const result = dockerode.buildImage({
             context: process.env.DOCKDIR,
-            src: ['jugglr/Dockerfile', `../${relSchema}`]}, 
+            src: ['jugglr/Dockerfile', `${relSchema}`]}, 
             {t: image}, function(error) {
             if (error) {
               console.error(error);
