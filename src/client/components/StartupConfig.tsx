@@ -3,7 +3,7 @@ import { destructureImageList, runNewContainer, buildImage} from "../utility/fil
 import {  useEffect } from "react";
 import { useForm, } from "@mantine/hooks";
 import { useAppSelector, useAppDispatch } from "../utility/hooks.types";
-import { setEnvConfig, setDropDownImage } from "../reducers/envConfigSlice";
+import { setDropDownImage } from "../reducers/envConfigSlice";
 
 
 
