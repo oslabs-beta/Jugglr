@@ -3,19 +3,8 @@ const lfs = require('fs');
 const lpath = require('path');
 const Docker = require('dockerode');
 
-//rootDir is the project directory of the user. We will also create the Jugglr folder in rootDir
-//the following variables will have to be updated w data coming in from the frontend:
-
-////frontend:: 
-////frontend:: user selecting a project directory (rootDir) will invoke file.mkJugglr function. 
-//For e.g., invoke file.mkJugglr() when passing path data to rootDir variable?
-  //users will select their own sql schema file
-  //note: can't use abs path for sql file in Dockerfile
-  //for our team: after creating Jugglr folder, drag and drop starwars_postgres_create.sql into it
 
 const dockerController = {
-  ////frontend:: user clicks 'Generate Docker File' button. 
-    //onClick(?) calls the dockerController.createDockerfile function, passing in pathDockerfile and dockerfileContents
   createDockerfile: async (dockerfile) => {
     const { from, user, host, database, password, port, rootDir, schema } = dockerfile;
    
@@ -36,10 +25,10 @@ const dockerController = {
     WORKDIR ${process.env.ROOTDIR}
     COPY ${relSchema} /docker-entrypoint-initdb.d/ `
 
-    // if (!lfs.existsSync(process.env.DOCKDIR)){
-    //   lfs.mkdirSync(process.env.DOCKDIR);
-    // } 
-    const dFile = lpath.resolve(process.env.ROOTDIR, 'Dockerfile')
+    if (!lfs.existsSync(process.env.DOCKDIR)){
+      lfs.mkdirSync(process.env.DOCKDIR);
+    } 
+    const dFile = lpath.resolve(process.env.DOCKDIR, 'Dockerfile')
     try {
       lfs.writeFileSync(dFile, dockerfileContents, { flag: "w" });
     } catch (err) {
@@ -51,12 +40,7 @@ const dockerController = {
 
   },
   
-  //// frontend:: user enters container name and port, and clicks 'Run New Container' button
-    //onClick: transfer input field info to variables containerName and containerPort 
-    //AND then trigger dockerController.runNewContainer function 
-
-  // runNewContainer: 
-  // port hardcoded atm
+  
   createContainer: async  (image, containerName) => {
     const docker = new Docker({socketPath: '/var/run/docker.sock'});
     const result = await docker.createContainer({ 
@@ -72,9 +56,6 @@ const dockerController = {
     return result;
   },
 
-  //frontend:: user clicks stop/delete/start container buttons. 
-  //onClick(?) triggers dockerController.stopContainer/.deleteContainer/.startContainer function(s)
-    
   startContainer: async function (containerId) {
     const docker = await new Docker({socketPath: '/var/run/docker.sock'});
     const selectedContainer = await docker.getContainer(containerId);
@@ -131,33 +112,25 @@ const dockerController = {
     });
   },
 
-
-  // getImages: function () {},
-  // getVolumes: function () {},
-  // getRunCommand: function (rootDir, imageName, containerName) {}
-
   buildImage:  async (image) => {
     console.log('controller',image)
     try {
       console.log(process.env.SCHEMA)
       const schema = process.env.SCHEMA
-      // let myschema: RegExpMatchArray | null | undefined | string = schema?.match(/[^/]+(?!\/)+$/);
-      // console.log(myschema? myschema[0] : '')
-      // myschema = myschema ? myschema[0] : '';
-      // myschema = '../' + myschema;
-      // console.log(schema)
       const relSchema = lpath.relative(process.env.ROOTDIR, schema);
       console.log("relative path: ",relSchema);
       const dockerode = await  new Docker();
       const result = dockerode.buildImage({
-          context: process.env.ROOTDIR,
-          src: ['Dockerfile', relSchema]
-        }, {t: image}, function(error, output) {
-          if (error) {
-            return console.error(error);
-          }
-          output.pipe(process.stdout) })
-    } catch (err) {
+            context: process.env.DOCKDIR,
+            src: ['jugglr/Dockerfile', `../${relSchema}`]}, 
+            {t: image}, function(error) {
+            if (error) {
+              console.error(error);
+              return false;
+      }})
+      if (!result) return false;
+    }
+    catch (err) {
       console.log(err); 
       return false;
     }
@@ -182,7 +155,6 @@ const dockerController = {
         console.log('Postgres started');
         const containerId = await docker.getContainer(container.id);
         console.log(containerId.id)
-        //lfs.writeFileSync(`${process.env.DOCKDIR}/container.txt`, containerId.id, "utf8")
         return containerId.id;
     })
     return result;
