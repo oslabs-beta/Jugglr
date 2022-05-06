@@ -5,6 +5,7 @@ import { useForm } from "@mantine/hooks";
 import { useAppSelector,useAppDispatch} from "../utility/hooks.types";
 import { LoadTable } from "../../types";
 import { setEnvConfig } from "../reducers/envConfigSlice";
+import { showNotification } from "@mantine/notifications";
 
 
 const LoadData = () => {
@@ -28,9 +29,13 @@ const LoadData = () => {
   const setStateAndCall = async (values: LoadTable) => {
     dispatch(setEnvConfig(values));
     const response = await uploadTableData(values)
-    form.setFieldValue('message',response)
+    // form.setFieldValue('message',response)
+    showNotification({
+      message: response,
+      autoClose: 4000
+    })
   }
-  console.log(form.values.message)
+ 
 
   return (
     <>
@@ -75,7 +80,7 @@ const LoadData = () => {
          </div>
          
          </form>
-         {form.values.message}
+         
       
     </Box>
 

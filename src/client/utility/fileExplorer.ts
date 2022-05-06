@@ -19,8 +19,8 @@ export const uploadTableData = async (values:LoadTable) :Promise<string>  => {
   const tableName=values.tableName
   console.log(tablePath)
   console.log('tn',tableName)
-  if(tablePath==="" || tableName===""){ 
-    return "Please fill out all required fields"
+  if(tablePath===""){ 
+    return "Please provide a table Path"
   }
 
   const response = await psUploadData.uploadData(tableName,tablePath)
