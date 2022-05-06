@@ -41,6 +41,7 @@ const AppLayout = () => {
   /**
    * function created to give NavBarButtons pseudo-ordering
    * using the above endpoints record for controlling browser's URL
+   * @todo transition to Mantine usePagination hook for prev/next navigation support
    * @param index
    * @returns void
    */
