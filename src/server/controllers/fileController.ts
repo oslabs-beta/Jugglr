@@ -49,7 +49,7 @@ const fileController = {
     setProjectRoot: async (rootdir) => {
       process.env.ROOTDIR = rootdir;
       process.env.DOCKDIR = fpath.resolve(rootdir, 'jugglr');
-      const dockerfl = fpath.resolve(process.env.ROOTDIR, 'Dockerfile')
+      const dockerfl = fpath.resolve(process.env.DOCKDIR, 'Dockerfile')
       if (!ffs.existsSync(dockerfl)) return {};
       const dockerfile =  ffs.readFileSync(dockerfl).toString().split("\n");
       for (const line of dockerfile){
