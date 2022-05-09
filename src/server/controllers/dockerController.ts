@@ -186,7 +186,7 @@ const dockerController = {
   */
  getContainersList: async () => {
     const docker = await new Docker({socketPath: '/var/run/docker.sock'})
-    const list = await docker.listContainers()
+    const list = await docker.listContainers({all: true})
     .then(list => { return list })
     return list;
    
