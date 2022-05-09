@@ -51,8 +51,6 @@ const LoadData = () => {
     <TextInput
           style={{width:"60%"}}
           required
-          disabled
-  
           label="Table Path"
           placeholder="Table Path"
           {...form.getInputProps("tablePath")}
