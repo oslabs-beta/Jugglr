@@ -5,7 +5,7 @@ import { useForm } from "@mantine/hooks";
 import { useAppSelector,useAppDispatch} from "../utility/hooks.types";
 import { LoadTable } from "../../types";
 import { setEnvConfig } from "../reducers/envConfigSlice";
-import { showNotification } from "@mantine/notifications";
+import { cleanNotifications, cleanNotificationsQueue, showNotification } from "@mantine/notifications";
 
 
 const LoadData = () => {
@@ -30,6 +30,7 @@ const LoadData = () => {
     dispatch(setEnvConfig(values));
     const response = await uploadTableData(values)
     // form.setFieldValue('message',response)
+  
     showNotification({
       message: response,
       autoClose: 4000
@@ -47,7 +48,7 @@ const LoadData = () => {
       <Space h={50} />
     <Box>
     
-    <form  style={{display:'flex', flexDirection:'column', alignItems:"center"}} onSubmit={form.onSubmit((values)=> setStateAndCall(values))}>
+    <form  style={{display:'flex', flexDirection:'column', alignItems:"center"}} onSubmit={form.onSubmit((values)=> {setStateAndCall(values); })}>
     <TextInput
           style={{width:"60%"}}
           required
@@ -73,7 +74,7 @@ const LoadData = () => {
         />
          <div style={{marginTop:"5%",display: "flex", justifyContent:"center"}}>
          <div >
-         <Button style={{top:"75%"}} type="submit">Load Table Data</Button>
+         <Button style={{top:"75%"}} onClick={cleanNotifications} type="submit">Load Table Data</Button>
          </div>
          </div>
          

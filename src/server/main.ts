@@ -4,6 +4,7 @@ const mpath = require("path");
 const selectorModule = require('./controllers/fileController');
 const { uploadData: psUploadData} = require('./controllers/postgres')
 const dockController = require('./controllers/dockerController')
+const docker = require('dockerode')
 require('dotenv/config');
 
 try {
@@ -104,7 +105,13 @@ ipcMain.handle("buildImage", async (_event, image) => {
 ipcMain.handle("runContainer", async (_event, imageName, containerName,port) => {
   try {
     const result = await dockController.run(imageName, containerName,port);
-    return result;
+    result.sender.send('container', async function (container) {
+      const dock = new docker();
+      const containerId = await dock.getContainer(container.id)
+      console.log(containerId.id)
+      return containerId.id;
+    })
+   
   }
   catch (err) {
     console.log(err);

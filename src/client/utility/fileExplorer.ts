@@ -99,8 +99,8 @@ export const runNewContainer = async (values:StartUpObj): Promise<string> => {
   const containerName = values.container
   const port = values.port+'' 
   
-  
   const response = await dockController.runContainer(imageValue,containerName,port)
+  console.log('newContainer', response);
   return response
    
 }
@@ -110,14 +110,23 @@ export const buildImage = async (image:string):Promise<void> => {
 }
  
 
-export const startContainer = async(containerId:string): Promise<void> => {
-await dockController.startContainer(containerId)
-//no response being sent from the backend
-
+export const startContainer = async(containerId:string): Promise<boolean| string > => {
+ 
+if(containerId===undefined){
+    return false;
+}
+const response = await dockController.startContainer(containerId)
+console.log(' file start',response)
+return response
 }
 
-export const stopContainer = async(containerId:string):Promise<void> => {
-await dockController.stopContainer(containerId)
+export const stopContainer = async(containerId:string):Promise<boolean> => {
+if(containerId===undefined){
+    return false;
+}
+const response = await dockController.stopContainer(containerId)
+console.log('stop',response)
+return response
 //no response being sent from the backend
  
 }

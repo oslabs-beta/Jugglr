@@ -5,6 +5,7 @@ import { useForm } from "@mantine/hooks";
 import { useAppSelector, useAppDispatch } from "../utility/hooks.types";
 import { setEnvConfig, setDropDownContainer } from "../reducers/envConfigSlice";
 import { container } from "../../types";
+import { showNotification, cleanNotifications } from "@mantine/notifications";
 
 
 
@@ -16,7 +17,6 @@ const Run = ():JSX.Element => {
       initialValues: {
         containerSelected:"",
         buttonSelected: false,
- 
       }
     })
   
@@ -40,25 +40,55 @@ const Run = ():JSX.Element => {
     }
     
   
-    const setStateAndCall = (values: string, action:'start' | 'stop') :void => {
+    const setStateAndCall = async (values: string, action:'start' | 'stop') :Promise<void> => {
+      //clear all notifications so only one notification is shown at any given time
+      cleanNotifications(); 
       if(action==='start'){
-        startContainer(values)
+       const response = await startContainer(values)
+        if(response){
+          const message = `${form2.values.containerSelected} started successfully`
+          showNotification({
+            message: message,
+            autoClose: 4000
+          })
+        } else {
+          const message = containerIdObject[form2.values.containerSelected]===undefined ? `Please select a valid container` : `${form2.values.containerSelected} already started`
+          showNotification({
+            message: message,
+            autoClose: 4000
+          })
+        } 
       } else {
-        stopContainer(values)
+        const response = await stopContainer(values)
+        if(response){
+          const message = `${form2.values.containerSelected} stopped successfully`
+          showNotification({
+            message: message,
+            autoClose: 4000
+          })
+        } else {
+          const message = `${form2.values.containerSelected} already stopped`
+          showNotification({
+            message: message,
+            autoClose: 4000
+          })
+        }
+        
       }
-     
+      containerRefresh()
       // dispatch(setEnvConfig(form2.values))
     }
-    // const containerRefresh = ()=>{
-    //   if(form2.values.buttonSelected===true){
-    //     form2.setFieldValue('buttonSelected',false)
-    //     console.log('here')
-    //   } else {
-    //     form2.setFieldValue('buttonSelected',true)
-    //     console.log('nooo')
-    //   }
 
-    // }
+    const containerRefresh = ()=>{
+      if(form2.values.buttonSelected===true){
+        form2.setFieldValue('buttonSelected',false)
+        console.log('here')
+      } else {
+        form2.setFieldValue('buttonSelected',true)
+        console.log('nooo')
+      }
+
+     }
    console.log( 'state',containerNames)
    console.log( 'state',containerIdObject)
   //  console.log(form2.values.container,'state', container)
@@ -72,12 +102,10 @@ const Run = ():JSX.Element => {
       </Paper>
       <Space h={50} />
       <div style={{position: "relative",}}>
-          <form style={{position:"absolute",left:"18%", width:"80%"}}>
-            
+          <form style={{position:"absolute",left:"18%", width:"80%" }} >
+          
              
-          <NativeSelect  required  style={{width:"80%"}} placeholder="select Container" label="Select A Container" data={containerNames} onChange={(event)=> setNameAndId(event)} />
-              
-        
+          <NativeSelect  required  style={{width:"80%"}} placeholder="Select Container" label="Select A Container" data={containerNames} onChange={(event)=> setNameAndId(event)} />
           <div style={{position:"relative",}}>
         <div
           style={{
@@ -90,11 +118,11 @@ const Run = ():JSX.Element => {
           }}
         >
           <div style={{ width: "30%" }}>
-            <Button fullWidth onClick={()=>{setStateAndCall(containerIdObject[form2.values.containerSelected],'start')}}>Start Container</Button>
+            <Button fullWidth onClick={()=>{setStateAndCall(containerIdObject[form2.values.containerSelected],'start') }}>Start Container</Button>
           </div>
   
           <div style={{ width: "30%" }}>
-            <Button fullWidth onClick={()=>{setStateAndCall(containerIdObject[form2.values.containerSelected],'stop')}}>Stop Container</Button>
+            <Button fullWidth onClick={()=>{ setStateAndCall(containerIdObject[form2.values.containerSelected],'stop'); }}>Stop Container</Button>
           </div>
   
           {/* <div style={{ width: "30%" }}>

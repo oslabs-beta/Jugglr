@@ -69,11 +69,13 @@ const dockerController = {
   startContainer: async function (containerId) {
     const docker = await new Docker({socketPath: '/var/run/docker.sock'});
     const selectedContainer = await docker.getContainer(containerId);
-    await selectedContainer.start(function (err, data) {
+    const response = await selectedContainer.start(function (err, data) {
       console.log('err', err, 'data', data);
-      if (err !== null) { return false }
+      if (err !== null) { 
+        console.log('err', err);
+        return false }
     });
-    return true;
+    return response;
   },
 
 

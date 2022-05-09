@@ -25,8 +25,8 @@ export const envConfigSlice = createSlice({
       return { ...state, ...action.payload };
     },
     setDropDownImage: (state,action) =>{
-      //destructure action.payload object which will have a property 'dropDownImage' that 
-      //contains the state
+      //destructure action.payload object which will have a property 'dropDownImage'. 
+      //dropDownImage property value represents the new state
       const {dropDownImage} = action.payload
       return {...state, dropDownImage }
     },

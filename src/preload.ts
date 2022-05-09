@@ -29,7 +29,10 @@ contextBridge.exposeInMainWorld("dockController", {
     return await ipcRenderer.invoke('buildImage', imageName);
   },
   runContainer: async(imageName: string, containerName:string, port:string) => {
-    return await ipcRenderer.invoke('runContainer', imageName, containerName, port)
+    
+      await ipcRenderer.invoke('runContainer', imageName, containerName, port)
+      
+
   }, 
   startContainer: async (containerId:string):Promise<void> => {
     return await ipcRenderer.invoke('startContainer', containerId)
@@ -45,7 +48,11 @@ contextBridge.exposeInMainWorld("dockController", {
   },
   getImagesList: async ():Promise<image[]> => {
     return await ipcRenderer.invoke('getImages')
-  }
+  },
+  // mainToRenderer: async(): Promise<string>=>{
+  //   return await ipcRenderer.on('async')
+  // }
+  
 })
 
 contextBridge.exposeInMainWorld("psUploadData", {
