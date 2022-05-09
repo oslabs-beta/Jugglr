@@ -1,3 +1,6 @@
+/**
+ * @jest-environment jsdom
+ */
 import React from "React";
 import { Provider } from "react-redux";
 import UserEvent from "@testing-library/user-event";

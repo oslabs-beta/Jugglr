@@ -108,8 +108,8 @@ const AppLayout = () => {
     >
       <Container>
         <Routes>
-          <Route path="/" element={<ProjectConfig />} />
-          <Route path="/database" element={<DatabaseConfig />} />
+          <Route path="/" element={<ProjectConfig navigate={urlNavigation} />} />
+          <Route path="/database" element={<DatabaseConfig navigate={urlNavigation} />} />
           <Route path="/startup" element={<StartupConfig />} />
           <Route path="/run" element={<ContainerConfig />} />
           <Route path="/loadData" element={<LoadDataConfig />} />
