@@ -4,7 +4,11 @@ const fpath = require('path');
 const ffs = require('fs');
 
 const fileController = {
-  
+
+    /**
+     * Opens a dialog box to let user select a schema sql file
+     * @returns filepath of the schema sql file 
+     */
     openFile: async () => {
       
       const response = await dialog.showOpenDialog({ properties: ["openFile"] })
@@ -18,6 +22,10 @@ const fileController = {
       }
     },
 
+    /**
+     * Opens a dialog box to let user select the project root directory, where the jugglr folder will be created
+     * @returns path of root directory chosen by user
+     */
     openDir: async () => {
       
       const response = await dialog.showOpenDialog({ properties: ["openDirectory"] })
@@ -33,6 +41,11 @@ const fileController = {
       }
     },
 
+    /**
+     * Sets the project root directory selected by the user. The jugglr folder will be created here
+     * @param rootdir => project root directory 
+     * @returns       => object with the username, database name, and password info entered by user
+     */
     setProjectRoot: async (rootdir) => {
       process.env.ROOTDIR = rootdir;
       process.env.DOCKDIR = fpath.resolve(rootdir, 'jugglr');

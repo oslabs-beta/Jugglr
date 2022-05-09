@@ -5,6 +5,12 @@ const path = require('path');
 
 const { Pool } = require('pg')
 
+/**
+ * 
+ * @param table table with data that user can upload into the dockerized database
+ * @param sqlSchema sql schema file of the data to be uploaded
+ * @returns result of client.query
+ */
 const uploadData = async (table, sqlSchema) => {
   try {  
     if (!process.env.POSTGRES_USER || !process.env.POSTGRES_DB || !process.env.POSTGRES_PASSWORD) {
