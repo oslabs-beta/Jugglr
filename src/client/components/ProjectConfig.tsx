@@ -3,6 +3,7 @@
  * useState is used under the hood, and values can be retrieved.
  * ref: https://mantine.dev/form/use-form/
  */
+import PropTypes from "prop-types";
 import {
   Box,
   Button,
@@ -13,8 +14,9 @@ import {
   Title
 } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
-import { EnvConfig } from "../../types";
+import { showNotification } from "@mantine/notifications";
 
+import { EnvConfig } from "../../types";
 import FileSearchButton from "../containers/FileSearchButton";
 import { setEnvConfig } from "../reducers/envConfigSlice";
 import {
@@ -23,7 +25,7 @@ import {
 } from "../utility/fileExplorer";
 import { useAppDispatch, useAppSelector } from "../utility/hooks.types";
 
-const ProjectConfig = () => {
+const ProjectConfig = ({ navigate }) => {
   const { rootDir } = useAppSelector(state => state.envConfig);
   const dispatch = useAppDispatch();
   const form = useForm({
@@ -47,12 +49,19 @@ const ProjectConfig = () => {
 
   /**
    * update Redux state and call backend with given directory
+   * then go to database configuration page
+   * @todo decouple page change away from component
    * @param {EnvConfig} values 
    * @returns {void}
    */
   const setStateAndCall = (values: EnvConfig): void => {
     dispatch(setEnvConfig(values));
     setProjectDirectory(values);
+    showNotification({
+      message: "Project directory is set!"
+    });
+    navigate(1);
+    return;
   };
 
   return (
@@ -86,5 +95,9 @@ const ProjectConfig = () => {
     </Box>
   );
 };
+
+ProjectConfig.propTypes = {
+  navigate : PropTypes.func
+}
 
 export default ProjectConfig;
