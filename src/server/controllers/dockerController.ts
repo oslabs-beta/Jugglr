@@ -248,14 +248,14 @@ const dockerController = {
           if (err) { console.log("err", err)} })
       .on('error', (err) => {
         console.log('error', err);
+        event.sender.send('runResult', false);
       })
       .on('end', (data) => {
         console.log('end', data)
       })
-      .on('container', async function (container) {
+      .on('container', async function (_container) {
         console.log('Postgres started');
-        //const containerId = await docker.getContainer(container.id);
-        event.sender.send('runResult', container.id);
+        event.sender.send('runResult', true);
     })
     streams[1].on('end', (data) => {
       console.log('streams data', data)
