@@ -101,21 +101,23 @@ ipcMain.handle("buildImage", async (_event, image) => {
 });
 
 
-ipcMain.handle("runContainer", async (_event, imageName, containerName,port) => {
+ipcMain.handle("runContainer", async (event, imageName, containerName,port) => {
   try {
-    const result = await dockController.run(imageName, containerName,port);
-    return result;
+    await dockController.run(event, imageName, containerName,port)
+    return true;
   }
   catch (err) {
-    console.log(err);
+    console.log('catch block', err);
     return err;
   }
+ 
 });
 
 ipcMain.handle("startContainer", async (_event, containerId) => {
   try {
     const result = await dockController.startContainer(containerId);
     console.log('startcontainer', result);
+
     return result;
   }
   catch (err) {

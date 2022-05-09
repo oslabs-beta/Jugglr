@@ -140,3 +140,7 @@ await dockController.stopContainer(containerId)
  
 }
 
+export const receiveRunResult = async (event, args)=> {
+  console.log('in receiveRunResult', event, args);
+  //act on results = show a message based on what's in args
+}
