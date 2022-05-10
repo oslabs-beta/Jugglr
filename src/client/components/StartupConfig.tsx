@@ -1,5 +1,5 @@
 import { Space, Box, Title, Paper, Button, TextInput, NativeSelect, Grid,Center } from "@mantine/core";
-import { destructureImageList, runNewContainer, buildImage, receiveRunResult} from "../utility/fileExplorer";
+import { destructureImageList, runNewContainer, buildImage, } from "../utility/fileExplorer";
 import {  useEffect } from "react";
 import { useForm, } from "@mantine/hooks";
 import { useAppSelector, useAppDispatch } from "../utility/hooks.types";
@@ -44,10 +44,7 @@ const Startup = ():JSX.Element => {
    
   },[form1.values.imageSubmitted]) 
 
-  // useEffect( () => {
-  //   console.log('useEf', form1.values.message)
-  //   notifyUsers(form1.values.message)
-  // },[form1.values.newNotification]) 
+   
   
   const imageCreated = ():void => {
      if(form1.values.imageSubmitted===false){
@@ -72,26 +69,11 @@ const Startup = ():JSX.Element => {
   
   const setStateAndCall = async (values:StartUpObj, action:string) => {
     if(action==='buildImage'){
-      // console.log('build',values);
-      
       buildImage(values.image)
-
-      // if(form1.values.imageSubmitted===false){
-      //   form1.setFieldValue('imageSubmitted',true)
-      // } else {
-      //   form1.setFieldValue('imageSubmitted',false)
-      // }
-      
     } else {
       await runNewContainer(values)
     
         await dockController.returnResult((args)=>{
-        // form1.setFieldValue('message',args)
-        // if(form1.values.newNotification===false){
-        //   form1.setFieldValue('newNotification',true)
-        // } else {
-        //   form1.setFieldValue('newNotification',false)
-        // }
         notifyUsers(args)
       })
      
@@ -99,7 +81,7 @@ const Startup = ():JSX.Element => {
     }
 }
 
-// console.log('outer', form1.values.message, form1.values.newNotification)
+
   return (
     <>
     <Paper style={{ background: "none" }}>
