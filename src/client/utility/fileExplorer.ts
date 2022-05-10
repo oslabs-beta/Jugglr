@@ -131,7 +131,9 @@ return response
  
 }
 
-export const receiveRunResult = async (event, args)=> {
-  console.log('in receiveRunResult', event, args);
+export const receiveRunResult = async ( args?:any)=> {
+  console.log('in receiveRunResult',  args);
+  console.log('hello!')
+  return args;
   //act on results = show a message based on what's in args
 }

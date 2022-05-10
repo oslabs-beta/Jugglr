@@ -51,6 +51,13 @@ contextBridge.exposeInMainWorld("dockController", {
   getImagesList: async ():Promise<image[]> => {
     return await ipcRenderer.invoke('getImages')
   },
+  returnResult: (callback) => {
+    ipcRenderer.on('runResult', ( _event, arg) => {
+      callback(arg)
+  })
+  
+}
+  
   // mainToRenderer: async(): Promise<string>=>{
   //   return await ipcRenderer.on('async')
   // }
@@ -62,8 +69,4 @@ contextBridge.exposeInMainWorld("psUploadData", {
     const response = await ipcRenderer.invoke("uploadData", table, sqlSchema);
     return response;
   }
-})
-ipcRenderer.on('runResult', (event, arg) => {
-  console.log('received run result', event, arg)
-   receiveRunResult(event, arg);
 })

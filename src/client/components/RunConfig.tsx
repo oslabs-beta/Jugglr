@@ -20,8 +20,7 @@ const Run = ():JSX.Element => {
       }
     })
   
-    useEffect( () => {
-      const grabContainer = async (): Promise<void> => {
+    const grabContainer = async (): Promise<void> => {
       const containers:container[] = await dockController.getContainersList()
       console.log('effect',containers)
       const cList:string[] = destructureContainerList(containers)
@@ -30,7 +29,8 @@ const Run = ():JSX.Element => {
       // form2.setFieldValue('containerIdObject',cObject)
       // form2.setFieldValue('containerNames', cList)
       }
-     
+    useEffect( () => {
+      
       grabContainer().catch(console.error);
      
     },[form2.values.buttonSelected])
@@ -89,8 +89,8 @@ const Run = ():JSX.Element => {
       }
 
      }
-   console.log( 'state',containerNames)
-   console.log( 'state',containerIdObject)
+  //  console.log( 'state',containerNames)
+  //  console.log( 'state',containerIdObject)
   //  console.log(form2.values.container,'state', container)
     return (
       <>
