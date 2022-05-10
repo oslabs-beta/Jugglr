@@ -31,10 +31,7 @@ contextBridge.exposeInMainWorld("dockController", {
     return await ipcRenderer.invoke('buildImage', imageName);
   },
   runContainer: async(imageName: string, containerName:string, port:string) => {
-    
       await ipcRenderer.invoke('runContainer', imageName, containerName, port)
-      
-
   }, 
   startContainer: async (containerId:string):Promise<void> => {
     return await ipcRenderer.invoke('startContainer', containerId)
@@ -58,9 +55,6 @@ contextBridge.exposeInMainWorld("dockController", {
   
 }
   
-  // mainToRenderer: async(): Promise<string>=>{
-  //   return await ipcRenderer.on('async')
-  // }
   
 })
 
@@ -69,4 +63,28 @@ contextBridge.exposeInMainWorld("psUploadData", {
     const response = await ipcRenderer.invoke("uploadData", table, sqlSchema);
     return response;
   }
+})
+ipcRenderer.on('runResult', (event, arg) => {
+  console.log('received run result', event, arg)
+   receiveRunResult(event, arg);
+})
+
+ipcRenderer.on('buildImageResult', (_event, arg) => {
+  //buildImageResult(arg);
+  console.log('received buildImageResult', arg)
+})
+
+ipcRenderer.on('startContainerResult', (_event, arg) => {
+  //buildImageResult(arg);
+  console.log('received startContainerResult', arg)
+})
+
+ipcRenderer.on('stopContainerResult', (_event, arg) => {
+  //buildImageResult(arg);
+  console.log('received stopContainerResult', arg)
+})
+
+ipcRenderer.on('removeContainerResult', (_event, arg) => {
+  //buildImageResult(arg);
+  console.log('received removeContainerResult', arg)
 })

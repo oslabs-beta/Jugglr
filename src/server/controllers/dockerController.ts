@@ -63,17 +63,20 @@ const dockerController = {
   
  /**
   * Starts an existing container if that container is not running
+  * @param event       => event emitter to use for returning async results to front end
   * @param containerId => id of container to start
   * @returns true/false
   */
-  startContainer: async function (containerId) {
+  startContainer: async function (event, containerId) {
     const docker = await new Docker({socketPath: '/var/run/docker.sock'});
     const selectedContainer = await docker.getContainer(containerId);
     const response = await selectedContainer.start(function (err, data) {
       console.log('err', err, 'data', data);
       if (err !== null) { 
-        console.log('err', err);
-        return false }
+         event. sender.send('startContainerResult', false) 
+      } else {
+        event.sender.send('startContainerResult', true)
+      }
     });
     return response;
   },
@@ -81,28 +84,41 @@ const dockerController = {
 
 /**
  * Stops a container if that container is running
+ * @param event       => event emitter to use for returning async results to front end
  * @param containerId   => id of container to stop
  * @returns true/false
  */
-  stopContainer: async function (containerId) {
+  stopContainer: async function (event, containerId) {
     const docker = await new Docker({socketPath: '/var/run/docker.sock'});
     const selectedContainer = await docker.getContainer(`${containerId}`);
     await selectedContainer.stop(function (err, data) {
       console.log('err', err, 'data', data);
-      if (err !== null) { return false }
+      if (err !== null) { 
+         event. sender.send('stopContainerResult', false) 
+      } else {
+        event.sender.send('stopContainerResult', true)
+      }
     });
     return true;
   },
 
 /**
  * Deletes a container
+ * @param event       => event emitter to use for returning async results to front end
  * @param containerId => container to delete
  * @returns 
  */  
-  removeContainer: async function (containerId) {
+  removeContainer: async function (event, containerId) {
     const docker = await new Docker({socketPath: '/var/run/docker.sock'});
     const selectedContainer = await docker.getContainer(`${containerId}`);    
-    const result = await selectedContainer.remove();
+    const result = await selectedContainer.remove(function (err, data) {
+      console.log('err', err, 'data', data);
+      if (err !== null) { 
+         event. sender.send('removeContainerResult', false) 
+      } else {
+        event.sender.send('removeContainerResult', true)
+      }
+    });
     return result;
   },
 /**
@@ -206,23 +222,27 @@ const dockerController = {
   },
 /**
  * creates a Docker image based on instructions in Dockerfile
- * @param image => image name
+* @param event         => event emitter to return result to front end 
+* @param image => image name
  * @returns true/balse
  */
-  buildImage:  async (image) => {
+  buildImage:  async (event, image) => {
     try {
       const schema = process.env.SCHEMA
       const relSchema = lpath.relative(process.env.DOCKDIR, schema);
       const dockerode = await  new Docker();
       console.log(process.env.DOCKDIR)
-      const result = dockerode.buildImage({
+      dockerode.buildImage({
             context: process.env.DOCKDIR,
             src: ['Dockerfile', `${relSchema}`]}, 
             {t: image}, function(error) {
             if (error) {
               console.error('Error building image', error);
-              return false;
+              event.sender.send('buildImageResult', false);
       }})
+      .then(() => {
+        event.sender.send('buildImageResult', true);
+      })
     }
     catch (err) {
       console.log('Error building image here', err); 
@@ -233,6 +253,7 @@ const dockerController = {
   
   /**
    * Runs a postgres image in a container
+   * @param event         => event emitter to return result to front end
    * @param image         => image name
    * @param containerName => container name to apply
    * @param port          => port to attach container to
