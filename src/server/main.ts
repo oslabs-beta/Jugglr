@@ -88,10 +88,10 @@ ipcMain.handle("createDockerfile", async (_event, dockerfile) => {
   }
 });
 
-ipcMain.handle("buildImage", async (_event, image) => {
+ipcMain.handle("buildImage", async (event, image) => {
   try {
     console.log('here');
-    const result = await dockController.buildImage(image);
+    const result = await dockController.buildImage(event, image);
     return result;
   }
   catch (err) {
@@ -113,9 +113,9 @@ ipcMain.handle("runContainer", async (event, imageName, containerName,port) => {
  
 });
 
-ipcMain.handle("startContainer", async (_event, containerId) => {
+ipcMain.handle("startContainer", async (event, containerId) => {
   try {
-    const result = await dockController.startContainer(containerId);
+    const result = await dockController.startContainer(event, containerId);
     console.log('startcontainer', result);
 
     return result;
@@ -126,9 +126,9 @@ ipcMain.handle("startContainer", async (_event, containerId) => {
   }
 });
 
-ipcMain.handle("stopContainer", async (_event, containerId) => {
+ipcMain.handle("stopContainer", async (event, containerId) => {
   try {
-    const result = await dockController.stopContainer(containerId);
+    const result = await dockController.stopContainer(event, containerId);
     console.log('stopcontainer', result);
     return result;
   }
@@ -139,9 +139,9 @@ ipcMain.handle("stopContainer", async (_event, containerId) => {
 });
 
 
-ipcMain.handle("removeContainer", async (_event, containerId) => {
+ipcMain.handle("removeContainer", async (event, containerId) => {
   try {
-    const result = await dockController.removeContainer(containerId);
+    const result = await dockController.removeContainer(event, containerId);
     return result;
   }
   catch (err) {

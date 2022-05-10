@@ -62,3 +62,23 @@ ipcRenderer.on('runResult', (event, arg) => {
   console.log('received run result', event, arg)
    receiveRunResult(event, arg);
 })
+
+ipcRenderer.on('buildImageResult', (_event, arg) => {
+  //buildImageResult(arg);
+  console.log('received buildImageResult', arg)
+})
+
+ipcRenderer.on('startContainerResult', (_event, arg) => {
+  //buildImageResult(arg);
+  console.log('received startContainerResult', arg)
+})
+
+ipcRenderer.on('stopContainerResult', (_event, arg) => {
+  //buildImageResult(arg);
+  console.log('received stopContainerResult', arg)
+})
+
+ipcRenderer.on('removeContainerResult', (_event, arg) => {
+  //buildImageResult(arg);
+  console.log('received removeContainerResult', arg)
+})
