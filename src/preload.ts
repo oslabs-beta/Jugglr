@@ -1,5 +1,7 @@
 const { contextBridge, ipcRenderer } = require("electron");
 import { container, DockerFile, image } from './types';
+const { receiveRunResult } = require('./client/utility/fileExplorer')
+// import { Dockerfile } from './types';
 
 contextBridge.exposeInMainWorld("selectorModule", {
   openFile: async () => {
@@ -60,4 +62,8 @@ contextBridge.exposeInMainWorld("psUploadData", {
     const response = await ipcRenderer.invoke("uploadData", table, sqlSchema);
     return response;
   }
+})
+ipcRenderer.on('runResult', (event, arg) => {
+  console.log('received run result', event, arg)
+   receiveRunResult(event, arg);
 })

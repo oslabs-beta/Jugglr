@@ -4,7 +4,8 @@ import {
   MantineProvider
 } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
-import {NotificationsProvider} from '@mantine/notifications'
+import { NotificationsProvider } from "@mantine/notifications";
+
 import AppLayout from "./components/AppLayout";
 
 const App = () => {
@@ -24,8 +25,8 @@ const App = () => {
         toggleColorScheme={toggleColorScheme}
       >
         <MantineProvider theme={{ colorScheme }}>
-         <NotificationsProvider limit={1}>
-          <AppLayout />
+          <NotificationsProvider limit={3} autoClose={2500}>
+            <AppLayout />
           </NotificationsProvider>
         </MantineProvider>
       </ColorSchemeProvider>

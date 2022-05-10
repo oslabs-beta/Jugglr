@@ -238,7 +238,7 @@ const dockerController = {
    * @param port          => port to attach container to
    * @returns 
    */
-  run: async (image, containerName, port="5432") => {
+  run: async (event, image, containerName, port="5432") => {
     const streams = [
       process.stdout,
       process.stderr
@@ -248,10 +248,25 @@ const dockerController = {
       Env: [`POSTGRES_PASSWORD=${process.env.POSTGRES_PASSWORD}`], WorkingDir: process.env.ROOTDIR, name: containerName, PortBindings: {
         [`${port}/tcp`] : [ { "HostPort": `${port}` } ]}, Tty: false}, (err, _data, _rawContainer) => {
           if (err) { console.log("err", err)} })
-      .on('container', async function (container) {
+      .on('error', (err) => {
+        console.log('error', err);
+        event.sender.send('runResult', false);
+      })
+      .on('end', (data) => {
+        console.log('end', data)
+      })
+      .on('container', async function (_container) {
         console.log('Postgres started');
-        const containerId = await docker.getContainer(container.id);
-        return containerId.id;
+        event.sender.send('runResult', true);
+    })
+    streams[1].on('end', (data) => {
+      console.log('streams data', data)
+    })
+    streams[0].on('end', (data) => {
+      console.log('nothing', data)
+    })
+    streams[0].on('error', (err) => {
+      console.log('streams error', err)
     })
     return result;
     }

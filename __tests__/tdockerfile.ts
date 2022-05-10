@@ -45,7 +45,7 @@ describe ('run image', () => {
     const container = await run("test:test", 'testc');
     container.on('container', async function (container) {
       const containerId = await docker.getContainer(container.id);
-      console.log(containerId.id);
+      console.log('container: ', containerId.id);
       expect(containerId.id).toBeDefined;
       expect(containerId).not.toThrowError
     })

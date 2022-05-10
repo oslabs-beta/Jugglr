@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import {
   Box,
   Space,
@@ -10,6 +11,7 @@ import {
   Button
 } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
+import { showNotification } from "@mantine/notifications";
 import { EyeOff, EyeCheck } from "tabler-icons-react";
 
 import FileSearchButton from "../containers/FileSearchButton";
@@ -18,7 +20,7 @@ import { selectFile, setDockerFile } from "../utility/fileExplorer";
 import { useAppDispatch, useAppSelector } from "../utility/hooks.types";
 import { dockerReadyValidation } from "../utility/validations";
 
-const DatabaseConfig = () => {
+const DatabaseConfig = ({ navigate }) => {
   const reduxState = useAppSelector(state => state.envConfig);
   const dispatch = useAppDispatch();
   /**
@@ -52,16 +54,28 @@ const DatabaseConfig = () => {
    * set Redux state, then validate required fields set,
    * then call electron to create DockerFile
    * at given location with provided details
-   * @fix onSubmit app is rerendered
-   * @todo use return value to render non-blocking notification
+   * @fixed onSubmit app is rerendered
+   * @todo properly handle setDockerFile returning false
    * @param {object} values
    * @returns {boolean}
    */
-  const setStateAndCall = async values => {
+  const setStateAndCall = async (values: object) => {
     dispatch(setEnvConfig(values));
-    return dockerReadyValidation(reduxState)
-      ? await setDockerFile(reduxState)
-      : false;
+    const test = {...reduxState, ...values};
+    
+    if (dockerReadyValidation(test)) {
+      await setDockerFile(test);
+      showNotification({
+        message: "DockerFile created successfully!"
+      });
+      navigate(2);
+      return true;
+    } else {
+      showNotification({
+        message: "DockerFile creation failed!"
+      });
+      return false;
+    }
   };
 
   return (
@@ -126,6 +140,10 @@ const DatabaseConfig = () => {
       </form>
     </Box>
   );
+};
+
+DatabaseConfig.propTypes = {
+  navigate: PropTypes.func
 };
 
 export default DatabaseConfig;

@@ -16,7 +16,7 @@ const dockerClone = {
  * @param {ReduxState} state
  * @returns {boolean}
  */
-const dockerReadyValidation = (state: object) => {
+const dockerReadyValidation = (state: object): boolean => {
   for (const key in dockerClone) {
     if (!state[key].trim()) return false;
   }
