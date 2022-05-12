@@ -232,20 +232,20 @@ const dockerController = {
       const relSchema = lpath.relative(process.env.DOCKDIR, schema);
       const dockerode = await  new Docker();
       console.log(process.env.DOCKDIR)
-      dockerode.buildImage({
-        context: process.env.DOCKDIR,
-        src: ['Dockerfile', `${relSchema}`]}, 
-        {t: image}, function(error) {
-        if (error) {
-          console.error('Error building image', error);
-  }})
-  .then(() => {
-    event.sender.send('buildImageResult', true);
-  })
-      }
+      const stream = await dockerode.buildImage({
+            context: process.env.DOCKDIR,
+            src: ['Dockerfile', `${relSchema}`]}, 
+            {t: image})
+      await new Promise((_resolve, _reject) => {
+        dockerode.modem.followProgress(stream, () => {
+            event.sender.send('buildImageResult', true);      
+        })
+      })
+    }
     catch (err) {
-      console.log('Error building image here', err);
-      event.sender.send('buildImageResult', false) 
+      console.log('Error building image here', err); 
+      event.sender.send('buildImageResult', false);
+      return false;
     }
     return true;
   },
