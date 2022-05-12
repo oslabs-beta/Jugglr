@@ -1,8 +1,8 @@
 {
-  "name": "electron-react",
+  "name": "jugglr-app",
   "version": "1.0.0",
   "description": "",
-  "main": "main.js",
+  "main": "./build/server/main.js",
   "type": "commonjs",
   "scripts": {
     "tsc": "tsc",
@@ -30,7 +30,8 @@
     "react-dom": "^18.1.0",
     "react-redux": "^8.0.1",
     "react-router-dom": "^6.3.0",
-    "tabler-icons-react": "^1.47.0"
+    "tabler-icons-react": "^1.47.0",
+    "electron-devtools-installer": "^3.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.17.9",
@@ -53,8 +54,6 @@
     "@typescript-eslint/parser": "^5.21.0",
     "babel-loader": "^8.2.5",
     "css-loader": "^6.7.1",
-    "dotenv": "^16.0.0",
-    "electron-devtools-installer": "^3.2.0",
     "electron-reloader": "^1.2.3",
     "eslint": "^8.14.0",
     "eslint-plugin-react": "^7.29.4",
