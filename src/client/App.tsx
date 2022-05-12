@@ -25,7 +25,7 @@ const App = () => {
         toggleColorScheme={toggleColorScheme}
       >
         <MantineProvider theme={{ colorScheme }}>
-          <NotificationsProvider limit={3} autoClose={2500}>
+          <NotificationsProvider limit={3} autoClose={3000}>
             <AppLayout />
           </NotificationsProvider>
         </MantineProvider>
