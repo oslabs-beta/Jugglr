@@ -70,7 +70,6 @@ contextBridge.exposeInMainWorld("dockController", {
   },
 
   stopContainerResult: (callback:Function) => {
-    console.log('stop outer')
     ipcRenderer.once('stopContainerResult', (_event, arg) => {
       console.log('received stopContainerResult', arg)
       callback(arg)
