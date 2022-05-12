@@ -24,6 +24,6 @@
       "rootDir": "./"
     }
   },
-  "include": ["src/**/*", "src/.env"],
+  "include": ["src/**/*"],
   "exclude": ["__tests__/**/*"]
 }
