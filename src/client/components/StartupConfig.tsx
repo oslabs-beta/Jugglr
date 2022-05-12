@@ -5,7 +5,7 @@ import { useForm, } from "@mantine/hooks";
 import { useAppSelector, useAppDispatch } from "../utility/hooks.types";
 import { setDropDownImage } from "../reducers/envConfigSlice";
 import { image, StartUpObj } from "../../types";
-import { showNotification } from "@mantine/notifications";
+import { cleanNotifications, showNotification } from "@mantine/notifications";
 
 
 
@@ -54,32 +54,52 @@ const Startup = ():JSX.Element => {
       }
   }
 
-  const notifyUsers = (bool:boolean) => {
-    console.log(bool);
+  const notifyUserContainer = (bool:boolean) => {
+    console.log(bool)
     if(bool){
       showNotification({
-        message:'Successfully started a new container'
+        message:'Container started successfully',
+        autoClose: 3500
       })
     } else {
       showNotification({
-        message:'Failed to start a new container'
+        message:'Failed to start a new container. Container name may already exist on this port',
+        autoClose: 3500
+      })
+    }
+    
+  }
+  const notifyUserImage = (bool:boolean) => {
+    if(bool){
+      showNotification({
+        message:'Image created successfully',
+        autoClose: 3500
+      })
+    } else {
+      console.log('failed')
+      showNotification({
+        message:'Failed to create new image',
+        autoClose: 3500
       })
     }
   }
   
   const setStateAndCall = async (values:StartUpObj, action:string) => {
     if(action==='buildImage'){
+      console.log('here')
       buildImage(values.image)
+      await dockController.buildImageResult((args:boolean)=>{
+       notifyUserImage(args)
+      })
+      
     } else {
       await runNewContainer(values)
-    
-        await dockController.returnResult((args)=>{
-        notifyUsers(args)
+      await dockController.runNewResult((args:boolean)=>{
+        console.log('args',args)
+      notifyUserContainer(args)
       })
-     
-    
     }
-}
+  }
 
 
   return (
@@ -95,8 +115,7 @@ const Startup = ():JSX.Element => {
       <form  onSubmit={form1.onSubmit((values)=> setStateAndCall(values,'buildImage'))}>
       
       <Center>
-     
-   
+
     <TextInput
           style={{marginTop:"5%", width: "60%"}}
           required

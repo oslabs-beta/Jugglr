@@ -73,7 +73,7 @@ const dockerController = {
     const response = await selectedContainer.start(function (err, data) {
       console.log('err', err, 'data', data);
       if (err !== null) { 
-         event. sender.send('startContainerResult', false) 
+         event.sender.send('startContainerResult', false) 
       } else {
         event.sender.send('startContainerResult', true)
       }
@@ -94,7 +94,7 @@ const dockerController = {
     await selectedContainer.stop(function (err, data) {
       console.log('err', err, 'data', data);
       if (err !== null) { 
-         event. sender.send('stopContainerResult', false) 
+         event.sender.send('stopContainerResult', false) 
       } else {
         event.sender.send('stopContainerResult', true)
       }
@@ -232,21 +232,19 @@ const dockerController = {
       const relSchema = lpath.relative(process.env.DOCKDIR, schema);
       const dockerode = await  new Docker();
       console.log(process.env.DOCKDIR)
-      dockerode.buildImage({
+      await dockerode.buildImage({
             context: process.env.DOCKDIR,
             src: ['Dockerfile', `${relSchema}`]}, 
             {t: image}, function(error) {
             if (error) {
               console.error('Error building image', error);
-              event.sender.send('buildImageResult', false);
       }})
-      .then(() => {
-        event.sender.send('buildImageResult', true);
-      })
+      event.sender.send('buildImageResult', true);
     }
     catch (err) {
-      console.log('Error building image here', err); 
-      return false;
+      console.log('Error building image here', err);
+      event.sender.send('buildImageResult', false) 
+      // return false;
     }
     return true;
   },
@@ -268,10 +266,12 @@ const dockerController = {
     const result = await docker.run(image, ['postgres'], streams, {
       Env: [`POSTGRES_PASSWORD=${process.env.POSTGRES_PASSWORD}`], WorkingDir: process.env.ROOTDIR, name: containerName, PortBindings: {
         [`${port}/tcp`] : [ { "HostPort": `${port}` } ]}, Tty: false}, (err, _data, _rawContainer) => {
-          if (err) { console.log("err", err)} })
+          if (err) { console.log("err", err);
+           event.sender.send('runResult', false)}
+         })
       .on('error', (err) => {
         console.log('error', err);
-        event.sender.send('runResult', false);
+        
       })
       .on('end', (data) => {
         console.log('end', data)

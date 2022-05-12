@@ -5,12 +5,13 @@ import { useForm } from "@mantine/hooks";
 import { useAppSelector,useAppDispatch} from "../utility/hooks.types";
 import { LoadTable } from "../../types";
 import { setEnvConfig } from "../reducers/envConfigSlice";
-import { cleanNotifications, cleanNotificationsQueue, showNotification } from "@mantine/notifications";
+import { cleanNotifications, showNotification } from "@mantine/notifications";
 
 
 const LoadData = () => {
   const { tablePath, tableName } = useAppSelector(state => state.envConfig)
   const dispatch = useAppDispatch();
+
   const setFieldType = (field:"tablePath") => {
     return (value: string) => {
       form.setFieldValue(field, value);
@@ -18,11 +19,11 @@ const LoadData = () => {
   }
 
   
-  const form = useForm({
-    initialValues: {
-      tablePath: tablePath,
-      tableName: tableName,
-      message:''
+const form = useForm({
+  initialValues: {
+    tablePath: tablePath,
+    tableName: tableName,
+    message:''
     }
   });
   
@@ -79,8 +80,7 @@ const LoadData = () => {
          </div>
          
          </form>
-         
-      
+
     </Box>
 
 

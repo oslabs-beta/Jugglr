@@ -1,6 +1,5 @@
 const { contextBridge, ipcRenderer } = require("electron");
 import { container, DockerFile, image } from './types';
-const { receiveRunResult } = require('./client/utility/fileExplorer')
 // import { Dockerfile } from './types';
 
 contextBridge.exposeInMainWorld("selectorModule", {
@@ -27,11 +26,10 @@ contextBridge.exposeInMainWorld("dockController", {
     return await ipcRenderer.invoke('createDockerfile', dockerfile);
   },
   buildImage: async(imageName:string) => {
-    console.log('preload')
     return await ipcRenderer.invoke('buildImage', imageName);
   },
   runContainer: async(imageName: string, containerName:string, port:string) => {
-      await ipcRenderer.invoke('runContainer', imageName, containerName, port)
+    return await ipcRenderer.invoke('runContainer', imageName, containerName, port)
   }, 
   startContainer: async (containerId:string):Promise<void> => {
     return await ipcRenderer.invoke('startContainer', containerId)
@@ -48,14 +46,34 @@ contextBridge.exposeInMainWorld("dockController", {
   getImagesList: async ():Promise<image[]> => {
     return await ipcRenderer.invoke('getImages')
   },
-  returnResult: (callback) => {
-    ipcRenderer.on('runResult', ( _event, arg) => {
+  runNewResult: (callback:Function) => {
+    ipcRenderer.once('runResult', ( _event, arg) => {
+      console.log('listening')
       callback(arg)
   })
-  
-}
-  
-  
+  },
+
+  buildImageResult: (callback:Function) => {
+    ipcRenderer.once('buildImageResult', (_event, arg) => {
+    console.log('received buildImageResult', arg)
+    callback(arg)
+  })
+  },
+
+  startContainerResult: (callback:Function) => {
+    ipcRenderer.once('startContainerResult', (_event, arg) => {
+      callback(arg)
+      console.log('received startContainerResult', arg)
+    })
+  },
+
+  stopContainerResult: (callback:Function) => {
+    ipcRenderer.once('stopContainerResult', (_event, arg) => {
+      callback(arg)
+      console.log('received stopContainerResult', arg)
+    })
+
+  },
 })
 
 contextBridge.exposeInMainWorld("psUploadData", {
@@ -64,27 +82,14 @@ contextBridge.exposeInMainWorld("psUploadData", {
     return response;
   }
 })
-ipcRenderer.on('runResult', (event, arg) => {
-  console.log('received run result', event, arg)
-   receiveRunResult(event, arg);
-})
 
-ipcRenderer.on('buildImageResult', (_event, arg) => {
-  //buildImageResult(arg);
-  console.log('received buildImageResult', arg)
-})
 
-ipcRenderer.on('startContainerResult', (_event, arg) => {
-  //buildImageResult(arg);
-  console.log('received startContainerResult', arg)
-})
 
-ipcRenderer.on('stopContainerResult', (_event, arg) => {
-  //buildImageResult(arg);
-  console.log('received stopContainerResult', arg)
-})
 
-ipcRenderer.on('removeContainerResult', (_event, arg) => {
-  //buildImageResult(arg);
-  console.log('received removeContainerResult', arg)
-})
+
+
+
+// ipcRenderer.on('removeContainerResult', (_event, arg) => {
+//   //buildImageResult(arg);
+//   console.log('received removeContainerResult', arg)
+// })
