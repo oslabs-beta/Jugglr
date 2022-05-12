@@ -23,4 +23,6 @@ const dockerReadyValidation = (state: object): boolean => {
   return true;
 };
 
-export { dockerReadyValidation };
+const isEmptyObject = (record: object) => Object.keys(record).length == 0;
+
+export { dockerReadyValidation, isEmptyObject };
