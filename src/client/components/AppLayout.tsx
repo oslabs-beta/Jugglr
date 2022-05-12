@@ -14,7 +14,8 @@ import {
   useMantineTheme,
   Title,
   Image,
-  Paper
+  Paper,
+  Footer
 } from "@mantine/core";
 
 import DarkModeButton from "./DarkModeButton";
@@ -25,6 +26,8 @@ import ProjectConfig from "./ProjectConfig";
 import DatabaseConfig from "./DatabaseConfig";
 import ContainerConfig from "./RunConfig";
 import LoadDataConfig from "./LoadDataConfig";
+import FooterButtons from "./FooterButtons";
+
 
 const AppLayout = () => {
   const [opened, setOpened] = useState(false);
@@ -96,9 +99,21 @@ const AppLayout = () => {
                 columnGap: 35
               }}
             >
-              <Image src="src/client/assets/jugglr-logo.png" radius="lg" width={70}></Image>
+              <Image
+                src="src/client/assets/jugglr-logo.png"
+                radius="lg"
+                width={70}
+              ></Image>
               <Paper>
-                <Title>Jugglr</Title>
+                <Title
+                  style={{
+                    fontFamily: "Oleo Script Swash Caps, cursive",
+                    fontSize: 45,
+                    color: "#228be6"
+                  }}
+                >
+                  Jugglr
+                </Title>
               </Paper>
             </div>
 
@@ -107,6 +122,11 @@ const AppLayout = () => {
             </div>
           </div>
         </Header>
+      }
+      footer={
+        <Footer height={60}>
+          <FooterButtons navigate={urlNavigation} />
+        </Footer>
       }
     >
       <Container>

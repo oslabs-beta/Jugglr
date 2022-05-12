@@ -13,7 +13,7 @@ const DarkModeButton = () => {
   return (
     <ActionIcon
       variant="outline"
-      color={dark ? "orange" : "gray"}
+      color={dark ? "#228be6" : "gray"}
       onClick={() => toggleColorScheme()}
       title="Toggle color scheme"
     >

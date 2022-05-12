@@ -9,7 +9,9 @@ import {
 
 import { navButtonTheme } from "../themes/themeFunctions";
 
+
 const NavbarButtons = ({ navigate }) => {
+
   return (
     <>
       <UnstyledButton

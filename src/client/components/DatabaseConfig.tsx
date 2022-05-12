@@ -20,6 +20,7 @@ import { selectFile, setDockerFile } from "../utility/fileExplorer";
 import { useAppDispatch, useAppSelector } from "../utility/hooks.types";
 import { dockerReadyValidation } from "../utility/validations";
 
+
 const DatabaseConfig = ({ navigate }) => {
   const reduxState = useAppSelector(state => state.envConfig);
   const dispatch = useAppDispatch();
