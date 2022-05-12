@@ -272,7 +272,8 @@ const dockerController = {
             console.log('data', data, 'container', rawContainer);
             if (err) { console.log("err", err)}
             streams[0].destroy();
-          streams[1].destroy() })
+            streams[1].destroy() 
+        })
         .once('error', (err) => {
           console.log('error', err);
           event.sender.send('runResult', false);
