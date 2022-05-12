@@ -44,9 +44,9 @@ export const setDockerFile = async (values: DockerFile): Promise<boolean> => {
 /**
  * call electron to set rootDir env variable
  * @param {EnvConfig} values 
- * @returns {boolean}
+ * @returns {object}
  */
-export const setProjectDirectory = async (values: EnvConfig): Promise<boolean> => {
+export const setProjectDirectory = async (values: EnvConfig): Promise<object> => {
   return await selectorModule.setProjectRoot(values.rootDir);
 }
 

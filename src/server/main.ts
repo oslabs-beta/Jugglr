@@ -4,8 +4,6 @@ const mpath = require("path");
 const selectorModule = require('./controllers/fileController');
 const { uploadData: psUploadData} = require('./controllers/postgres')
 const dockController = require('./controllers/dockerController')
-const docker = require('dockerode')
-require('dotenv/config');
 
 try {
   require("electron-reloader")(module);
@@ -199,15 +197,3 @@ const {
   REACT_DEVELOPER_TOOLS
 } = require('electron-devtools-installer');
 
-
-
-// Tester code
-// app.whenReady().then(() => {
-//   const extensions = [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS];
-//   const extensionsPlural = extensions.length > 0 ? 's' : '';
-//   Promise.all(extensions.map(extension => installExtension(extension)))
-//     .then(names =>
-//       console.log(`[electron-extensions] Added DevTools Extension${extensionsPlural}: ${names.join(', ')}`))
-//     .catch(err =>
-//       console.log('[electron-extensions] An error occurred: ', err));
-// });

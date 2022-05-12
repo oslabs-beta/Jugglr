@@ -24,6 +24,7 @@ import {
   setProjectDirectory
 } from "../utility/fileExplorer";
 import { useAppDispatch, useAppSelector } from "../utility/hooks.types";
+import { isEmptyObject } from "../utility/validations";
 
 const ProjectConfig = ({ navigate }) => {
   const { rootDir } = useAppSelector(state => state.envConfig);
@@ -51,17 +52,20 @@ const ProjectConfig = ({ navigate }) => {
    * update Redux state and call backend with given directory
    * then go to database configuration page
    * @todo decouple page change away from component
-   * @param {EnvConfig} values 
+   * @param {EnvConfig} values
    * @returns {void}
    */
-  const setStateAndCall = (values: EnvConfig): void => {
-    dispatch(setEnvConfig(values));
-    setProjectDirectory(values);
-    showNotification({
-      message: "Project directory is set!"
-    });
+  const setStateAndCall = async (values: EnvConfig): Promise<void> => {
+    const response = await setProjectDirectory(values);
+    const newState = { ...values, ...response };
+    dispatch(setEnvConfig(newState));
+    if (!isEmptyObject(response)) {
+      showNotification({
+        title: "DockerFile found!",
+        message: "Database details were preset!"
+      });
+    }
     navigate(1);
-    return;
   };
 
   return (
@@ -97,7 +101,7 @@ const ProjectConfig = ({ navigate }) => {
 };
 
 ProjectConfig.propTypes = {
-  navigate : PropTypes.func
-}
+  navigate: PropTypes.func
+};
 
 export default ProjectConfig;

@@ -6,7 +6,7 @@ A brief description of what this project does and who it's for
 
 ## Authors
 
-- [@Anthony Stanislaus](GITHUB.COM/STANISLAUSA)
+- [@Anthony Stanislaus](https://github.com/STANISLAUSA)
 - [@Alvin Ma](http://github.com/ALVMA1945)
 - [@Miriam Feder](https://www.github.com/mirfeder)
 - [@Iftekhar Uddin](http://github.com/iuddin)
