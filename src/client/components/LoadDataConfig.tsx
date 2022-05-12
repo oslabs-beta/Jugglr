@@ -31,9 +31,10 @@ const form = useForm({
     dispatch(setEnvConfig(values));
     const response = await uploadTableData(values)
     // form.setFieldValue('message',response)
+    
   
     showNotification({
-      message: response,
+      message: 'success?',
       autoClose: 4000
     })
   }

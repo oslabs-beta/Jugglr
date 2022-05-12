@@ -98,6 +98,7 @@ export const runNewContainer = async (values:StartUpObj): Promise<string> => {
   const imageValue = values.selectedImage
   const containerName = values.container
   const port = values.port+'' 
+  console.log('fileexplorer',port);
   
   const response = await dockController.runContainer(imageValue,containerName,port)
   console.log('newContainer', response);

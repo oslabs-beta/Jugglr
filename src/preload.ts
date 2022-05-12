@@ -29,6 +29,7 @@ contextBridge.exposeInMainWorld("dockController", {
     return await ipcRenderer.invoke('buildImage', imageName);
   },
   runContainer: async(imageName: string, containerName:string, port:string) => {
+    console.log(port);
     return await ipcRenderer.invoke('runContainer', imageName, containerName, port)
   }, 
   startContainer: async (containerId:string):Promise<void> => {
@@ -69,9 +70,10 @@ contextBridge.exposeInMainWorld("dockController", {
   },
 
   stopContainerResult: (callback:Function) => {
+    console.log('stop outer')
     ipcRenderer.once('stopContainerResult', (_event, arg) => {
-      callback(arg)
       console.log('received stopContainerResult', arg)
+      callback(arg)
     })
 
   },

@@ -89,6 +89,7 @@ const dockerController = {
  * @returns true/false
  */
   stopContainer: async function (event, containerId) {
+    console.log('stop dock')
     const docker = await new Docker({socketPath: '/var/run/docker.sock'});
     const selectedContainer = await docker.getContainer(`${containerId}`);
     await selectedContainer.stop(function (err, data) {
@@ -290,6 +291,7 @@ const dockerController = {
     streams[0].on('error', (err) => {
       console.log('streams error', err)
     })
+    console.log('controller', result)
     return result;
     }
 }
