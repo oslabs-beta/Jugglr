@@ -37,7 +37,7 @@ ipcMain.handle("open", async (_event) => {
     return result;
   }
   catch (err) {
-    console.log(err);
+    // console.log(err);
     return err;
   }
 });
@@ -48,7 +48,7 @@ ipcMain.handle("dir", async(_event)=>{
     return result;
   }
   catch (err) {
-    console.log(err);
+    // console.log(err);
     return err;
   }
 })
@@ -59,7 +59,7 @@ ipcMain.handle("setProjectRoot", async(_event, rootdir)=>{
     return result;
   }
   catch (err) {
-    console.log(err);
+    // console.log(err);
     return err;
   }
 })
@@ -67,12 +67,12 @@ ipcMain.handle("setProjectRoot", async(_event, rootdir)=>{
 
 ipcMain.handle("uploadData", async (_event, table, sqlSchema) => {
   try {
-    console.log('here', table, sqlSchema)
+    // console.log('here', table, sqlSchema)
     const result = await psUploadData(table, sqlSchema);
     return result;
   }
   catch (err) {
-    console.log(err);
+    // console.log(err);
     return err;
   }
 });
@@ -89,12 +89,12 @@ ipcMain.handle("createDockerfile", async (_event, dockerfile) => {
 
 ipcMain.handle("buildImage", async (event, image) => {
   try {
-    console.log('here');
+    // console.log('here');
     const result = await dockController.buildImage(event, image);
     return result;
   }
   catch (err) {
-    console.log(err);
+    // console.log(err);
     return err;
   }
 });
@@ -106,7 +106,7 @@ ipcMain.handle("runContainer", async (event, imageName, containerName,port) => {
     return true;
   }
   catch (err) {
-    console.log('catch block', err);
+    // console.log('catch block', err);
     return err;
   }
  
@@ -115,12 +115,12 @@ ipcMain.handle("runContainer", async (event, imageName, containerName,port) => {
 ipcMain.handle("startContainer", async (event, containerId) => {
   try {
     const result = await dockController.startContainer(event, containerId);
-    console.log('startcontainer', result);
+    // console.log('startcontainer', result);
 
     return result;
   }
   catch (err) {
-    console.log(err);
+    // console.log(err);
     return err;
   }
 });
@@ -128,11 +128,11 @@ ipcMain.handle("startContainer", async (event, containerId) => {
 ipcMain.handle("stopContainer", async (event, containerId) => {
   try {
     const result = await dockController.stopContainer(event, containerId);
-    console.log('stopcontainer', result);
+    // console.log('stopcontainer', result);
     return result;
   }
   catch (err) {
-    console.log(err);
+    // console.log(err);
     return err;
   }
 });
@@ -144,7 +144,7 @@ ipcMain.handle("removeContainer", async (event, containerId) => {
     return result;
   }
   catch (err) {
-    console.log(err);
+    // console.log(err);
     return err;
   }
 });
@@ -162,7 +162,7 @@ ipcMain.handle("getContainers", async (_event) => {
      return formatted;
   }
   catch (err) {
-    console.log(err);
+    // console.log(err);
     return err;
   }
 });
@@ -179,7 +179,7 @@ ipcMain.handle("getImages", async (_event) => {
    return formatted;
   }
   catch (err) {
-    console.log(err);
+    // console.log(err);
     return err;
   }
 });

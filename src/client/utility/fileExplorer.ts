@@ -1,4 +1,5 @@
 import { container, DockerFile, EnvConfig, LoadTable, StartUpObj ,image} from "../../types";
+import * as path from 'path'
 
 /**
  * Action helpers moved here for time being...
