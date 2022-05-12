@@ -63,7 +63,7 @@ const Run = ():JSX.Element => {
       }) 
     } else {
       showNotification({
-        message: `Error stopping container. ${form2.values.containerSelected} may already be stopped`,
+        message: `Error stopping container - ${form2.values.containerSelected} may already be stopped`,
         autoClose: 3500
       })
     }
@@ -83,21 +83,18 @@ const Run = ():JSX.Element => {
       })
     }
     containerRefresh()
-    // dispatch(setEnvConfig(form2.values))
   }
 
   const containerRefresh = ()=>{
     if(form2.values.buttonSelected===true){
       form2.setFieldValue('buttonSelected',false)
-      console.log('here')
+      console.log('false')
     } else {
        form2.setFieldValue('buttonSelected',true)
-       console.log('nooo')
+       console.log('true')
      }
    }
-  //  console.log( 'state',containerNames)
-  //  console.log( 'state',containerIdObject)
-  //  console.log(form2.values.container,'state', container)
+
   return (
     <>
     <Box>

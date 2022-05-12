@@ -46,6 +46,7 @@ contextBridge.exposeInMainWorld("dockController", {
   getImagesList: async ():Promise<image[]> => {
     return await ipcRenderer.invoke('getImages')
   },
+  
   runNewResult: (callback:Function) => {
     ipcRenderer.once('runResult', ( _event, arg) => {
       console.log('listening')

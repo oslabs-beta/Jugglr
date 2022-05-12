@@ -70,7 +70,7 @@ const dockerController = {
   startContainer: async function (event, containerId) {
     const docker = await new Docker({socketPath: '/var/run/docker.sock'});
     const selectedContainer = await docker.getContainer(containerId);
-    const response = await selectedContainer.start(function (err, data) {
+    await selectedContainer.start(function (err, data) {
       console.log('err', err, 'data', data);
       if (err !== null) { 
          event.sender.send('startContainerResult', false) 
@@ -78,7 +78,7 @@ const dockerController = {
         event.sender.send('startContainerResult', true)
       }
     });
-    return response;
+    return true
   },
 
 
@@ -232,19 +232,20 @@ const dockerController = {
       const relSchema = lpath.relative(process.env.DOCKDIR, schema);
       const dockerode = await  new Docker();
       console.log(process.env.DOCKDIR)
-      await dockerode.buildImage({
-            context: process.env.DOCKDIR,
-            src: ['Dockerfile', `${relSchema}`]}, 
-            {t: image}, function(error) {
-            if (error) {
-              console.error('Error building image', error);
-      }})
-      event.sender.send('buildImageResult', true);
-    }
+      dockerode.buildImage({
+        context: process.env.DOCKDIR,
+        src: ['Dockerfile', `${relSchema}`]}, 
+        {t: image}, function(error) {
+        if (error) {
+          console.error('Error building image', error);
+  }})
+  .then(() => {
+    event.sender.send('buildImageResult', true);
+  })
+      }
     catch (err) {
       console.log('Error building image here', err);
       event.sender.send('buildImageResult', false) 
-      // return false;
     }
     return true;
   },
@@ -271,7 +272,7 @@ const dockerController = {
          })
       .on('error', (err) => {
         console.log('error', err);
-        
+        event.sender.send('runResult', false)
       })
       .on('end', (data) => {
         console.log('end', data)
