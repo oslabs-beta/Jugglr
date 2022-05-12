@@ -66,7 +66,8 @@ const fileController = {
           // console.log(process.env[linetype[0]], val[0]);
            
         } else if(schema) {
-          process.env.SCHEMA = schema[0];
+          const schemaname = schema[0];
+          process.env.SCHEMA = fpath.resolve(process.env.ROOTDIR, schemaname)
           console.log(process.env.SCHEMA)
         }
         
@@ -74,7 +75,8 @@ const fileController = {
       return {
         user: `${process.env.POSTGRES_USER}`,
         database: `${process.env.POSTGRES_DB}`,
-        password: `${process.env.POSTGRES_PASSWORD}`
+        password: `${process.env.POSTGRES_PASSWORD}`,
+        schema: `${process.env.SCHEMA}`
       }
     }
   }
