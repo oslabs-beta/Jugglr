@@ -54,14 +54,14 @@ const ProjectConfig = ({ navigate }) => {
    * @param {EnvConfig} values 
    * @returns {void}
    */
-  const setStateAndCall = (values: EnvConfig): void => {
-    dispatch(setEnvConfig(values));
-    setProjectDirectory(values);
+  const setStateAndCall = async (values: EnvConfig): Promise<void> => {
+    const response = await setProjectDirectory(values);
+    const newState = {...values, ...response};
+    dispatch(setEnvConfig(newState));
     showNotification({
       message: "Project directory is set!"
     });
     navigate(1);
-    return;
   };
 
   return (

@@ -13,7 +13,8 @@ import {
   Container,
   useMantineTheme,
   Title,
-  Image
+  Image,
+  Paper
 } from "@mantine/core";
 
 import DarkModeButton from "./DarkModeButton";
@@ -95,8 +96,10 @@ const AppLayout = () => {
                 columnGap: 35
               }}
             >
-              <Image src="https://lh3.googleusercontent.com/hsWsBhpDo3Vllq4yCTpTTL7UMF-tQ_Ia0Wo3C2SDKTUTYXnnrXK1o1xedMvxZ16ADlhv-w=s96"></Image>
-              <Title>Jugglr</Title>
+              <Image src="src/client/assets/jugglr-logo.png" radius="lg" width={70}></Image>
+              <Paper>
+                <Title>Jugglr</Title>
+              </Paper>
             </div>
 
             <div style={{ marginLeft: "auto", marginRight: "50px" }}>
@@ -108,8 +111,14 @@ const AppLayout = () => {
     >
       <Container>
         <Routes>
-          <Route path="/" element={<ProjectConfig navigate={urlNavigation} />} />
-          <Route path="/database" element={<DatabaseConfig navigate={urlNavigation} />} />
+          <Route
+            path="/"
+            element={<ProjectConfig navigate={urlNavigation} />}
+          />
+          <Route
+            path="/database"
+            element={<DatabaseConfig navigate={urlNavigation} />}
+          />
           <Route path="/startup" element={<StartupConfig />} />
           <Route path="/run" element={<ContainerConfig />} />
           <Route path="/loadData" element={<LoadDataConfig />} />
