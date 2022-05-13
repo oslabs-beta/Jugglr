@@ -1,13 +1,16 @@
 import { Space, Box, Title, Paper, Button, TextInput, NativeSelect, Grid,Center } from "@mantine/core";
-import { destructureImageList, runNewContainer, buildImage} from "../utility/fileExplorer";
+import { destructureImageList, runNewContainer, buildImage, } from "../utility/fileExplorer";
 import {  useEffect } from "react";
 import { useForm, } from "@mantine/hooks";
 import { useAppSelector, useAppDispatch } from "../utility/hooks.types";
-import { setEnvConfig, setDropDownImage } from "../reducers/envConfigSlice";
+import { setDropDownImage } from "../reducers/envConfigSlice";
+import { image, StartUpObj } from "../../types";
+import { cleanNotifications, showNotification } from "@mantine/notifications";
 
 
 
-const Startup = () => {
+
+const Startup = ():JSX.Element => {
   const {  dropDownImage, port} = useAppSelector(state => state.envConfig)
   const dispatch = useAppDispatch();
   // const [imageList, setImageList] = useState<string[]>([""])
@@ -17,12 +20,9 @@ const Startup = () => {
     initialValues: {
       image:"",
       imageSubmitted: false,
-      
       container:"",
-      // containerCreated:false,
       selectedImage:"",
       port:port,
-
     }
   })
  
@@ -30,10 +30,9 @@ const Startup = () => {
   useEffect( () => {
     console.log('start')
     const grabImages = async (): Promise<void> => {
-    const images = await dockController.getImagesList()
-    console.log('images',images)
+    const images:image[] = await dockController.getImagesList()
     const iList:string[] = destructureImageList(images)
-    console.log('ilist',iList)
+    // console.log('ilist',iList)
     // form1.setFieldValue('dropDownImage', iList)
     dispatch(setDropDownImage({dropDownImage:iList}))
     form1.setFieldValue('image',"")
@@ -44,39 +43,64 @@ const Startup = () => {
     grabImages().catch(console.error);
    
   },[form1.values.imageSubmitted]) 
+
+   
   
-  const imageCreated = () => {
+  const imageCreated = ():void => {
      if(form1.values.imageSubmitted===false){
         form1.setFieldValue('imageSubmitted',true)
       } else {
         form1.setFieldValue('imageSubmitted',false)
       }
   }
-  const setStateAndCall = (values, action:string) => {
+
+  const notifyUserContainer = (bool:boolean) => {
+    console.log(bool)
+    if(bool){
+      showNotification({
+        message:'Container started successfully',
+        autoClose: 3500
+      })
+    } else {
+      showNotification({
+        message:'Failed to start a new container. Container name may already exist on this port',
+        autoClose: 3500
+      })
+    }
+    
+  }
+  const notifyUserImage = (bool:boolean) => {
+    if(bool){
+      showNotification({
+        message:'Image created successfully',
+        autoClose: 3500
+      })
+    } else {
+      console.log('failed')
+      showNotification({
+        message:'Failed to create new image',
+        autoClose: 3500
+      })
+    }
+  }
+  
+  const setStateAndCall = async (values:StartUpObj, action:string) => {
     if(action==='buildImage'){
-      console.log('build',values);
-      
+      console.log('here')
       buildImage(values.image)
-      if(form1.values.imageSubmitted===false){
-        form1.setFieldValue('imageSubmitted',true)
-      } else {
-        form1.setFieldValue('imageSubmitted',false)
-      }
+      await dockController.buildImageResult((args:boolean)=>{
+       notifyUserImage(args)
+      })
       
     } else {
-      runNewContainer(values)
-      // if(form1.values.containerCreated===true){
-      //   form1.setFieldValue('containerCreated',false)
-      // } else {
-      //   form1.setFieldValue('containerCreated',true)
-
-      // }
+      await runNewContainer(values)
+      await dockController.runNewResult((args:boolean)=>{
+        console.log('args',args)
+      notifyUserContainer(args)
+      })
     }
+  }
 
-  
-  
-}
-console.log('outerwstate',dropDownImage)
 
   return (
     <>
@@ -91,8 +115,7 @@ console.log('outerwstate',dropDownImage)
       <form  onSubmit={form1.onSubmit((values)=> setStateAndCall(values,'buildImage'))}>
       
       <Center>
-     
-   
+
     <TextInput
           style={{marginTop:"5%", width: "60%"}}
           required
@@ -167,3 +190,6 @@ console.log('outerwstate',dropDownImage)
 };
 
 export default Startup;
+
+
+

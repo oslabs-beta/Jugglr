@@ -10,7 +10,7 @@
     "clean": "rm -rf ./build",
     "start": "electron ./build/server/main.js",
     "test": "jest",
-    "remove-cont": "docker rm $(docker ps -q -a) ",
+    "remove-cont": "docker rm $(docker ps -q -a) --force",
     "remove-images":  "docker image rm $(docker image ls -q) --force"
   },
   "keywords": [],

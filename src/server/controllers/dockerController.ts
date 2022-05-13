@@ -56,7 +56,6 @@ const dockerController = {
       console.log(err);
       return false;
     } 
-    console.log('Dockerfile successfully created');
     return true;
 
   },
@@ -70,15 +69,14 @@ const dockerController = {
   startContainer: async function (event, containerId) {
     const docker = await new Docker();
     const selectedContainer = await docker.getContainer(containerId);
-    await selectedContainer.start(function (err, data) {
-      console.log('err', err, 'data', data);
+    await selectedContainer.start(function (err, _data) {
       if (err !== null) { 
-         event. sender.send('startContainerResult', false) 
+         event.sender.send('startContainerResult', false) 
       } else {
         event.sender.send('startContainerResult', true)
       }
     });
-    return true;
+    return true
   },
 
 
@@ -91,10 +89,9 @@ const dockerController = {
   stopContainer: async function (event, containerId) {
     const docker = await new Docker();
     const selectedContainer = await docker.getContainer(`${containerId}`);
-    await selectedContainer.stop(function (err, data) {
-      console.log('err', err, 'data', data);
+    await selectedContainer.stop(function (err, _data) {
       if (err !== null) { 
-         event. sender.send('stopContainerResult', false) 
+         event.sender.send('stopContainerResult', false) 
       } else {
         event.sender.send('stopContainerResult', true)
       }
@@ -111,8 +108,7 @@ const dockerController = {
   removeContainer: async function (event, containerId) {
     const docker = await new Docker({socketPath: '/var/run/docker.sock'});
     const selectedContainer = await docker.getContainer(`${containerId}`);    
-    const result = await selectedContainer.remove(function (err, data) {
-      console.log('err', err, 'data', data);
+    const result = await selectedContainer.remove(function (err, _data) {
       if (err !== null) { 
          event. sender.send('removeContainerResult', false) 
       } else {
@@ -231,7 +227,6 @@ const dockerController = {
       const schema = process.env.SCHEMA
       const relSchema = lpath.relative(process.env.DOCKDIR, schema);
       const dockerode = await  new Docker();
-      console.log(process.env.DOCKDIR)
       const stream = await dockerode.buildImage({
             context: process.env.DOCKDIR,
             src: ['Dockerfile', `${relSchema}`]}, 
@@ -243,7 +238,6 @@ const dockerController = {
       })
     }
     catch (err) {
-      console.log('Error building image here', err); 
       event.sender.send('buildImageResult', false);
       return false;
     }
@@ -259,33 +253,21 @@ const dockerController = {
    * @returns 
    */
   run: async (event, image, containerName, port="5432") => {
-    const streams = [
-      process.stdout,
-      process.stderr
-    ];
     process.env.POSTGRES_PORT = port;
     try {
       const docker = await  new Docker();
-      const result = await docker.run(image, ['postgres'], streams, {
+      const stream = await docker.run(image, ['postgres'], process.stdout, {
         Env: [`POSTGRES_PASSWORD=${process.env.POSTGRES_PASSWORD}`], WorkingDir: process.env.ROOTDIR, name: containerName, HostConfig: { PortBindings: {
-          "5432/tcp" : [ { "HostPort": `${port}` } ] }}, Tty: false}, (err, data, rawContainer) => {
-            console.log('data', data, 'container', rawContainer);
-            if (err) { console.log("err", err)}
-            streams[0].destroy();
-            streams[1].destroy() 
-        })
-        .once('error', (err) => {
-          console.log('error', err);
+          "5432/tcp" : [ { "HostPort": `${port}` } ] }}, Tty: false})
+        stream.once('error', function err (_err) {
           event.sender.send('runResult', false);
         })
-        .once('container', async function (_container) {
-          console.log('Postgres started');
+        stream.once('container', async function container (_container) {
           event.sender.send('runResult', true);
       })
-      return result;
+      return true;
     }
     catch (error) {
-      console.log('run error', error)
       event.sender.send('runResult', false);
     }
   }
