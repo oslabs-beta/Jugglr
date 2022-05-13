@@ -26,6 +26,7 @@ import {
 import { useAppDispatch, useAppSelector } from "../utility/hooks.types";
 import { isEmptyObject } from "../utility/validations";
 
+
 const ProjectConfig = ({ navigate }) => {
   const { rootDir } = useAppSelector(state => state.envConfig);
   const dispatch = useAppDispatch();
@@ -65,7 +66,7 @@ const ProjectConfig = ({ navigate }) => {
         message: "Database details were preset!"
       });
     }
-    navigate(1);
+    navigate();
   };
 
   return (
