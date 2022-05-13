@@ -38,7 +38,6 @@ contextBridge.exposeInMainWorld("dockController", {
     return await ipcRenderer.invoke('stopContainer', containerId)
   },
   removeContainer: async (containerId:string):Promise<void> => {
-    console.log('remove preload')
     return await ipcRenderer.invoke('removeContainer', containerId)
   },
   getContainersList: async ():Promise<container[]>  => {
@@ -50,7 +49,6 @@ contextBridge.exposeInMainWorld("dockController", {
   
   runNewResult: (callback:Function) => {
     ipcRenderer.once('runResult', ( _event: Event, arg: boolean|string) => {
-      console.log('listening')
       callback(arg)
   })
   },
@@ -65,21 +63,18 @@ contextBridge.exposeInMainWorld("dockController", {
   startContainerResult: (callback:Function) => {
     ipcRenderer.once('startContainerResult', (_event: Event, arg: boolean|string) => {
       callback(arg)
-      console.log('received startContainerResult', arg)
     })
   },
 
 
   stopContainerResult: (callback:Function) => {
     ipcRenderer.once('stopContainerResult', (_event: Event, arg: boolean|string) => {
-      console.log('received stopContainerResult', arg)
       callback(arg)
     })
   },
 
   removeContainerResult:(callback:Function)=>{
     ipcRenderer.once('removeContainerResult', (_event: Event, arg: boolean|string) => {
-        console.log('received removeContainerResult', arg)
         callback(arg)
     })
   }
@@ -91,12 +86,12 @@ contextBridge.exposeInMainWorld("psUploadData", {
     return response;
   },
 
-  DatabaseResult: async (callback:Function) => {
-    ipcRenderer.once('DatabaseResult', (_event: Event, arg: boolean|string) => {
-      console.log('received Database Result', arg)
-      callback(arg)
-    })
-  },
+  // DatabaseResult: async (callback:Function) => {
+  //   ipcRenderer.once('DatabaseResult', (_event: Event, arg: boolean|string) => {
+  //     console.log('received Database Result', arg)
+  //     callback(arg)
+  //   })
+  // },
 
    
   
@@ -108,7 +103,4 @@ contextBridge.exposeInMainWorld("psUploadData", {
 
 
 
-// ipcRenderer.on('removeContainerResult', (_event, arg) => {
-//   //buildImageResult(arg);
-//   console.log('received removeContainerResult', arg)
-// })
+

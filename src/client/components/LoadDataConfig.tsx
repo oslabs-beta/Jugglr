@@ -60,11 +60,12 @@ const form = useForm({
         message: response,
         autoClose: 4000
       })
-    } else {
-      await psUploadData.DatabaseResult((args:boolean|string)=>{
-        notifyUser(args)
-      })
-    }
+    } 
+    // else {
+    //   await psUploadData.DatabaseResult((args:boolean|string)=>{
+    //     notifyUser(args)
+    //   })
+    // }
   }
   /**
    * 
