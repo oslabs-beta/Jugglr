@@ -11,9 +11,10 @@ import { cleanNotifications, showNotification } from "@mantine/notifications";
 
 
 const Startup = ():JSX.Element => {
+  //destructure redux global state
   const {  dropDownImage, port} = useAppSelector(state => state.envConfig)
+  //declare redux dispatch function. Used to update global state
   const dispatch = useAppDispatch();
-  // const [imageList, setImageList] = useState<string[]>([""])
  
   
   const form1 = useForm({
@@ -32,12 +33,8 @@ const Startup = ():JSX.Element => {
     const grabImages = async (): Promise<void> => {
     const images:image[] = await dockController.getImagesList()
     const iList:string[] = destructureImageList(images)
-    // console.log('ilist',iList)
-    // form1.setFieldValue('dropDownImage', iList)
     dispatch(setDropDownImage({dropDownImage:iList}))
     form1.setFieldValue('image',"")
-    // setImageList(iList)
-    
     }
    
     grabImages().catch(console.error);

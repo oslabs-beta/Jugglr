@@ -18,7 +18,15 @@ export const selectProjectRootDirectory = async () :Promise<void>=> {
 export const uploadTableData = async (values:LoadTable) :Promise<string>  => {
   const tablePath= values.tablePath
   const tableName=values.tableName
-  
+  let ext:string =""
+  for(let i=tablePath.length-4;i<tablePath.length;i++){
+    console.log(tablePath[i])
+    ext += tablePath[i]
+    console.log(ext)
+  }
+  if(ext!=='.csv') {
+    return 'Please provide a .csv file'
+  } 
 
   const response = await psUploadData.uploadData(tableName,tablePath)
   return response;
