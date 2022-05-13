@@ -1,4 +1,5 @@
-import { DockerFile, EnvConfig, LoadTable } from "../../types";
+import { container, DockerFile, EnvConfig, LoadTable, StartUpObj ,image} from "../../types";
+import * as path from 'path'
 
 /**
  * Action helpers moved here for time being...
@@ -19,30 +20,25 @@ export const uploadTableData = async (values:LoadTable) :Promise<string>  => {
   const tableName=values.tableName
   console.log(tablePath)
   console.log('tn',tableName)
-  if(tablePath==="" || tableName===""){ 
-    return "Please fill out all required fields"
+  if(tablePath===""){ 
+    return "Please provide a table Path"
   }
-  
+
   const response = await psUploadData.uploadData(tableName,tablePath)
- console.log(response);
   return response;
 
 
 
 }
 
-interface image {
-  constainers: number
-  repoTags: string[]
-  id: string
-}
+
 
 /**
  * Call electron to create a DockerFile with given details
  * @param {DockerFile} values
  * @returns {boolean}
  */
-export const setDockerFile = async (values: DockerFile) => {
+export const setDockerFile = async (values: DockerFile): Promise<boolean> => {
   return await dockController.createDockerfile(values);
 }
 
@@ -55,36 +51,27 @@ export const setProjectDirectory = async (values: EnvConfig): Promise<object> =>
   return await selectorModule.setProjectRoot(values.rootDir);
 }
 
-export const destructureImageList = (arr:[]): string[] => {
-  
+export const destructureImageList = (arr:image[]): string[] => {
   const newImageList :string[] = ['']
   arr.forEach((ele)=>{
-    const curTag: image = ele['repoTags']
+    const curTag: string[] = ele['repoTags']
     if(curTag!==null){
     const string: string = curTag[0].substring(0,curTag[0].lastIndexOf(":"));
     newImageList.push(string);
-    
   }
   })
   
   return newImageList
 }
 
-interface container {
-  id: string
-  image: string
-  imageId:string
-  names: string
-}
+
 export const destructureContainerList = (arr:container[]):string[] => {
   
   const newContainerList:string[] = ['']
-
   arr.forEach((ele)=>{
     const curContainer: string = ele['names'][0]
     const containerName: string = curContainer.substring(curContainer.indexOf("/")+1);
     newContainerList.push(containerName);
-    
   }
   )
   
@@ -107,40 +94,42 @@ export const destructureContainerId = (arr:container[]) => {
   
   return containerIdObj
 }
-interface newContainer {
-  selectedImage: string
-  container: string
-  port: string
-}
-export const runNewContainer = async (values:newContainer): Promise<string | string> => {
+
+export const runNewContainer = async (values:StartUpObj): Promise<string> => {
   const imageValue = values.selectedImage
   const containerName = values.container
   const port = values.port+'' 
-  
+  console.log('fileexplorer',port);
   
   const response = await dockController.runContainer(imageValue,containerName,port)
+  console.log('newContainer', response);
   return response
    
 }
-export const buildImage = async (image:string) => {
+export const buildImage = async (image:string):Promise<void> => {
 
   return await dockController.buildImage(image);
 }
  
 
-export const startContainer = async(containerId:string): Promise<void> => {
-await dockController.startContainer(containerId)
-//no response being sent from the backend
-
+export const startContainer = async(containerId:string): Promise<boolean| string > => {
+ 
+if(containerId===undefined){
+    return false;
+}
+const response = await dockController.startContainer(containerId)
+console.log(' file start',response)
+return response
 }
 
-export const stopContainer = async(containerId:string):Promise<void> => {
-await dockController.stopContainer(containerId)
+export const stopContainer = async(containerId:string):Promise<boolean> => {
+if(containerId===undefined){
+    return false;
+}
+const response = await dockController.stopContainer(containerId)
+console.log('stop',response)
+return response
 //no response being sent from the backend
  
 }
 
-export const receiveRunResult = async (event, args)=> {
-  console.log('in receiveRunResult', event, args);
-  //act on results = show a message based on what's in args
-}

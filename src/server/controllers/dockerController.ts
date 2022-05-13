@@ -70,15 +70,15 @@ const dockerController = {
   startContainer: async function (event, containerId) {
     const docker = await new Docker();
     const selectedContainer = await docker.getContainer(containerId);
-    await selectedContainer.start(function (err, data) {
-      console.log('err', err, 'data', data);
+    await selectedContainer.start(function (err, _data) {
+      // console.log('err', err, 'data', data);
       if (err !== null) { 
-         event. sender.send('startContainerResult', false) 
+         event.sender.send('startContainerResult', false) 
       } else {
         event.sender.send('startContainerResult', true)
       }
     });
-    return true;
+    return true
   },
 
 
@@ -91,10 +91,10 @@ const dockerController = {
   stopContainer: async function (event, containerId) {
     const docker = await new Docker();
     const selectedContainer = await docker.getContainer(`${containerId}`);
-    await selectedContainer.stop(function (err, data) {
-      console.log('err', err, 'data', data);
+    await selectedContainer.stop(function (err, _data) {
+      // console.log('err', err, 'data', data);
       if (err !== null) { 
-         event. sender.send('stopContainerResult', false) 
+         event.sender.send('stopContainerResult', false) 
       } else {
         event.sender.send('stopContainerResult', true)
       }
@@ -243,7 +243,7 @@ const dockerController = {
       })
     }
     catch (err) {
-      console.log('Error building image here', err); 
+      // console.log('Error building image here', err); 
       event.sender.send('buildImageResult', false);
       return false;
     }
@@ -259,6 +259,7 @@ const dockerController = {
    * @returns 
    */
   run: async (event, image, containerName, port="5432") => {
+    
     const streams = [
       process.stdout,
       process.stderr
@@ -268,24 +269,24 @@ const dockerController = {
       const docker = await  new Docker();
       const result = await docker.run(image, ['postgres'], streams, {
         Env: [`POSTGRES_PASSWORD=${process.env.POSTGRES_PASSWORD}`], WorkingDir: process.env.ROOTDIR, name: containerName, HostConfig: { PortBindings: {
-          "5432/tcp" : [ { "HostPort": `${port}` } ] }}, Tty: false}, (err, data, rawContainer) => {
-            console.log('data', data, 'container', rawContainer);
+          "5432/tcp" : [ { "HostPort": `${port}` } ] }}, Tty: false}, (err, _data, _rawContainer) => {
+            // console.log('data', data, 'container', rawContainer);
             if (err) { console.log("err", err)}
             streams[0].destroy();
             streams[1].destroy() 
         })
-        .once('error', (err) => {
-          console.log('error', err);
+        .once('error', (_err) => {
+          // console.log('error', err);
           event.sender.send('runResult', false);
         })
         .once('container', async function (_container) {
-          console.log('Postgres started');
+          // console.log('Postgres started');
           event.sender.send('runResult', true);
       })
       return result;
     }
     catch (error) {
-      console.log('run error', error)
+      // console.log('run error', error)
       event.sender.send('runResult', false);
     }
   }
