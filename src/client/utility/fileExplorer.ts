@@ -18,11 +18,7 @@ export const selectProjectRootDirectory = async () :Promise<void>=> {
 export const uploadTableData = async (values:LoadTable) :Promise<string>  => {
   const tablePath= values.tablePath
   const tableName=values.tableName
-  console.log(tablePath)
-  console.log('tn',tableName)
-  if(tablePath===""){ 
-    return "Please provide a table Path"
-  }
+  
 
   const response = await psUploadData.uploadData(tableName,tablePath)
   return response;
