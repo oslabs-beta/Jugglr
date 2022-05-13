@@ -68,7 +68,7 @@ const dockerController = {
   * @returns true/false
   */
   startContainer: async function (event, containerId) {
-    const docker = await new Docker({socketPath: '/var/run/docker.sock'});
+    const docker = await new Docker();
     const selectedContainer = await docker.getContainer(containerId);
     await selectedContainer.start(function (err, data) {
       console.log('err', err, 'data', data);
@@ -89,7 +89,7 @@ const dockerController = {
  * @returns true/false
  */
   stopContainer: async function (event, containerId) {
-    const docker = await new Docker({socketPath: '/var/run/docker.sock'});
+    const docker = await new Docker();
     const selectedContainer = await docker.getContainer(`${containerId}`);
     await selectedContainer.stop(function (err, data) {
       console.log('err', err, 'data', data);
@@ -264,33 +264,31 @@ const dockerController = {
       process.stderr
     ];
     process.env.POSTGRES_PORT = port;
-    const docker = await  new Docker();
-    const result = await docker.run(image, ['postgres'], streams, {
-      Env: [`POSTGRES_PASSWORD=${process.env.POSTGRES_PASSWORD}`], WorkingDir: process.env.ROOTDIR, name: containerName, HostConfig: { PortBindings: {
-        "5432/tcp" : [ { "HostPort": `${port}` } ] }}, Tty: false}, (err, _data, _rawContainer) => {
-          if (err) { console.log("err", err)} })
-      .on('error', (err) => {
-        console.log('error', err);
-        event.sender.send('runResult', false);
+    try {
+      const docker = await  new Docker();
+      const result = await docker.run(image, ['postgres'], streams, {
+        Env: [`POSTGRES_PASSWORD=${process.env.POSTGRES_PASSWORD}`], WorkingDir: process.env.ROOTDIR, name: containerName, HostConfig: { PortBindings: {
+          "5432/tcp" : [ { "HostPort": `${port}` } ] }}, Tty: false}, (err, data, rawContainer) => {
+            console.log('data', data, 'container', rawContainer);
+            if (err) { console.log("err", err)}
+            streams[0].destroy();
+            streams[1].destroy() 
+        })
+        .once('error', (err) => {
+          console.log('error', err);
+          event.sender.send('runResult', false);
+        })
+        .once('container', async function (_container) {
+          console.log('Postgres started');
+          event.sender.send('runResult', true);
       })
-      .on('end', (data) => {
-        console.log('end', data)
-      })
-      .on('container', async function (_container) {
-        console.log('Postgres started');
-        event.sender.send('runResult', true);
-    })
-    streams[1].on('end', (data) => {
-      console.log('streams data', data)
-    })
-    streams[0].on('end', (data) => {
-      console.log('nothing', data)
-    })
-    streams[0].on('error', (err) => {
-      console.log('streams error', err)
-    })
-    return result;
+      return result;
     }
+    catch (error) {
+      console.log('run error', error)
+      event.sender.send('runResult', false);
+    }
+  }
 }
 
 module.exports = dockerController;
