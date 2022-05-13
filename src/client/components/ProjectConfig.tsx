@@ -63,7 +63,7 @@ const ProjectConfig = ({ navigate }) => {
     if (!isEmptyObject(response)) {
       showNotification({
         title: "DockerFile found!",
-        message: "Database details were preset!"
+        message: "Database details are preset!"
       });
     }
     navigate();
