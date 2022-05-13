@@ -106,7 +106,6 @@ const dockerController = {
  * @returns 
  */  
   removeContainer: async function (event, containerId) {
-    console.log('remove container')
     const docker = await new Docker({socketPath: '/var/run/docker.sock'});
     const selectedContainer = await docker.getContainer(`${containerId}`);    
     const result = await selectedContainer.remove(function (err, _data) {
