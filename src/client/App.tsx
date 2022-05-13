@@ -32,7 +32,12 @@ const App = () => {
             headings: { fontFamily: "Bad Script, serif" }
           }}
         >
-          <NotificationsProvider limit={3} autoClose={3000}>
+          <NotificationsProvider
+            limit={3}
+            autoClose={3000}
+            containerWidth={280}
+            style={{ bottom: 60 }}
+          >
             <AppLayout />
           </NotificationsProvider>
         </MantineProvider>
