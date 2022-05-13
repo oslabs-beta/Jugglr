@@ -71,12 +71,12 @@ const dockerController = {
     const selectedContainer = await docker.getContainer(containerId);
     await selectedContainer.start(function (err, _data) {
       if (err !== null) { 
-         event. sender.send('startContainerResult', false) 
+         event.sender.send('startContainerResult', false) 
       } else {
         event.sender.send('startContainerResult', true)
       }
     });
-    return true;
+    return true
   },
 
 
@@ -91,7 +91,7 @@ const dockerController = {
     const selectedContainer = await docker.getContainer(`${containerId}`);
     await selectedContainer.stop(function (err, _data) {
       if (err !== null) { 
-         event. sender.send('stopContainerResult', false) 
+         event.sender.send('stopContainerResult', false) 
       } else {
         event.sender.send('stopContainerResult', true)
       }
@@ -253,7 +253,6 @@ const dockerController = {
    * @returns 
    */
   run: async (event, image, containerName, port="5432") => {
-   
     process.env.POSTGRES_PORT = port;
     try {
       const docker = await  new Docker();

@@ -5,7 +5,6 @@ const selectorModule = require('./controllers/fileController');
 const { uploadData: psUploadData} = require('./controllers/postgres')
 const dockController = require('./controllers/dockerController')
 
-
 try {
   require("electron-reloader")(module);
 } catch (_) {
