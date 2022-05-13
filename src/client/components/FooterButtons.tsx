@@ -19,7 +19,7 @@ const FooterButtons = ({ page, prev, next }) => {
         <Button
           size="sm"
           onClick={() => prev()}
-          variant={page == 1 ? "white" : "light"}
+          variant={page == 1 ? "subtle" : "light"}
         >
           prev
         </Button>
@@ -27,7 +27,7 @@ const FooterButtons = ({ page, prev, next }) => {
         <Button
           size="sm"
           onClick={() => next()}
-          variant={page == 5 ? "white" : "light"}
+          variant={page == 5 ? "subtle" : "light"}
         >
           next
         </Button>
