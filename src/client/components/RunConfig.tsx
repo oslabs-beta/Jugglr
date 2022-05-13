@@ -1,6 +1,6 @@
-import { Space, Box, Title, Paper, Button, TextInput, NativeSelect } from "@mantine/core";
-import {  destructureContainerList, destructureContainerId, startContainer, stopContainer} from "../utility/fileExplorer";
-import { ChangeEvent, useEffect, useState } from "react";
+import { Space, Box, Title, Paper, Button,  NativeSelect } from "@mantine/core";
+import {  destructureContainerList, destructureContainerId, startContainer, stopContainer, removeContainer} from "../utility/fileExplorer";
+import { ChangeEvent, useEffect } from "react";
 import { useForm } from "@mantine/hooks";
 import { useAppSelector, useAppDispatch } from "../utility/hooks.types";
 import { setDropDownContainer } from "../reducers/envConfigSlice";
@@ -8,15 +8,19 @@ import { container } from "../../types";
 import { showNotification, cleanNotifications } from "@mantine/notifications";
 
 
-
+/**
+ * 
+ * @returns JSX Definition for Docker Run tab
+ * Docker Run tab enables users to start and stop existing containers in Docker Desktop
+ */
 const Run = ():JSX.Element => {
 
-  //destructure redux global state
+  //pull in redux global state and the redux dispatch function to update global state
   const { containerIdObject, containerNames } = useAppSelector(state => state.envConfig)
-  //declare redux dispatch function. Used to update global state
   const dispatch = useAppDispatch();
   
-  //local state for the form
+  //local state of the form declared via Mantine's useForm hook
+  
   const form2 = useForm({
     initialValues: {
       containerSelected:"",
@@ -50,51 +54,72 @@ const Run = ():JSX.Element => {
   }
 
  
-  const setStateAndCall = async (containerId: string, action:'start' | 'stop') :Promise<void> => {
+  const setStateAndCall = async (containerId: string, action:'start' | 'stop'| 'remove') :Promise<void> => {
     //clear all notifications so only one notification is shown at any given time
     cleanNotifications(); 
-  
+    console.log(action)
     if(action==='start'){
-      
       await startContainer(containerId)
     //After invoking start container, listen for response from backend.  Will receive either true or false as a response
-      await dockController.startContainerResult((arg:boolean)=>{
+      await dockController.startContainerResult((arg:boolean | string)=>{
         //function below will determine what message is displayed in app 
         notifyUserStart(arg)
       })
-    } else {
+    } else if (action ==='stop') {
       await stopContainer(containerId)
-      await dockController.stopContainerResult((arg:boolean)=>{
+      await dockController.stopContainerResult((arg:boolean | string)=>{
         notifyUserStop(arg)
       })
+    } else {
+      console.log('remove react')
+      await removeContainer(containerId)
+      await dockController.removeContainerResult((arg: boolean|string)=>{
+      notifyUserRemove(arg)
+      })
+      }
+      containerRefresh()
     }
-    containerRefresh()
-  }
+  
+  
 
-  const notifyUserStart = async (bool:Boolean) => {
+  const notifyUserStart = async (bool:Boolean |string) => {
     //if true, container started successfully, otherwise container failed to start.
     if(bool){
       showNotification({
-        message: `Container started successfully`,
+        message: `Container '${form2.values.containerSelected}' started successfully`,
         autoClose: 3500
       }) 
     } else {
       showNotification({
-        message: `Container failed to start. ${form2.values.containerSelected} may already be running`,
+        message: `Container '${form2.values.containerSelected}' failed to start`,
         autoClose: 3500
       })
     }
   }
 
-  const notifyUserStop = async (bool:Boolean) => {
+  const notifyUserStop = async (bool:Boolean |string ) => {
     if(bool){
       showNotification({
-        message: `container ${form2.values.containerSelected} stopped successfully`,
+        message: `Container '${form2.values.containerSelected}' stopped successfully`,
         autoClose: 3500
       }) 
     } else {
       showNotification({
-        message: `Error stopping container - ${form2.values.containerSelected} may already be stopped`,
+        message: `Error stopping container '${form2.values.containerSelected}'`,
+        autoClose: 3500
+      })
+    }
+  }
+
+  const notifyUserRemove = async (bool: Boolean|string) => {
+    if(bool){
+      showNotification({
+        message: `Container '${form2.values.containerSelected}' removed successfully`,
+        autoClose: 3500
+      }) 
+    } else {
+      showNotification({
+        message: `Error removing container '${form2.values.containerSelected}'`,
         autoClose: 3500
       })
     }
@@ -141,6 +166,10 @@ const Run = ():JSX.Element => {
   
                     <div style={{ width: "30%" }}>
                       <Button fullWidth onClick={()=>{ setStateAndCall(containerIdObject[form2.values.containerSelected],'stop'); }}>Stop Container</Button>
+                    </div>
+
+                    <div style={{ width: "30%" }}>
+                      <Button fullWidth onClick={()=>{ setStateAndCall(containerIdObject[form2.values.containerSelected],'remove'); }}>Remove Container</Button>
                     </div>
               </div>
             </div>

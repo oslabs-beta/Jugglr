@@ -1,6 +1,6 @@
 const { contextBridge, ipcRenderer } = require("electron");
 import { container, DockerFile, image } from './types';
-// import { Dockerfile } from './types';
+
 
 contextBridge.exposeInMainWorld("selectorModule", {
   openFile: async () => {
@@ -29,7 +29,6 @@ contextBridge.exposeInMainWorld("dockController", {
     return await ipcRenderer.invoke('buildImage', imageName);
   },
   runContainer: async(imageName: string, containerName:string, port:string) => {
-    console.log(port);
     return await ipcRenderer.invoke('runContainer', imageName, containerName, port)
   }, 
   startContainer: async (containerId:string):Promise<void> => {
@@ -39,6 +38,7 @@ contextBridge.exposeInMainWorld("dockController", {
     return await ipcRenderer.invoke('stopContainer', containerId)
   },
   removeContainer: async (containerId:string):Promise<void> => {
+    console.log('remove preload')
     return await ipcRenderer.invoke('removeContainer', containerId)
   },
   getContainersList: async ():Promise<container[]>  => {
@@ -49,40 +49,57 @@ contextBridge.exposeInMainWorld("dockController", {
   },
   
   runNewResult: (callback:Function) => {
-    ipcRenderer.once('runResult', ( _event, arg) => {
+    ipcRenderer.once('runResult', ( _event: Event, arg: boolean|string) => {
       console.log('listening')
       callback(arg)
   })
   },
 
   buildImageResult: (callback:Function) => {
-    ipcRenderer.once('buildImageResult', (_event, arg) => {
+    ipcRenderer.once('buildImageResult', (_event: Event, arg: boolean|string) => {
     console.log('received buildImageResult', arg)
     callback(arg)
   })
   },
 
   startContainerResult: (callback:Function) => {
-    ipcRenderer.once('startContainerResult', (_event, arg) => {
+    ipcRenderer.once('startContainerResult', (_event: Event, arg: boolean|string) => {
       callback(arg)
       console.log('received startContainerResult', arg)
     })
   },
 
+
   stopContainerResult: (callback:Function) => {
-    ipcRenderer.once('stopContainerResult', (_event, arg) => {
+    ipcRenderer.once('stopContainerResult', (_event: Event, arg: boolean|string) => {
       console.log('received stopContainerResult', arg)
       callback(arg)
     })
-
   },
+
+  removeContainerResult:(callback:Function)=>{
+    ipcRenderer.once('removeContainerResult', (_event: Event, arg: boolean|string) => {
+        console.log('received removeContainerResult', arg)
+        callback(arg)
+    })
+  }
 })
 
 contextBridge.exposeInMainWorld("psUploadData", {
   uploadData: async (table:string,sqlSchema:string) => {
     const response = await ipcRenderer.invoke("uploadData", table, sqlSchema);
     return response;
-  }
+  },
+
+  DatabaseResult: async (callback:Function) => {
+    ipcRenderer.once('DatabaseResult', (_event: Event, arg: boolean|string) => {
+      console.log('received Database Result', arg)
+      callback(arg)
+    })
+  },
+
+   
+  
 })
 
 
