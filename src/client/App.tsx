@@ -8,6 +8,7 @@ import { NotificationsProvider } from "@mantine/notifications";
 
 import AppLayout from "./components/AppLayout";
 
+
 const App = () => {
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
     key: "mantine-color-scheme",
@@ -24,7 +25,13 @@ const App = () => {
         colorScheme={colorScheme}
         toggleColorScheme={toggleColorScheme}
       >
-        <MantineProvider theme={{ colorScheme }}>
+        <MantineProvider
+          theme={{
+            colorScheme,
+            fontFamily: "Mali, serif",
+            headings: { fontFamily: "Bad Script, serif" }
+          }}
+        >
           <NotificationsProvider limit={3} autoClose={3000}>
             <AppLayout />
           </NotificationsProvider>
