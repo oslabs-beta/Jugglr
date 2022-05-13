@@ -3,9 +3,9 @@
  * AppShell takes props header, navbar, footer, aside for ease of layout
  * ref: https://mantine.dev/core/app-shell/
  */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import { useMediaQuery } from "@mantine/hooks";
+import { useMediaQuery, usePagination } from "@mantine/hooks";
 import {
   AppShell,
   Navbar,
@@ -33,25 +33,19 @@ const AppLayout = () => {
   const [opened, setOpened] = useState(false);
   const theme = useMantineTheme();
   const isSmallView = useMediaQuery("(min-width: 993px");
+  const page = usePagination({ total: 5, initialPage: 1 });
   const navigate = useNavigate();
   const endpoints = {
-    0: "/",
-    1: "/database",
-    2: "/startup",
-    3: "/run",
-    4: "/loadData"
+    1: "/",
+    2: "/database",
+    3: "/startup",
+    4: "/run",
+    5: "/loadData"
   };
 
-  /**
-   * function created to give NavBarButtons pseudo-ordering
-   * using the above endpoints record for controlling browser's URL
-   * @todo transition to Mantine usePagination hook for prev/next navigation support
-   * @param index
-   * @returns void
-   */
-  const urlNavigation = (index: number) => {
-    return navigate(endpoints[index]);
-  };
+  useEffect(() => {
+    navigate(endpoints[page.active]);
+  }, [page.active]);
 
   return (
     <AppShell
@@ -68,7 +62,7 @@ const AppLayout = () => {
       fixed
       navbar={
         <Navbar p="md" hidden={!opened} width={{ base: 300 }}>
-          <NavbarButtons navigate={urlNavigation} />
+          <NavbarButtons navigate={page.setPage} />
         </Navbar>
       }
       header={
@@ -125,19 +119,20 @@ const AppLayout = () => {
       }
       footer={
         <Footer height={60}>
-          <FooterButtons navigate={urlNavigation} />
+          <FooterButtons
+            page={page.active}
+            prev={page.previous}
+            next={page.next}
+          />
         </Footer>
       }
     >
       <Container>
         <Routes>
-          <Route
-            path="/"
-            element={<ProjectConfig navigate={urlNavigation} />}
-          />
+          <Route path="/" element={<ProjectConfig navigate={page.next} />} />
           <Route
             path="/database"
-            element={<DatabaseConfig navigate={urlNavigation} />}
+            element={<DatabaseConfig navigate={page.next} />}
           />
           <Route path="/startup" element={<StartupConfig />} />
           <Route path="/run" element={<ContainerConfig />} />

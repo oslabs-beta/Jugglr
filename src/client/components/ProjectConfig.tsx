@@ -66,7 +66,7 @@ const ProjectConfig = ({ navigate }) => {
         message: "Database details were preset!"
       });
     }
-    navigate(1);
+    navigate();
   };
 
   return (

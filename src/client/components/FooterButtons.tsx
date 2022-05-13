@@ -1,32 +1,45 @@
 import PropTypes from "prop-types";
 import { Button } from "@mantine/core";
 
-import { navButtonTheme } from "../themes/themeFunctions";
 
-
-const FooterButtons = ({ navigate }) => {
-
+const FooterButtons = ({ page, prev, next }) => {
   return (
-    <>
-      <Button
-        onClick={() => navigate(0)}
-        sx={theme => navButtonTheme(theme)}
-      >
-        prev
-      </Button>
+    <div style={{ display: "flex", justifyContent: "space-around" }}>
+      <div style={{ flexGrow: 1 }}></div>
 
-      <Button
-        onClick={() => navigate(1)}
-        sx={theme => navButtonTheme(theme)}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-around",
+          justifyItems: "center",
+          flexGrow: 2,
+          paddingTop: 12
+        }}
       >
-        next
-      </Button>
-    </>
+        <Button
+          size="sm"
+          onClick={() => prev()}
+          variant={page == 1 ? "white" : "light"}
+        >
+          prev
+        </Button>
+
+        <Button
+          size="sm"
+          onClick={() => next()}
+          variant={page == 5 ? "white" : "light"}
+        >
+          next
+        </Button>
+      </div>
+    </div>
   );
 };
 
 FooterButtons.propTypes = {
-  navigate: PropTypes.func
+  page: PropTypes.number,
+  prev: PropTypes.func,
+  next: PropTypes.func
 };
 
 export default FooterButtons;

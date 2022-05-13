@@ -69,7 +69,7 @@ const DatabaseConfig = ({ navigate }) => {
       showNotification({
         message: "DockerFile created successfully!"
       });
-      navigate(2);
+      navigate();
       return true;
     } else {
       showNotification({

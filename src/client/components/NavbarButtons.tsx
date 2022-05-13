@@ -15,7 +15,7 @@ const NavbarButtons = ({ navigate }) => {
   return (
     <>
       <UnstyledButton
-        onClick={() => navigate(0)}
+        onClick={() => navigate(1)}
         sx={theme => navButtonTheme(theme)}
       >
         <Group>
@@ -27,7 +27,7 @@ const NavbarButtons = ({ navigate }) => {
       </UnstyledButton>
 
       <UnstyledButton
-        onClick={() => navigate(1)}
+        onClick={() => navigate(2)}
         sx={theme => navButtonTheme(theme)}
       >
         <Group>
@@ -39,7 +39,7 @@ const NavbarButtons = ({ navigate }) => {
       </UnstyledButton>
 
       <UnstyledButton
-        onClick={() => navigate(2)}
+        onClick={() => navigate(3)}
         sx={theme => navButtonTheme(theme)}
       >
         <Group>
@@ -52,7 +52,7 @@ const NavbarButtons = ({ navigate }) => {
 
 
       <UnstyledButton
-        onClick={() => navigate(3)}
+        onClick={() => navigate(4)}
         sx={theme => navButtonTheme(theme)}
       >
         <Group>
@@ -64,7 +64,7 @@ const NavbarButtons = ({ navigate }) => {
       </UnstyledButton>
 
       <UnstyledButton
-        onClick={() => navigate(4)}
+        onClick={() => navigate(5)}
         sx={theme => navButtonTheme(theme)}
       >
         <Group>
