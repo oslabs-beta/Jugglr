@@ -60,20 +60,22 @@ const DatabaseConfig = ({ navigate }) => {
    * @param {object} values
    * @returns {boolean}
    */
-  const setStateAndCall = async (values: object) => {
+  const setStateAndCall = async (values: object): Promise<boolean> => {
     dispatch(setEnvConfig(values));
     const test = {...reduxState, ...values};
     
     if (dockerReadyValidation(test)) {
       await setDockerFile(test);
       showNotification({
-        message: "DockerFile created successfully!"
+        title: "Success!",
+        message: "DockerFile created!"
       });
       navigate();
       return true;
     } else {
       showNotification({
-        message: "DockerFile creation failed!"
+        title: "Failure!",
+        message: "DockerFile not created!"
       });
       return false;
     }
