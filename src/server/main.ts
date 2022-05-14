@@ -76,25 +76,26 @@ ipcMain.handle("setProjectRoot", async(_event, rootdir)=>{
 })
 
 
-ipcMain.handle("uploadData", async (_event, table, sqlSchema) => {
+ipcMain.handle("uploadData", async (event, table, sqlSchema) => {
   try {
     // console.log('here', table, sqlSchema)
-    const result = await psUploadData(table, sqlSchema);
+    const result = await psUploadData(event, table, sqlSchema);
     return result;
   }
-  catch (err) {
+  catch (err:any) {
     // console.log(err);
-    return err;
+    return event.sender.send('databaseResult', err.json.message);
   }
 });
 
 
 ipcMain.handle("createDockerfile", async (_event, dockerfile) => {
   try {
-    return await dockController.createDockerfile(dockerfile);
+    await dockController.createDockerfile(dockerfile);
+    return true;
   }
-  catch (err) {
-    return err;
+  catch (err:any) {
+    return err.json.message;
   }
 });
 
