@@ -25,6 +25,7 @@ import {
 } from "../utility/fileExplorer";
 import { useAppDispatch, useAppSelector } from "../utility/hooks.types";
 import { isEmptyObject } from "../utility/validations";
+import React from "React"
 
 
 const ProjectConfig = ({ navigate }) => {

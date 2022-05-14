@@ -106,7 +106,6 @@ const dockerController = {
  * @returns 
  */  
   removeContainer: async function (event, containerId) {
-    console.log('remove container')
     const docker = await new Docker({socketPath: '/var/run/docker.sock'});
     const selectedContainer = await docker.getContainer(`${containerId}`);    
     const result = await selectedContainer.remove(function (err, _data) {
@@ -260,12 +259,13 @@ const dockerController = {
       const stream = await docker.run(image, ['postgres'], process.stdout, {
         Env: [`POSTGRES_PASSWORD=${process.env.POSTGRES_PASSWORD}`], WorkingDir: process.env.ROOTDIR, name: containerName, HostConfig: { PortBindings: {
           "5432/tcp" : [ { "HostPort": `${port}` } ] }}, Tty: false})
+       stream.once('error', function err (_err) {
+            event.sender.send('runResult', false);
+       })
         stream.once('container', async function container (_container) {
           event.sender.send('runResult', true);
       })
-      stream.once('error', function err (_err) {
-        event.sender.send('runResult', false);
-      })
+     
      
       return true;
     }
