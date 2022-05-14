@@ -1,5 +1,5 @@
 import { container, DockerFile, EnvConfig, LoadTable, StartUpObj ,image} from "../../types";
-import * as path from 'path'
+
 
 /**
  * Action helpers moved here for time being...
@@ -18,11 +18,13 @@ export const selectProjectRootDirectory = async () :Promise<void>=> {
 export const uploadTableData = async (values:LoadTable) :Promise<string>  => {
   const tablePath= values.tablePath
   const tableName=values.tableName
-  console.log(tablePath)
-  console.log('tn',tableName)
-  if(tablePath===""){ 
-    return "Please provide a table Path"
+  let ext:string =""
+  for(let i=tablePath.length-4;i<tablePath.length;i++){
+    ext += tablePath[i]
   }
+  if(ext!=='.csv') {
+    return 'Please provide a .csv file'
+  } 
 
   const response = await psUploadData.uploadData(tableName,tablePath)
   return response;
@@ -83,12 +85,10 @@ export const destructureContainerId = (arr:container[]) => {
   const containerIdObj = {}
 
   arr.forEach((ele)=>{
-  
     const curContainer: string = ele['names'][0]
     const containerName: string = curContainer.substring(curContainer.indexOf("/")+1);
     const curId: string = ele['id']
     containerIdObj[containerName] = curId
-    
   }
   )
   
@@ -99,15 +99,11 @@ export const runNewContainer = async (values:StartUpObj): Promise<string> => {
   const imageValue = values.selectedImage
   const containerName = values.container
   const port = values.port+'' 
-  console.log('fileexplorer',port);
-  
   const response = await dockController.runContainer(imageValue,containerName,port)
-  console.log('newContainer', response);
   return response
    
 }
 export const buildImage = async (image:string):Promise<void> => {
-
   return await dockController.buildImage(image);
 }
  
@@ -118,7 +114,6 @@ if(containerId===undefined){
     return false;
 }
 const response = await dockController.startContainer(containerId)
-console.log(' file start',response)
 return response
 }
 
@@ -127,9 +122,15 @@ if(containerId===undefined){
     return false;
 }
 const response = await dockController.stopContainer(containerId)
-console.log('stop',response)
 return response
-//no response being sent from the backend
  
 }
 
+export const removeContainer = async(containerId: string): Promise<boolean> => {
+  if(containerId ===undefined){
+    return false;
+  }
+  console.log('remove file explorer')
+  const response = await dockController.removeContainer(containerId)
+  return response
+}
