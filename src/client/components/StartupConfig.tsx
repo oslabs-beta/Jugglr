@@ -51,7 +51,6 @@ const Startup = ():JSX.Element => {
   }
 
   const notifyUserContainer = (bool:boolean) => {
-    console.log(bool)
     if(bool){
       showNotification({
         message:'Container started successfully',

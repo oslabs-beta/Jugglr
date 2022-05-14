@@ -260,12 +260,11 @@ const dockerController = {
         Env: [`POSTGRES_PASSWORD=${process.env.POSTGRES_PASSWORD}`], WorkingDir: process.env.ROOTDIR, name: containerName, HostConfig: { PortBindings: {
           "5432/tcp" : [ { "HostPort": `${port}` } ] }}, Tty: false})
        stream.once('error', function err (_err) {
-            event.sender.send('runResult', false);
-       })
+          event.sender.send('runResult', false);
+        })
         stream.once('container', async function container (_container) {
           event.sender.send('runResult', true);
       })
-     
      
       return true;
     }

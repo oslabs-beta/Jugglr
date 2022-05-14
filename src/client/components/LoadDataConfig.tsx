@@ -62,7 +62,7 @@ const form = useForm({
       })
     } 
     // else {
-    //   await psUploadData.DatabaseResult((args:boolean|string)=>{
+    //   await psUploadData.databaseResult((args:boolean|string)=>{
     //     notifyUser(args)
     //   })
     // }

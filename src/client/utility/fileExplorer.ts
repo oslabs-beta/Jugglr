@@ -20,9 +20,7 @@ export const uploadTableData = async (values:LoadTable) :Promise<string>  => {
   const tableName=values.tableName
   let ext:string =""
   for(let i=tablePath.length-4;i<tablePath.length;i++){
-    console.log(tablePath[i])
     ext += tablePath[i]
-    console.log(ext)
   }
   if(ext!=='.csv') {
     return 'Please provide a .csv file'

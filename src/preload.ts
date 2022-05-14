@@ -87,7 +87,7 @@ contextBridge.exposeInMainWorld("psUploadData", {
   },
 
   // DatabaseResult: async (callback:Function) => {
-  //   ipcRenderer.once('DatabaseResult', (_event: Event, arg: boolean|string) => {
+  //   ipcRenderer.once('databaseResult', (_event: Event, arg: boolean|string) => {
   //     console.log('received Database Result', arg)
   //     callback(arg)
   //   })
