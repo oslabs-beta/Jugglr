@@ -5,15 +5,16 @@ import { useForm, } from "@mantine/hooks";
 import { useAppSelector, useAppDispatch } from "../utility/hooks.types";
 import { setDropDownImage } from "../reducers/envConfigSlice";
 import { image, StartUpObj } from "../../types";
-import { cleanNotifications, showNotification } from "@mantine/notifications";
+import { showNotification } from "@mantine/notifications";
 
 
 
 
 const Startup = ():JSX.Element => {
+  //destructure redux global state
   const {  dropDownImage, port} = useAppSelector(state => state.envConfig)
+  //declare redux dispatch function. Used to update global state
   const dispatch = useAppDispatch();
-  // const [imageList, setImageList] = useState<string[]>([""])
  
   
   const form1 = useForm({
@@ -28,16 +29,11 @@ const Startup = ():JSX.Element => {
  
 
   useEffect( () => {
-    console.log('start')
     const grabImages = async (): Promise<void> => {
     const images:image[] = await dockController.getImagesList()
     const iList:string[] = destructureImageList(images)
-    // console.log('ilist',iList)
-    // form1.setFieldValue('dropDownImage', iList)
     dispatch(setDropDownImage({dropDownImage:iList}))
     form1.setFieldValue('image',"")
-    // setImageList(iList)
-    
     }
    
     grabImages().catch(console.error);
@@ -55,7 +51,6 @@ const Startup = ():JSX.Element => {
   }
 
   const notifyUserContainer = (bool:boolean) => {
-    console.log(bool)
     if(bool){
       showNotification({
         message:'Container started successfully',
@@ -63,20 +58,20 @@ const Startup = ():JSX.Element => {
       })
     } else {
       showNotification({
-        message:'Failed to start a new container. Container name may already exist on this port',
+        message:'Failed to start a new container',
         autoClose: 3500
       })
     }
     
   }
   const notifyUserImage = (bool:boolean) => {
+    console.log('notify',bool)
     if(bool){
       showNotification({
         message:'Image created successfully',
         autoClose: 3500
       })
     } else {
-      console.log('failed')
       showNotification({
         message:'Failed to create new image',
         autoClose: 3500
@@ -86,16 +81,14 @@ const Startup = ():JSX.Element => {
   
   const setStateAndCall = async (values:StartUpObj, action:string) => {
     if(action==='buildImage'){
-      console.log('here')
       buildImage(values.image)
       await dockController.buildImageResult((args:boolean)=>{
        notifyUserImage(args)
       })
       
     } else {
-      await runNewContainer(values)
+      runNewContainer(values)
       await dockController.runNewResult((args:boolean)=>{
-        console.log('args',args)
       notifyUserContainer(args)
       })
     }
