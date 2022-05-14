@@ -25,7 +25,7 @@ const dockerController = {
    * @returns true/false
    */
   
-  createDockerfile: async (dockerfile) => {
+  createDockerfile: (dockerfile) => {
     const { from, user, host, database, password, port, rootDir, schema } = dockerfile;
    
     process.env.ROOTDIR = rootDir;
@@ -52,9 +52,9 @@ const dockerController = {
     const dFile = lpath.resolve(process.env.DOCKDIR, 'Dockerfile')
     try {
       lfs.writeFileSync(dFile, dockerfileContents, { flag: "w" });
-    } catch (err) {
+    } catch (err: any) {
       console.log(err);
-      return false;
+      return err.json.message
     } 
     return true;
 
@@ -71,12 +71,11 @@ const dockerController = {
     const selectedContainer = await docker.getContainer(containerId);
     await selectedContainer.start(function (err, _data) {
       if (err !== null) { 
-         event.sender.send('startContainerResult', false) 
+         event.sender.send('startContainerResult', err.json.message) 
       } else {
         event.sender.send('startContainerResult', true)
       }
     });
-    return true
   },
 
 
@@ -91,12 +90,11 @@ const dockerController = {
     const selectedContainer = await docker.getContainer(`${containerId}`);
     await selectedContainer.stop(function (err, _data) {
       if (err !== null) { 
-         event.sender.send('stopContainerResult', false) 
+         event.sender.send('stopContainerResult', err.json.message) 
       } else {
         event.sender.send('stopContainerResult', true)
       }
     });
-    return true;
   },
 
 /**
@@ -110,12 +108,11 @@ const dockerController = {
     const selectedContainer = await docker.getContainer(`${containerId}`);    
     const result = await selectedContainer.remove(function (err, _data) {
       if (err !== null) { 
-         event. sender.send('removeContainerResult', false) 
+         event. sender.send('removeContainerResult', err.json.message) 
       } else {
         event.sender.send('removeContainerResult', true)
       }
     });
-    return result;
   },
 /**
  * Returns an array with information aboutimages available in Docker
@@ -237,8 +234,8 @@ const dockerController = {
         })
       })
     }
-    catch (err) {
-      event.sender.send('buildImageResult', false);
+    catch (err: any) {
+      event.sender.send('buildImageResult', err.json.message);
       return false;
     }
     return true;
@@ -256,21 +253,41 @@ const dockerController = {
     process.env.POSTGRES_PORT = port;
     try {
       const docker = await  new Docker();
-      const stream = await docker.run(image, ['postgres'], process.stdout, {
+      const result = await docker.run(image, ['postgres'], process.stdout, {
         Env: [`POSTGRES_PASSWORD=${process.env.POSTGRES_PASSWORD}`], WorkingDir: process.env.ROOTDIR, name: containerName, HostConfig: { PortBindings: {
-          "5432/tcp" : [ { "HostPort": `${port}` } ] }}, Tty: false})
-       stream.once('error', function err (_err) {
-          event.sender.send('runResult', false);
-        })
-        stream.once('container', async function container (_container) {
-          event.sender.send('runResult', true);
+          "5432/tcp" : [ { "HostPort": `${port}` } ] }}, Tty: false}, (err, _data, _rawContainer) => {
+            if (err) { 
+              console.log(err.json.message);
+              event.sender.send('runResult', err.json.message)
+            } })
+        .on('container', async function (container) {
+          console.log('Postgres started');
+          setTimeout(findContainer, 2000, event, container.id);
       })
-     
-      return true;
     }
-    catch (error) {
-      event.sender.send('runResult', false);
+    catch (error: any) {
+      console.log('in error process', error)
+      event.sender.send('runResult', error.json.message);
     }
+  }
+}
+
+const findContainer = async (event, id) => {
+  const docker = await new Docker();
+  const list = await docker.listContainers({all: true})
+  for (let i = 0; i < list.length; i++) {
+    if (list[i].Id === id) {
+      if (list[i].State === 'running') {
+        console.log(`Container state is ${list[i].State}; container status is ${list[i].Status}`)
+        event.sender.send('runResult', true);
+      } else {
+        console.log(`Container state is ${list[i].State}; container status is ${list[i].Status}`)
+        event.sender.send('runResult', `Container state is ${list[i].State}; container status is ${list[i].Status}`);
+      }
+      break;
+    }
+    console.log(`container ${list[i].Id} not found for ${id}`)
+    event.sender.send('runResult', 'Container not found');
   }
 }
 
