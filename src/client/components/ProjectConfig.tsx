@@ -50,6 +50,7 @@ const ProjectConfig = ({ navigate }) => {
     };
   };
 
+  console.log('ProjectConfig')
   /**
    * update Redux state and call backend with given directory
    * then go to database configuration page

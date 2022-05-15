@@ -1,11 +1,12 @@
-import { Space, Box, Title, Paper, Button, TextInput } from "@mantine/core";
+import { Space, Box, Title, Paper, Button, TextInput, NativeSelect } from "@mantine/core";
 import FileSearchButton from "../containers/FileSearchButton";
-import { selectFile, uploadTableData} from "../utility/fileExplorer";
+import { selectFile, uploadTableData, destructureContainerList,destructureContainerPort} from "../utility/fileExplorer";
 import { useForm } from "@mantine/hooks";
 import { useAppSelector,useAppDispatch} from "../utility/hooks.types";
-import { LoadTable } from "../../types";
-import { setEnvConfig } from "../reducers/envConfigSlice";
+import { LoadTable,container} from "../../types";
+import   {setEnvConfig,setDropDownPort } from "../reducers/envConfigSlice";
 import { cleanNotifications, showNotification } from "@mantine/notifications";
+import { ChangeEvent, useEffect } from "react";
 
 /**
  * 
@@ -16,7 +17,7 @@ import { cleanNotifications, showNotification } from "@mantine/notifications";
 const LoadData = () => {
   
   //pull in redux global state and the redux dispatch function to update global state
-  const { tablePath, tableName } = useAppSelector(state => state.envConfig)
+  const { tablePath, tableName, activePorts } = useAppSelector(state => state.envConfig)
   const dispatch = useAppDispatch();
 
   
@@ -28,6 +29,9 @@ const form = useForm({
   initialValues: {
     tablePath: tablePath,
     tableName: tableName,
+    // activePorts: [""],
+    portSelected:""
+    
     }
   });
   /**
@@ -51,21 +55,45 @@ const form = useForm({
     Function updates global state via dispatch and invokes uploadTableData to initiate backend process responsible for uploading data to containeraized database.
     Will also notify users if the data was uploaded successfully via psUploadData which listens for a true/false value from the backend.
    */
-  const setStateAndCall = async (values: LoadTable) => {
-    dispatch(setEnvConfig(values));
-    const response = await uploadTableData(values)
     
-    if(response !== ""){
+useEffect(() => {
+    
+  grabPorts()
+
+  },[]
+)
+
+
+const grabPorts = async (): Promise<void> => {
+  // invoke docker function and receive an array of objects with type 'container'.
+  const containers:container[] = await dockController.getContainersList(false)
+  //desctructure returned object to just grab container names
+  //destructure returned object to just grab container ids
+  const pArray = destructureContainerPort(containers)
+  // form.setFieldValue('activePorts',pArray)
+  //update redux global state
+  dispatch(setDropDownPort({activePorts:pArray}))
+}
+
+  const setStateAndCall = async (values: LoadTable) => {
+    
+    const response = await uploadTableData(values,form.values.portSelected)
+    console.log('response', response)
+    if(response !== undefined){
       showNotification({
         message: response,
         autoClose: 4000
       })
     } 
-    // else {
-    //   await psUploadData.databaseResult((args:boolean|string)=>{
-    //     notifyUser(args)
-    //   })
-    // }
+    else {
+      console.log('here')
+      await psUploadData.databaseResult((args:boolean|string|Error)=>{
+        console.log('in here', typeof args)
+        
+        notifyUser(args, values)
+      })
+    }
+    
   }
   /**
    * 
@@ -73,18 +101,29 @@ const form = useForm({
    * Function will display a success or failure message to the user based on what is received from the backend.
    * True indicates data was loaded successfully, whereas false indicates upload failed 
    */
-  const notifyUser = (bool:boolean|string) => {
-    if(bool){
+  const notifyUser = (arg: boolean |string |Error, values:LoadTable) => {
+    
+    
+    if(typeof arg==='object'){
+      const error = ""+arg
+    
       showNotification({
-        message: "Data uploaded successfully",
+        message: error,
         autoClose: 4000
       })
+     
     } else {
       showNotification({
-        message: "Failed to upload data",
+        message: "Data uploaded Successfully",
         autoClose: 4000
       })
+      
     }
+    dispatch(setEnvConfig(values));
+  }
+      //set local state 'portSelected' to the drop down value
+  const setNameAndId = async (event: ChangeEvent<HTMLSelectElement> ):Promise<void> => {
+    form.setFieldValue('portSelected', event.currentTarget.value)
   }
 
 
@@ -99,6 +138,10 @@ const form = useForm({
     <Box>
     {/* tablePath and tableName fields are wrapped in a form to leverage Mantine useForm hook */}
     <form  style={{display:'flex', flexDirection:'column', alignItems:"center"}} onSubmit={form.onSubmit((values)=> {setStateAndCall(values); })}>
+    <NativeSelect  required  style={{width:"60%"}} placeholder="Select Port" label="Select A Container" data={activePorts} onChange={(event)=> setNameAndId(event)} />
+
+    <Space h={50}/>
+    
     <TextInput
           style={{width:"60%"}}
           required

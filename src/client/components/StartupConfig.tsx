@@ -50,15 +50,15 @@ const Startup = ():JSX.Element => {
       }
   }
 
-  const notifyUserContainer = (bool:boolean) => {
-    if(bool){
+  const notifyUserContainer = (args:boolean|string) => {
+    if(typeof args === 'string'){
       showNotification({
-        message:'Container started successfully',
-        autoClose: 3500
+        message: args,
+        autoClose: 6000
       })
     } else {
       showNotification({
-        message:'Failed to start a new container',
+        message:'Container started successfully',
         autoClose: 3500
       })
     }
@@ -81,14 +81,16 @@ const Startup = ():JSX.Element => {
   
   const setStateAndCall = async (values:StartUpObj, action:string) => {
     if(action==='buildImage'){
-      buildImage(values.image)
+      const result = await buildImage(values.image)
+      console.log(result)
       await dockController.buildImageResult((args:boolean)=>{
        notifyUserImage(args)
       })
       
     } else {
-      runNewContainer(values)
-      await dockController.runNewResult((args:boolean)=>{
+      await runNewContainer(values)
+      await dockController.runNewResult((args:boolean|string)=>{
+        console.log(args)
       notifyUserContainer(args)
       })
     }

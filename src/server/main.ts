@@ -6,7 +6,7 @@ const { uploadData: psUploadData} = require('./controllers/postgres')
 const dockController = require('./controllers/dockerController')
 
 try {
-  require("electron-reloader")(module);
+  require("electron-reloader")(module, {ignore:['./jugglr']});
 } catch (_) {
   console.log("Error");
 }
@@ -38,6 +38,7 @@ function createWindow() {
 
   //win.loadURL('localhost://env variable for endpoint')
   win.webContents.openDevTools();
+
 }
 
 app.whenReady().then(createWindow);
@@ -161,15 +162,16 @@ ipcMain.handle("removeContainer", async (event, containerId) => {
   }
 });
 
-ipcMain.handle("getContainers", async (_event, all) => {
+ipcMain.handle("getContainers", async (event, all) => {
   try {
-    const result = await dockController.getContainersList(all);
+    const result = await dockController.getContainersList(event, all);
+   
     const formatted = result.map(object => {
       const id = object.Id;
       const names = object.Names;
       const image = object.Image;
       const imageId = object.ImageID;
-      const port = object.Ports[0].PublicPort;
+      const port = object.Ports.length!==0 ? object.Ports[0].PublicPort : undefined
       return { id, names, image, imageId, port }
     })
      return formatted;

@@ -78,6 +78,7 @@ const DatabaseConfig = ({ navigate }) => {
       return false;
     }
   };
+  console.log('database Config')
 
   return (
     <Box sx={{ maxWidth: 500 }} mx="auto">

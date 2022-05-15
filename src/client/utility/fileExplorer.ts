@@ -15,7 +15,7 @@ export const selectProjectRootDirectory = async () :Promise<void>=> {
 };
 
 
-export const uploadTableData = async (values:LoadTable) :Promise<string>  => {
+export const uploadTableData = async (values:LoadTable, port:string) :Promise<string>  => {
   const tablePath= values.tablePath
   const tableName=values.tableName
   let ext:string =""
@@ -26,7 +26,7 @@ export const uploadTableData = async (values:LoadTable) :Promise<string>  => {
     return 'Please provide a .csv file'
   } 
 
-  const response = await psUploadData.uploadData(tableName,tablePath)
+  const response = await psUploadData.uploadData(tableName,tablePath,port)
   return response;
 
 
@@ -70,6 +70,7 @@ export const destructureImageList = (arr:image[]): string[] => {
 export const destructureContainerList = (arr:container[]):string[] => {
   
   const newContainerList:string[] = ['']
+  
   arr.forEach((ele)=>{
     const curContainer: string = ele['names'][0]
     const containerName: string = curContainer.substring(curContainer.indexOf("/")+1);
@@ -104,6 +105,7 @@ export const runNewContainer = async (values:StartUpObj): Promise<string> => {
    
 }
 export const buildImage = async (image:string):Promise<void> => {
+
   return await dockController.buildImage(image);
 }
  
@@ -130,7 +132,20 @@ export const removeContainer = async(containerId: string): Promise<boolean> => {
   if(containerId ===undefined){
     return false;
   }
-  console.log('remove file explorer')
   const response = await dockController.removeContainer(containerId)
   return response
+}
+
+export const destructureContainerPort = (container:container[]):string[] => {
+const newArray = ['']
+  container.forEach((ele)=>{
+    newArray.push(""+ele.port)
+  })
+return newArray
+}
+
+export const modifyErrorRemove = (errorMessage: string)=>{
+  const arr=errorMessage.split(' ')
+  const newArr = arr.slice(0,6)
+  return newArr.join(' ')
 }

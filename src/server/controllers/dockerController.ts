@@ -1,3 +1,4 @@
+import { clampUseMovePosition } from "@mantine/hooks";
 
 const lfs = require('fs');
 const lpath = require('path');
@@ -52,6 +53,7 @@ const dockerController = {
     const dFile = lpath.resolve(process.env.DOCKDIR, 'Dockerfile')
     try {
       lfs.writeFileSync(dFile, dockerfileContents, { flag: "w" });
+      
     } catch (err: any) {
       console.log(err);
       return err.json.message
@@ -71,7 +73,9 @@ const dockerController = {
     const selectedContainer = await docker.getContainer(containerId);
     await selectedContainer.start(function (err, _data) {
       if (err !== null) { 
-         event.sender.send('startContainerResult', err.json.message) 
+       
+         event.sender.send('startContainerResult', err.reason) 
+         //err.json.message sends back buffer
       } else {
         event.sender.send('startContainerResult', true)
       }
@@ -90,8 +94,10 @@ const dockerController = {
     const selectedContainer = await docker.getContainer(`${containerId}`);
     await selectedContainer.stop(function (err, _data) {
       if (err !== null) { 
-         event.sender.send('stopContainerResult', err.json.message) 
+        console.log('stop', err)
+         event.sender.send('stopContainerResult', err.reason) 
       } else {
+        console.log('stop success')
         event.sender.send('stopContainerResult', true)
       }
     });
@@ -108,6 +114,7 @@ const dockerController = {
     const selectedContainer = await docker.getContainer(`${containerId}`);    
     const result = await selectedContainer.remove(function (err, _data) {
       if (err !== null) { 
+        console.log(err)
          event. sender.send('removeContainerResult', err.json.message) 
       } else {
         event.sender.send('removeContainerResult', true)
@@ -195,7 +202,7 @@ const dockerController = {
  *  }
  * ]
   */
- getContainersList: async (all: boolean) => {
+ getContainersList: async ( _event,all: boolean) => {
     const docker = await new Docker({socketPath: '/var/run/docker.sock'})
     const list = await docker.listContainers({all: all})
     .then(list => { return list })
@@ -230,11 +237,16 @@ const dockerController = {
             {t: image})
       await new Promise((_resolve, _reject) => {
         dockerode.modem.followProgress(stream, () => {
+          console.log('build image dock')
             event.sender.send('buildImageResult', true);      
         })
       })
+      console.log('buildimage outside')
     }
     catch (err: any) {
+      //errors when dockerfile information isn't available. error message does not have a err.json.message
+      //haven't figured out a way to error out docker image creation when dockerfile is available
+      console.log('catch', err)
       event.sender.send('buildImageResult', err.json.message);
       return false;
     }
@@ -257,7 +269,7 @@ const dockerController = {
         Env: [`POSTGRES_PASSWORD=${process.env.POSTGRES_PASSWORD}`], WorkingDir: process.env.ROOTDIR, name: containerName, HostConfig: { PortBindings: {
           "5432/tcp" : [ { "HostPort": `${port}` } ] }}, Tty: false}, (err, _data, _rawContainer) => {
             if (err) { 
-              console.log(err.json.message);
+              console.log('here', err.json.message);
               event.sender.send('runResult', err.json.message)
             } })
         .on('container', async function (container) {
