@@ -235,7 +235,7 @@ const dockerController = {
       })
     }
     catch (err: any) {
-      event.sender.send('buildImageResult', err.json.message);
+      event.sender.send('buildImageResult', err);
       return false;
     }
     return true;

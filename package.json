@@ -54,6 +54,7 @@
     "@typescript-eslint/parser": "^5.21.0",
     "babel-loader": "^8.2.5",
     "css-loader": "^6.7.1",
+    "electron-mock-ipc": "^0.3.12",
     "electron-reloader": "^1.2.3",
     "eslint": "^8.14.0",
     "eslint-plugin-react": "^7.29.4",
