@@ -1,7 +1,7 @@
 
-# Jugglr
+# Jugglr ·
 
-A brief description of what this project does and who it's for
+Jugglr is a tool for managing test data and running tests with a lightweight, dedicated database. Jugglr enables developers, testers, and CI/CD processes to run tests against containerized databases with data loaded at runtime.
 
 
 ## Authors
@@ -9,17 +9,20 @@ A brief description of what this project does and who it's for
 - [@Anthony Stanislaus](https://github.com/STANISLAUSA)
 - [@Alvin Ma](http://github.com/ALVMA1945)
 - [@Miriam Feder](https://www.github.com/mirfeder)
-- [@Iftekhar Uddin](http://github.com/iuddin)
+- [@S M Iftekhar Uddin](http://github.com/iuddin)
 
 
-## Run Locally
+## Installation
+
+A. Download the Jugglr executable app from [here](http://github.com/oslabs-beta/Jugglr) to start using it right away. 
+
+B. Alternatively, follow these steps:
 
 ### Clone the project
 
 ```bash
   git clone https://github.com/oslabs-beta/Jugglr
 ```
-
 ### Go to the project directory
 
 ```bash
@@ -43,9 +46,12 @@ A brief description of what this project does and who it's for
 ```bash
   npm test
 ```
+
+**Note: you must be running Docker to use Jugglr. Download Docker Desktop from [here](https://www.docker.com/get-started/).**
+
 ## Documentation
 
-[Documentation](https://linktodocumentation)
+Detailed documentation on how to use Jugglr can be found [here](https://github.com/oslabs-beta/Jugglr).
 
 
 ## Running in CI/CD
