@@ -108,7 +108,7 @@ const dockerController = {
     const selectedContainer = await docker.getContainer(`${containerId}`);    
     const result = await selectedContainer.remove(function (err, _data) {
       if (err !== null) { 
-         event. sender.send('removeContainerResult', err.reason) 
+         event. sender.send('removeContainerResult', err.json.message) 
       } else {
         event.sender.send('removeContainerResult', true)
       }
