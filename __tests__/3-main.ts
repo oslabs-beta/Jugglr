@@ -19,26 +19,13 @@ describe ("Server Routes", () => {
   describe ('getImages', () => {
     it ('gets a list of images', async () => {
       const list = await dockerController.getImagesList();
-      const formatted = list.map(object => {
-        const id = object.Id;
-        const containers = object.Containers;
-        const repoTags = object.RepoTags;
-        return { id: id, containers: containers, repoTags: repoTags}
-      })
-      expect(formatted).toBeInstanceOf(Array)
+      expect(list).toBeInstanceOf(Array)
     })
   }),
   describe ('getContainers', () => {
     it ('gets a list of containers', async () => {
       const list = await dockerController.getContainersList();
-      const formatted = list.map(object => {
-        const id = object.Id;
-        const names = object.Names;
-        const image = object.Image;
-        const imageId = object.ImageID
-        return { id, names, image, imageId }
-      })
-      expect(formatted).toBeInstanceOf(Array)
+      expect(list).toBeInstanceOf(Array)
     })
   })
 })

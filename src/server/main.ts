@@ -169,7 +169,7 @@ ipcMain.handle("getContainers", async (_event, all) => {
       const names = object.Names;
       const image = object.Image;
       const imageId = object.ImageID;
-      const port = object.Ports[0].PublicPort;
+      const port = object.Ports[0]?.PublicPort;
       return { id, names, image, imageId, port }
     })
      return formatted;

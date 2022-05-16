@@ -91,7 +91,7 @@ export default {
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1',
   },
-  
+  testSequencer: "<rootDir>/__tests__/sequencer.js",
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
   // moduleNameMapper: {},
 
@@ -166,7 +166,7 @@ export default {
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
   testPathIgnorePatterns: [
-    "/node_modules/"
+    "/node_modules/", "__tests__/sequencer.js", "__tests__/electron-mock.ts"
   ],
 
   // The regexp pattern or array of patterns that Jest uses to detect test files
