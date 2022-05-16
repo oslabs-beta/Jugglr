@@ -8,7 +8,7 @@
  import {store} from "../src/client/store" 
  import StartupConfig from "../src/client/components/StartupConfig";
  import '@testing-library/jest-dom/extend-expect'
-//  import {ipcMain, ipcRenderer} from "."
+ import {ipcMain, ipcRenderer} from "./electron-mock"
 //  import  "../src/preload"
 
  

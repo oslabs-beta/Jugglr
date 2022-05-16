@@ -21,9 +21,15 @@ export const setDockerFile = async (values: DockerFile): Promise<boolean> => {
  * @returns {object}
  */
 
-
+/**
+ * Extracts just the image name from array of image objects obtained from docker
+ * @param arr - arr param is an array of image objects
+ * @returns returns an array of image names that are shown as the dropdown values
+ */
 export const destructureImageList = (arr:image[]): string[] => {
   const newImageList :string[] = ['']
+
+  
   arr.forEach((ele)=>{
     const curTag: string[] = ele['repoTags']
     if(curTag!==null){
@@ -35,7 +41,11 @@ export const destructureImageList = (arr:image[]): string[] => {
   return newImageList
 }
 
-
+/**
+ * 
+ * @param arr 
+ * @returns 
+ */
 export const destructureContainerList = (arr:container[]):string[] => {
   
   const newContainerList:string[] = ['']
@@ -126,9 +136,8 @@ export const modifyErrorRemove = (errorMessage: string)=>{
 export const buildOrRun = async (values:StartUpObj, action:string, callback:Function) => {
     if(action==='buildImage'){
       buildImage(values.image)
-      console.log('hello')
-      await dockController.buildImageResult((args:boolean)=>{
-          console.log(args)
+      await dockController.buildImageResult((args:boolean|string|Error)=>{
+        //   console.log('dockFunctions',args, typeof args)
        callback(args)
       })
       

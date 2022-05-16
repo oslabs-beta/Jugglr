@@ -156,19 +156,19 @@ const Run = ():JSX.Element => {
                     justifyContent: "space-evenly",
                     alignItems: "center",
                     height: "15vh",
-                    width:"75%"
+                    width:"80%"
                   }}>
                     <div style={{ width: "30%" }}>
                     {/* When button is selected, call setStateAndCall passing in the id of the selected container and the action */}
-                      <Button fullWidth onClick={()=>{setStateAndCall(containerIdObject[form2.values.containerSelected],'start') }}>Start Container</Button>
+                      <Button fullWidth onClick={()=>{setStateAndCall(containerIdObject[form2.values.containerSelected],'start') }}>Start</Button>
                     </div>
   
                     <div style={{ width: "30%" }}>
-                      <Button fullWidth onClick={()=>{ setStateAndCall(containerIdObject[form2.values.containerSelected],'stop'); }}>Stop Container</Button>
+                      <Button fullWidth onClick={()=>{ setStateAndCall(containerIdObject[form2.values.containerSelected],'stop'); }}>Stop</Button>
                     </div>
 
                     <div style={{ width: "30%" }}>
-                      <Button fullWidth onClick={()=>{ setStateAndCall(containerIdObject[form2.values.containerSelected],'remove'); }}>Remove Container</Button>
+                      <Button fullWidth onClick={()=>{ setStateAndCall(containerIdObject[form2.values.containerSelected],'remove'); }}>Remove</Button>
                     </div>
               </div>
             </div>

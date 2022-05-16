@@ -65,9 +65,9 @@ const Startup = ():JSX.Element => {
     }
     
   }
-  const notifyUserImage = (bool:boolean) => {
-    console.log('notify',bool)
-    if(bool){
+  const notifyUserImage = (arg:boolean|string) => {
+    console.log(typeof arg)
+    if(typeof arg==='boolean'){
       showNotification({
         message:'Image created successfully',
         autoClose: 3500

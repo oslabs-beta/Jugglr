@@ -162,9 +162,9 @@ ipcMain.handle("removeContainer", async (event, containerId) => {
   }
 });
 
-ipcMain.handle("getContainers", async (event, all) => {
+ipcMain.handle("getContainers", async (_event, all) => {
   try {
-    const result = await dockController.getContainersList(event, all);
+    const result = await dockController.getContainersList(all);
    
     const formatted = result.map(object => {
       const id = object.Id;

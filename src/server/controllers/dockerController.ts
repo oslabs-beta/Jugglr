@@ -202,7 +202,7 @@ const dockerController = {
  *  }
  * ]
   */
- getContainersList: async ( _event,all: boolean) => {
+ getContainersList: async ( all: boolean) => {
     const docker = await new Docker({socketPath: '/var/run/docker.sock'})
     const list = await docker.listContainers({all: all})
     .then(list => { return list })
@@ -242,6 +242,7 @@ const dockerController = {
       })
     }
     catch (err: any) {
+      console.log('img',err)
       event.sender.send('buildImageResult', err);
       return false;
     }
