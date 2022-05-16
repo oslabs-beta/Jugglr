@@ -14,10 +14,8 @@ const { Pool } = require('pg')
 const uploadData = async (event, table, sqlSchema, port="5432") => {
   try {  
     if (!process.env.POSTGRES_USER || !process.env.POSTGRES_DB || !process.env.POSTGRES_PASSWORD) {
-      
-      console.log('Error: missing required database information');
       event.sender.send('databaseResult', 'Error: missing required database information');
-      return;
+      return 'Error: missing required database information';
     }  
     process.env.POSTGRES_PORT = port; 
     const pool = new Pool({
@@ -29,7 +27,6 @@ const uploadData = async (event, table, sqlSchema, port="5432") => {
     });
     
     pool.on('error', (err, _client) => {
-      console.log('Unexpected error on idle client', err) // your callback here
       return event.sender.send('databaseResult', err.error);
     });
     const string = `COPY ${table} FROM STDIN DELIMITERS ',' CSV HEADER`
@@ -39,13 +36,9 @@ const uploadData = async (event, table, sqlSchema, port="5432") => {
       const stream = client.query(csvCopyString, params);
       const fileStream = fs.createReadStream(sqlSchema);
       fileStream.on('error', (error) => {
-        console.log('first filestream error!', error)
-        done();
         return event.sender.send('databaseResult', error);
       });
       stream.on('error', (error) => {
-        console.log('stream error!', error)
-        //done();
         return event.sender.send('databaseResult', error);
       });
       fileStream.pipe(stream);
