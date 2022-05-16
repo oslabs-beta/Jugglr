@@ -237,17 +237,12 @@ const dockerController = {
             {t: image})
       await new Promise((_resolve, _reject) => {
         dockerode.modem.followProgress(stream, () => {
-          console.log('build image dock')
             event.sender.send('buildImageResult', true);      
         })
       })
-      console.log('buildimage outside')
     }
     catch (err: any) {
-      //errors when dockerfile information isn't available. error message does not have a err.json.message
-      //haven't figured out a way to error out docker image creation when dockerfile is available
-      console.log('catch', err)
-      event.sender.send('buildImageResult', err.json.message);
+      event.sender.send('buildImageResult', err);
       return false;
     }
     return true;

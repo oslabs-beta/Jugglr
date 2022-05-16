@@ -16,8 +16,8 @@ const uploadData = async (event, table, sqlSchema, port="5432") => {
     if (!process.env.POSTGRES_USER || !process.env.POSTGRES_DB || !process.env.POSTGRES_PASSWORD) {
       
       console.log('Error: missing required database information');
-      return 'Error: missing required database information'
-      // return event.sender.send('databaseResult', 'Error: missing required database information');
+      event.sender.send('databaseResult', 'Error: missing required database information');
+      return;
     }  
     process.env.POSTGRES_PORT = port; 
     const pool = new Pool({
@@ -29,7 +29,7 @@ const uploadData = async (event, table, sqlSchema, port="5432") => {
     });
     
     pool.on('error', (err, _client) => {
-      console.error('Unexpected error on idle client', err) // your callback here
+      console.log('Unexpected error on idle client', err) // your callback here
       return event.sender.send('databaseResult', err.error);
     });
     const string = `COPY ${table} FROM STDIN DELIMITERS ',' CSV HEADER`
