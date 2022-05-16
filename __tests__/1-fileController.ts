@@ -6,6 +6,10 @@ describe ("Gets Dockerfile Information", () => {
     it('finds and parses the Dockerfile', async () => {
       const response = await fileCtrlr.setProjectRoot(process.env.ROOTDIR);
       expect(response).toHaveProperty('user');
+      expect(response).toHaveProperty('database');
+      expect(response).toHaveProperty('password');      
+      expect(response).toHaveProperty('schema');
+      expect(response.schema).toMatch (/starwars_postgres_create.sql/)
     })
   }),
   describe ('No Dockerfile Exists', () => {
