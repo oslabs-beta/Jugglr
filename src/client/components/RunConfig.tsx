@@ -1,5 +1,5 @@
 import { Space, Box, Title, Paper, Button,  NativeSelect } from "@mantine/core";
-import {  destructureContainerList, destructureContainerId, startContainer, stopContainer, removeContainer, modifyErrorRemove} from "../utility/fileExplorer";
+import {  destructureContainerList, destructureContainerId, startContainer, stopContainer, removeContainer, modifyErrorRemove} from "../utility/dockerFunctions";
 import { ChangeEvent, useEffect } from "react";
 import { useForm } from "@mantine/hooks";
 import { useAppSelector, useAppDispatch } from "../utility/hooks.types";

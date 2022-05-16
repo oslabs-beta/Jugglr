@@ -4,7 +4,6 @@ import { container, DockerFile, image } from './types';
 
 contextBridge.exposeInMainWorld("selectorModule", {
   openFile: async () => {
-    console.log("hello!")
     const response = await ipcRenderer.invoke("open");
     return response;
   },
@@ -26,7 +25,6 @@ contextBridge.exposeInMainWorld("dockController", {
     return await ipcRenderer.invoke('createDockerfile', dockerfile);
   },
   buildImage: async(imageName:string) => {
-    console.log('preload',imageName)
     return await ipcRenderer.invoke('buildImage', imageName);
   },
   runContainer: async(imageName: string, containerName:string, port:string) => {
@@ -56,7 +54,8 @@ contextBridge.exposeInMainWorld("dockController", {
   },
 
   buildImageResult: (callback:Function) => {
-    ipcRenderer.on('buildImageResult', (_event: Event, arg: boolean|string) => {
+    console.log('outer buildimageresult')
+    ipcRenderer.once('buildImageResult', (_event: Event, arg: boolean|string) => {
     console.log('received buildImageResult', arg)
     callback(arg)
   })

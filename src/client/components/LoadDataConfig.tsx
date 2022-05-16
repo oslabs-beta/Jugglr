@@ -1,6 +1,9 @@
 import { Space, Box, Title, Paper, Button, TextInput, NativeSelect } from "@mantine/core";
 import FileSearchButton from "../containers/FileSearchButton";
-import { selectFile, uploadTableData, destructureContainerList,destructureContainerPort} from "../utility/fileExplorer";
+import { selectFile } from "../utility/fileExplorer";
+import { uploadTableData} from "../utility/postrgresFunctions";
+import { destructureContainerPort} from "../utility/dockerFunctions";
+
 import { useForm } from "@mantine/hooks";
 import { useAppSelector,useAppDispatch} from "../utility/hooks.types";
 import { LoadTable,container} from "../../types";

@@ -1,11 +1,12 @@
 import { Space, Box, Title, Paper, Button, TextInput, NativeSelect, Grid,Center } from "@mantine/core";
-import { destructureImageList, runNewContainer, buildImage, } from "../utility/fileExplorer";
+import { destructureImageList, getImages, buildOrRun } from "../utility/dockerFunctions";
 import {  useEffect } from "react";
 import { useForm, } from "@mantine/hooks";
 import { useAppSelector, useAppDispatch } from "../utility/hooks.types";
 import { setDropDownImage } from "../reducers/envConfigSlice";
-import { image, StartUpObj } from "../../types";
+import { image } from "../../types";
 import { showNotification } from "@mantine/notifications";
+import React from "react"
 
 
 
@@ -30,7 +31,7 @@ const Startup = ():JSX.Element => {
 
   useEffect( () => {
     const grabImages = async (): Promise<void> => {
-    const images:image[] = await dockController.getImagesList()
+    const images:image[] = await getImages()
     const iList:string[] = destructureImageList(images)
     dispatch(setDropDownImage({dropDownImage:iList}))
     form1.setFieldValue('image',"")
@@ -78,23 +79,8 @@ const Startup = ():JSX.Element => {
       })
     }
   }
-  
-  const setStateAndCall = async (values:StartUpObj, action:string) => {
-    if(action==='buildImage'){
-      const result = await buildImage(values.image)
-      console.log(result)
-      await dockController.buildImageResult((args:boolean)=>{
-       notifyUserImage(args)
-      })
-      
-    } else {
-      await runNewContainer(values)
-      await dockController.runNewResult((args:boolean|string)=>{
-        console.log(args)
-      notifyUserContainer(args)
-      })
-    }
-  }
+ 
+ 
 
 
   return (
@@ -107,7 +93,7 @@ const Startup = ():JSX.Element => {
       <Space h="sm" />
       <Box>
 
-      <form  onSubmit={form1.onSubmit((values)=> setStateAndCall(values,'buildImage'))}>
+      <form  onSubmit={form1.onSubmit((values)=> buildOrRun(values,'buildImage',notifyUserImage))}>
       
       <Center>
 
@@ -122,7 +108,7 @@ const Startup = ():JSX.Element => {
 
       <Space h="md" />
       <Center>
-      <Button type="submit">Create new Image</Button>
+      <Button type="submit">Create New Image</Button>
       
       </Center>
       
@@ -137,7 +123,7 @@ const Startup = ():JSX.Element => {
       <Space h={50} />
     <Box>
     
-      <form onSubmit={form1.onSubmit((values)=> setStateAndCall(values,'newContainer'))}>
+      <form onSubmit={form1.onSubmit((values)=> buildOrRun(values,'newContainer', notifyUserContainer))}>
         <Grid>
      
     <Grid.Col>
