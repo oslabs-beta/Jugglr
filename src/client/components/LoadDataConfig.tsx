@@ -89,10 +89,7 @@ const grabPorts = async (): Promise<void> => {
       })
     } 
     else {
-      console.log('here')
       await psUploadData.databaseResult((args:boolean|string|Error)=>{
-        console.log('in here', typeof args)
-        
         notifyUser(args, values)
       })
     }
@@ -105,8 +102,6 @@ const grabPorts = async (): Promise<void> => {
    * True indicates data was loaded successfully, whereas false indicates upload failed 
    */
   const notifyUser = (arg: boolean |string |Error, values:LoadTable) => {
-    console.log(arg)
-    
     if(typeof arg==='object' || typeof arg==='string'){
       const error = ""+arg
       showNotification({
