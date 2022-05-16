@@ -69,7 +69,7 @@ describe('Docker and Postgres tests', () => {
         await ipcMain.on('buildImageResult', (_event: Event, arg: boolean|string) => {
           result = arg;
         })
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        await new Promise(resolve => setTimeout(resolve, 3000));
         expect(result).toBe(true);
         })
     }),  
@@ -81,7 +81,7 @@ describe('Docker and Postgres tests', () => {
       await ipcMain.on('runResult', (_event: Event, arg: boolean|string) => {
         result = arg;
       })
-      await new Promise(resolve => setTimeout(resolve, 3000));
+      await new Promise(resolve => setTimeout(resolve, 4000));
       expect(result).toBe(true)
     })
   }),
