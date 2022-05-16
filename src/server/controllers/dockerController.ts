@@ -54,7 +54,7 @@ const dockerController = {
       lfs.writeFileSync(dFile, dockerfileContents, { flag: "w" });
     } catch (err: any) {
       console.log(err);
-      return err.reason
+      return err;
     } 
     return true;
 
