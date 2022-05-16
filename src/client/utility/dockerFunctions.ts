@@ -89,7 +89,6 @@ export const buildImage = async (image:string):Promise<void> => {
 }
  
 export const getImages = async () : Promise<image[]> => {
-    console.log('getImages')
   return await dockController.getImagesList()
 }
 

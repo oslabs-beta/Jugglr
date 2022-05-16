@@ -8,12 +8,9 @@
  import {store} from "../src/client/store" 
  import StartupConfig from "../src/client/components/StartupConfig";
  import '@testing-library/jest-dom/extend-expect'
- import {ipcMain, ipcRenderer} from "./electron-mock"
-//  import  "../src/preload"
-
- 
-
- 
+//  import {ipcMain, ipcRenderer} from "./electron-mock"
+//  import "../src/preload"
+//  const { contextBridge } = require("electron");
 
 
  
@@ -29,7 +26,7 @@
   });
  
    it("Start up screen renders properly with two headers: 'Image Configuration', 'Create New Image', and 'Container Configuration'", async () => {
-    const headings = await component.findAllByRole('heading')
+    const headings = await screen.findAllByRole('heading')
     expect(headings.length).toBe(2)
     expect(headings[0]).toHaveTextContent("Image Configuration");
     expect(headings[1]).toHaveTextContent("Container Configuration")
@@ -37,7 +34,7 @@
    })
    
   it("renders two buttons with the texts 'Create New Image' and 'Run New Container'", async ()=>{
-      const buttons = await component.findAllByRole('button')
+      const buttons = await screen.findAllByRole('button')
       expect(buttons.length).toBe(2)
       expect(buttons[0]).toHaveTextContent('Create New Image')
       expect(buttons[1]).toHaveTextContent('Run New Container')

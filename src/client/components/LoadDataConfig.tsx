@@ -105,11 +105,10 @@ const grabPorts = async (): Promise<void> => {
    * True indicates data was loaded successfully, whereas false indicates upload failed 
    */
   const notifyUser = (arg: boolean |string |Error, values:LoadTable) => {
+    console.log(arg)
     
-    
-    if(typeof arg==='object'){
+    if(typeof arg==='object' || typeof arg==='string'){
       const error = ""+arg
-    
       showNotification({
         message: error,
         autoClose: 4000
