@@ -54,7 +54,7 @@ const dockerController = {
       lfs.writeFileSync(dFile, dockerfileContents, { flag: "w" });
     } catch (err: any) {
       console.log(err);
-      return err.json.message
+      return err.reason
     } 
     return true;
 
@@ -71,7 +71,7 @@ const dockerController = {
     const selectedContainer = await docker.getContainer(containerId);
     await selectedContainer.start(function (err, _data) {
       if (err !== null) { 
-         event.sender.send('startContainerResult', err.json.message) 
+         event.sender.send('startContainerResult', err.reason) 
       } else {
         event.sender.send('startContainerResult', true)
       }
@@ -90,7 +90,7 @@ const dockerController = {
     const selectedContainer = await docker.getContainer(`${containerId}`);
     await selectedContainer.stop(function (err, _data) {
       if (err !== null) { 
-         event.sender.send('stopContainerResult', err.json.message) 
+         event.sender.send('stopContainerResult', err.reason) 
       } else {
         event.sender.send('stopContainerResult', true)
       }
@@ -108,7 +108,7 @@ const dockerController = {
     const selectedContainer = await docker.getContainer(`${containerId}`);    
     const result = await selectedContainer.remove(function (err, _data) {
       if (err !== null) { 
-         event. sender.send('removeContainerResult', err.json.message) 
+         event. sender.send('removeContainerResult', err.reason) 
       } else {
         event.sender.send('removeContainerResult', true)
       }
@@ -257,8 +257,8 @@ const dockerController = {
         Env: [`POSTGRES_PASSWORD=${process.env.POSTGRES_PASSWORD}`], WorkingDir: process.env.ROOTDIR, name: containerName, HostConfig: { PortBindings: {
           "5432/tcp" : [ { "HostPort": `${port}` } ] }}, Tty: false}, (err, _data, _rawContainer) => {
             if (err) { 
-              console.log(err.json.message);
-              event.sender.send('runResult', err.json.message)
+              console.log(err.reason);
+              event.sender.send('runResult', err.reason)
             } })
         .on('container', async function (container) {
           console.log('Postgres started');
