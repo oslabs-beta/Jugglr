@@ -50,7 +50,9 @@ const uploadData = async (event, table, sqlSchema, port="5432") => {
       });
       fileStream.pipe(stream);
       fileStream.on('end', done);
-      return event.sender.send('databaseResult', true);
+      stream.on('finish', () => {
+        return event.sender.send('databaseResult', true);
+      }) 
     })
   }
   catch (error:any) {
