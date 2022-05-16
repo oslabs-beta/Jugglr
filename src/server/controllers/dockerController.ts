@@ -257,8 +257,7 @@ const dockerController = {
         Env: [`POSTGRES_PASSWORD=${process.env.POSTGRES_PASSWORD}`], WorkingDir: process.env.ROOTDIR, name: containerName, HostConfig: { PortBindings: {
           "5432/tcp" : [ { "HostPort": `${port}` } ] }}, Tty: false}, (err, _data, _rawContainer) => {
             if (err) { 
-              console.log(err.reason);
-              event.sender.send('runResult', err.reason)
+              event.sender.send('runResult', err.json.message)
             } })
         .on('container', async function (container) {
           console.log('Postgres started');
