@@ -114,7 +114,6 @@ const dockerController = {
     const selectedContainer = await docker.getContainer(`${containerId}`);    
     const result = await selectedContainer.remove(function (err, _data) {
       if (err !== null) { 
-        console.log(err)
          event. sender.send('removeContainerResult', err.json.message) 
       } else {
         event.sender.send('removeContainerResult', true)
@@ -237,11 +236,9 @@ const dockerController = {
             {t: image})
       await new Promise((_resolve, _reject) => {
         dockerode.modem.followProgress(stream, () => {
-          console.log('build image dock')
             event.sender.send('buildImageResult', true);      
         })
       })
-      console.log('buildimage outside')
     }
     catch (err: any) {
       //errors when dockerfile information isn't available. error message does not have a err.json.message
