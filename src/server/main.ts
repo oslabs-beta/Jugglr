@@ -76,15 +76,15 @@ ipcMain.handle("setProjectRoot", async(_event, rootdir)=>{
 })
 
 
-ipcMain.handle("uploadData", async (event, table, sqlSchema) => {
+ipcMain.handle("uploadData", async (event, table, sqlSchema, port) => {
   try {
     // console.log('here', table, sqlSchema)
-    const result = await psUploadData(event, table, sqlSchema);
+    const result = await psUploadData(event, table, sqlSchema, port);
     return result;
   }
   catch (err:any) {
     // console.log(err);
-    return event.sender.send('databaseResult', err.json.message);
+    return event.sender.send('databaseResult', err);
   }
 });
 
@@ -161,15 +161,16 @@ ipcMain.handle("removeContainer", async (event, containerId) => {
   }
 });
 
-ipcMain.handle("getContainers", async (_event) => {
+ipcMain.handle("getContainers", async (_event, all) => {
   try {
-    const result = await dockController.getContainersList();
+    const result = await dockController.getContainersList(all);
     const formatted = result.map(object => {
       const id = object.Id;
       const names = object.Names;
       const image = object.Image;
-      const imageId = object.ImageID
-      return { id, names, image, imageId }
+      const imageId = object.ImageID;
+      const port = object.Ports[0]?.PublicPort;
+      return { id, names, image, imageId, port }
     })
      return formatted;
   }
