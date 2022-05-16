@@ -56,7 +56,7 @@ const dockerController = {
       
     } catch (err: any) {
       console.log(err);
-      return err.json.message
+      return err;
     } 
     return true;
 
@@ -73,9 +73,7 @@ const dockerController = {
     const selectedContainer = await docker.getContainer(containerId);
     await selectedContainer.start(function (err, _data) {
       if (err !== null) { 
-       
          event.sender.send('startContainerResult', err.reason) 
-         //err.json.message sends back buffer
       } else {
         event.sender.send('startContainerResult', true)
       }
@@ -94,7 +92,6 @@ const dockerController = {
     const selectedContainer = await docker.getContainer(`${containerId}`);
     await selectedContainer.stop(function (err, _data) {
       if (err !== null) { 
-        console.log('stop', err)
          event.sender.send('stopContainerResult', err.reason) 
       } else {
         console.log('stop success')
@@ -242,7 +239,6 @@ const dockerController = {
       })
     }
     catch (err: any) {
-      console.log('img',err)
       event.sender.send('buildImageResult', err);
       return false;
     }
@@ -265,7 +261,6 @@ const dockerController = {
         Env: [`POSTGRES_PASSWORD=${process.env.POSTGRES_PASSWORD}`], WorkingDir: process.env.ROOTDIR, name: containerName, HostConfig: { PortBindings: {
           "5432/tcp" : [ { "HostPort": `${port}` } ] }}, Tty: false}, (err, _data, _rawContainer) => {
             if (err) { 
-              console.log('here', err.json.message);
               event.sender.send('runResult', err.json.message)
             } })
         .on('container', async function (container) {

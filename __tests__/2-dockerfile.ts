@@ -7,7 +7,10 @@ const pg = require('../src/server/controllers/postgres');
 jest.setTimeout(20000);
 process.env.SCHEMA = path.resolve(`${process.env.ROOTDIR}`, 'data/starwars_postgres_create.sql')
 let container1;
+<<<<<<< HEAD
 let container2;
+=======
+>>>>>>> dev
 
 describe('Docker and Postgres tests', () => {
   describe ("Dockerfile Create", () => {
