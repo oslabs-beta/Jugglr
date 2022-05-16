@@ -141,7 +141,7 @@ const grabPorts = async (): Promise<void> => {
     <Box>
     {/* tablePath and tableName fields are wrapped in a form to leverage Mantine useForm hook */}
     <form  style={{display:'flex', flexDirection:'column', alignItems:"center"}} onSubmit={form.onSubmit((values)=> {setStateAndCall(values); })}>
-    <NativeSelect  required  style={{width:"60%"}} placeholder="Select Port" label="Select A Container" data={activePorts} onChange={(event)=> setNameAndId(event)} />
+    <NativeSelect  required  style={{width:"60%"}} placeholder="Select Port" label="Select A Port" data={activePorts} onChange={(event)=> setNameAndId(event)} />
 
     <Space h={50}/>
     
