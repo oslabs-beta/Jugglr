@@ -16,7 +16,8 @@ const uploadData = async (event, table, sqlSchema, port="5432") => {
     if (!process.env.POSTGRES_USER || !process.env.POSTGRES_DB || !process.env.POSTGRES_PASSWORD) {
       
       console.log('Error: missing required database information');
-      return event.sender.send('databaseResult', 'Error: missing required database information');
+      event.sender.send('databaseResult', 'Error: missing required database information');
+      return;
     }  
     process.env.POSTGRES_PORT = port; 
     const pool = new Pool({
