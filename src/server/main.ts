@@ -5,7 +5,7 @@ const selectorModule = require('./controllers/fileController');
 const { uploadData: psUploadData} = require('./controllers/postgres')
 const dockController = require('./controllers/dockerController')
 
-require("electron-reloader")(module);
+require("electron-reloader")(module, {ignore:['./jugglr']});
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -33,6 +33,7 @@ function createWindow() {
 
   //win.loadURL('localhost://env variable for endpoint')
   win.webContents.openDevTools();
+
 }
 
 app.whenReady().then(createWindow);
@@ -145,6 +146,7 @@ ipcMain.handle("removeContainer", async (event, containerId) => {
 ipcMain.handle("getContainers", async (_event, all) => {
   try {
     const result = await dockController.getContainersList(all);
+   
     const formatted = result.map(object => {
       const id = object.Id;
       const names = object.Names;

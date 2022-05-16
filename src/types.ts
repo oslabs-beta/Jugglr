@@ -22,6 +22,7 @@ export type  container = {
   image: string
   imageId:string
   names: string
+  port: string
 }
 export type RunDocker = {
   container:string
@@ -44,3 +45,4 @@ export type LoadTable = {
 }
 export type rootDir = string;
 export type schema = string;
+
