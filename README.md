@@ -14,32 +14,32 @@ A brief description of what this project does and who it's for
 
 ## Run Locally
 
-Clone the project
+### Clone the project
 
 ```bash
   git clone https://github.com/oslabs-beta/Jugglr
 ```
 
-Go to the project directory
+### Go to the project directory
 
 ```bash
   cd Jugglr
 ```
 
-Install dependencies
+### Install dependencies
 
 ```bash
   npm install
 ```
 
-Start the server
+### Start the servers
 
 ```bash
   npm run build
   npm start
 ```
 
-Run tests
+### Run tests
 ```bash
   npm test
 ```
@@ -48,16 +48,33 @@ Run tests
 [Documentation](https://linktodocumentation)
 
 
-## Environment Variables
+## Running in CI/CD
 
-If running locally, you may need to add a .env file. The following variables are set when using 
-the application, and should not need to be set directly if running the application.
+To run tests in a CI/CD process, the Docker image must be built and run in a container on the CI/CD server. 
+You may choose to create a second Dockerfile (e.g.) Dockerfile.cli as follows:
+Using the baseline Dockerfile created by Jugglr (in the `<project root>`/jugglr/ directory), you
+can either load a sql file with all data included (i.e., a PostgreSQL dump file) 
+or you can load data as a separate step, as described below
 
-`ROOTDIR` 
-`DOCKDIR` 
-`POSTGRES_DB`
-`POSTGRES_PASSWORD`
-`POSTGRES_USER`
-`POSTGRES_PORT`
-`SCHEMA` 
+#### First, in the Dockerfile, add a step at the end to copy the csv file(s) into the container:
+```bash
+COPY <yourcsvfilename.csv with full path>  <specify any path in the container, like /usr/data/yourcsvfilename.csv>
+```
+#### Build the image 
+- note: the dot after the image name is important, it means build the image from the current directory. If you want to build image from elsewhere, specify that location relative to where command is being run from
+- if you name your Dockerfile a different name or put it in a different path, specify that after the -f flag.
+```bash
+docker build -t <image name> . -f jugglr/Dockerfile   //or other name you have given the Dockerfile
+```
+#### Run the image in a container: 
+```bash
+  docker run -d \
+  --name <container name>  \
+  -p <port to run on>:5432 \                                  //port number can be anything on the left of the colon. Leave the 5432 after the colon
+  -e POSTGRES_PASSWORD=<postgres password>  <image name>
+```
+#### Finally, load data from a file (keep the single and double quotes in the copy command below):
 
+```bash
+docker exec -it <container name>  psql -U <database username> -d <databasename> -c "\copy <tablename> FROM '<path to csv file>' DELIMITER ',' CSV HEADER;"
+```
