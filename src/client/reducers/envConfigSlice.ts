@@ -4,7 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const envConfigSlice = createSlice({
   name: "envConfig",
   initialState: {
-    rootDir: "/Users/anthony/Desktop/Just WOW/VScode_Worktable/Codesmith/OSP/Jugglr",
+    rootDir: "",
     image: "",
     container: "",
     from: "postgres:latest",
@@ -13,7 +13,7 @@ export const envConfigSlice = createSlice({
     database: "",
     password: "",
     port: "5432",
-    schema: "/Users/anthony/Desktop/Just WOW/VScode_Worktable/Codesmith/OSP/Jugglr/__tests__/data/species.csv",
+    schema: "",
     tablePath: "",
     tableName:"",
     dropDownImage:[""],
