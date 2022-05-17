@@ -94,7 +94,7 @@ const AppLayout = () => {
               }}
             >
               <Image
-                src="src/client/assets/jugglr-logo.png"
+                src="build/client/assets/jugglr-hands.svg"
                 radius="lg"
                 width={70}
               ></Image>
