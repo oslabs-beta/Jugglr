@@ -94,10 +94,10 @@ const AppLayout = () => {
               }}
             >
               <Image
-                src="build/client/assets/jugglr-hands.svg"
+                src="build/client/assets/jugglr-logo.svg"
                 radius="lg"
                 width={70}
-              ></Image>
+              />
               <Paper>
                 <Title
                   style={{
