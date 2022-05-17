@@ -1,4 +1,4 @@
-import { container, DockerFile, EnvConfig, LoadTable, StartUpObj ,image} from "../../types";
+import { DockerFile, EnvConfig} from "../../types";
 
 
 /**

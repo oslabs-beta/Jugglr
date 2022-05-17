@@ -86,87 +86,80 @@ const Startup = ():JSX.Element => {
   return (
     <>
     <Paper style={{ background: "none" }}>
-        <Title order={1} align="center" mt={20}>
+      <Title order={1} align="center" mt={20}>
           Image Configuration
-        </Title>
-      </Paper>
-      <Space h="sm" />
-      <Box>
+      </Title>
+    </Paper>
 
-      <form  onSubmit={form1.onSubmit((values)=> buildOrRun(values,'buildImage',notifyUserImage))}>
-      
+    <form  onSubmit={form1.onSubmit((values)=> buildOrRun(values,'buildImage',notifyUserImage))}>
       <Center>
-
-    <TextInput
-          style={{marginTop:"5%", width: "60%"}}
-          required
-          label="Image Name"
-          placeholder="Image Name"
-          {...form1.getInputProps("image")}  
-        />
+        <TextInput
+            style={{marginTop:"2%", width: "60%"}}
+            required
+            label="Image Name"
+            placeholder="Image Name"
+            {...form1.getInputProps("image")}  
+          />
       </Center>
-
-      <Space h="md" />
+        <Space h="md" />
       <Center>
-      <Button type="submit">Create New Image</Button>
-      
+        <Button type="submit">Create New Image</Button>
       </Center>
-      
-        </form>
-        
-    </Box>
-      <Paper style={{ background: "none" }}>
-        <Title order={1} align="center" mt={20}>
-          Container Configuration
-        </Title>
-      </Paper>
-      <Space h={50} />
-    <Box>
-    
-      <form onSubmit={form1.onSubmit((values)=> buildOrRun(values,'newContainer', notifyUserContainer))}>
-        <Grid>
-     
-    <Grid.Col>
-    <Center>
-      <NativeSelect style={{width:"60%"}} placeholder="select image" label="Image" data={dropDownImage} onClick= {()=>imageCreated()} onChange={(event)=> form1.setFieldValue('selectedImage', event.currentTarget.value)} />
-    </Center>
-    </Grid.Col>
-
-    <Grid.Col>
-      <Center><div style={{display:"flex", justifyContent: "space-between", width:"60%"}}>
-    <TextInput
-          style={{marginTop:"5%"}}
-          required
-          label="Container Name"
-          placeholder="Container Name"
-          {...form1.getInputProps("container")}  
-        />
-    
-<TextInput
-          style={{marginTop:"5%"}}
-          required
-          label="Port"
-          placeholder="Port"
-          {...form1.getInputProps("port")}
-        />
-        </div>
-        </Center>
-    </Grid.Col>
-
-    <Grid.Col>
-    <Space h="sm" />
-      <Center>
-    <Button style={{top:"75%"}}type="submit">Run New Container</Button>
-    </Center>
-    </Grid.Col>
-    </Grid>
     </form>
-   
-         
-    </Box>
 
+    <Space h="xl"/>
+    <Space h="xl"/>
 
-    </>
+    <Paper style={{ background: "none" }}>
+       <Title order={1} align="center" mt={20}>
+        Container Configuration
+       </Title>
+    </Paper>
+
+      <Space h="md"/>
+    
+    <form onSubmit={form1.onSubmit((values)=> buildOrRun(values,'newContainer', notifyUserContainer))}>
+
+        <Grid>
+
+          <Grid.Col>
+            <Center>
+              <NativeSelect style={{width:"60%"}} placeholder="select image" label="Image" data={dropDownImage} onClick= {()=>imageCreated()} onChange={(event)=> form1.setFieldValue('selectedImage', event.currentTarget.value)} />
+            </Center>
+          </Grid.Col>
+
+          <Grid.Col>
+            <Center>
+              <div style={{display:"flex", justifyContent: "space-between", width:"60%"}}>
+                <TextInput
+                  style={{width:"55%"}}
+                  required
+                  label="Container Name"
+                  placeholder="Container Name"
+                  {...form1.getInputProps("container")}  
+                />
+    
+                <TextInput
+                  required
+                  label="Port"
+                  placeholder="Port"
+                  {...form1.getInputProps("port")}
+                />
+
+             </div>
+            </Center>
+          </Grid.Col>
+
+          <Grid.Col>
+            <Center>
+              <Button style={{top:"75%"}}type="submit">Run New Container</Button>
+            </Center>
+          </Grid.Col>
+
+        </Grid>
+
+    </form>
+   </>
   );
 };
 
