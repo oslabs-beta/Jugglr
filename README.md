@@ -51,7 +51,7 @@ B. Alternatively, follow these steps:
 
 ## Documentation
 
-Detailed documentation on how to use Jugglr can be found [here](https://github.com/oslabs-beta/Jugglr).
+Detailed documentation on how to use Jugglr can be found [here](/docs/Jugglr%20Documentation.md).
 
 
 ## Running in CI/CD
