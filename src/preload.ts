@@ -15,7 +15,7 @@ import { container, DockerFile, image } from './types';
  * 
  */
 
-//contextBridge exposes selectorModule, dockController, and psUploadData to frontend without having to write import statement in React
+//contextBridge exposes selectorModule, dockController, and psUploadData to frontend without having to write import statements in React
 contextBridge.exposeInMainWorld("selectorModule", {
   openFile: async () => {
     const response = await ipcRenderer.invoke("open");
