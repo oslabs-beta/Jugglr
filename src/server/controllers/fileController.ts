@@ -43,7 +43,7 @@ const fileController = {
     /**
      * Sets the project root directory selected by the user. The jugglr folder will be created here
      * @param rootdir => project root directory 
-     * @returns       => object with the username, database name, and password info entered by user
+     * @returns       => object with the username, database name, password, and path to schema file entered by user
      */
     setProjectRoot: async (rootdir) => {
       process.env.ROOTDIR = rootdir;
@@ -59,11 +59,7 @@ const fileController = {
         if (linetype) {
           const regex = /\b\w+(\b\s*)$/
           const val = line.match(regex);
-          // console.log(val[0])
-          process.env[linetype[0]] = val[0].trim();
-          // console.log(process.env[linetype[0]])
-          // console.log(process.env[linetype[0]], val[0]);
-           
+          process.env[linetype[0]] = val[0].trim();           
         } else if(schema) {
           const schemaname = schema[0];
           process.env.SCHEMA = fpath.resolve(process.env.ROOTDIR, schemaname)
