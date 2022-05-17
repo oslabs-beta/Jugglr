@@ -6,10 +6,11 @@ const path = require('path');
 const { Pool } = require('pg')
 
 /**
- * 
+ * @param event event emitter to use for returning async results to front end
  * @param table table with data that user can upload into the dockerized database
  * @param sqlSchema sql schema file of the data to be uploaded
- * @returns result of client.query
+ * @param port port to attach container to
+ * @returns true if succeeds or error message if fails
  */
 const uploadData = async (event, table, sqlSchema, port="5432") => {
   try {  

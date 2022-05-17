@@ -21,7 +21,7 @@ const dockerController = {
    *   rootDir: rootDir,                   => root directory of project where dockerfile will reside
    *   schema?: schema                     => schema to load to postgres, in the form of a .sql file
    * } 
-   * @returns true/false
+   * @returns true if succeeds or error message if fails
    */
   
   createDockerfile: (dockerfile) => {
@@ -63,7 +63,7 @@ const dockerController = {
   * Starts an existing container if that container is not running
   * @param event       => event emitter to use for returning async results to front end
   * @param containerId => id of container to start
-  * @returns true/false
+  * @returns true if succeeds or error message if fails
   */
   startContainer: async function (event, containerId) {
     const docker = await new Docker();
@@ -82,7 +82,7 @@ const dockerController = {
  * Stops a container if that container is running
  * @param event       => event emitter to use for returning async results to front end
  * @param containerId   => id of container to stop
- * @returns true/false
+ * @returns true if succeeds or error message if fails
  */
   stopContainer: async function (event, containerId) {
     const docker = await new Docker();
@@ -100,7 +100,7 @@ const dockerController = {
  * Deletes a container
  * @param event       => event emitter to use for returning async results to front end
  * @param containerId => container to delete
- * @returns 
+ * @returns true if succeeds or error message if fails
  */  
   removeContainer: async function (event, containerId) {
     const docker = await new Docker({socketPath: '/var/run/docker.sock'});
@@ -216,7 +216,7 @@ const dockerController = {
  * creates a Docker image based on instructions in Dockerfile
 * @param event         => event emitter to return result to front end 
 * @param image => image name
- * @returns true/balse
+ * @returns true if succeeds or error message if fails
  */
   buildImage:  async (event, image) => {
     try {
@@ -246,7 +246,7 @@ const dockerController = {
    * @param image         => image name
    * @param containerName => container name to apply
    * @param port          => port to attach container to
-   * @returns 
+   * @returns true if succeeds or error message if fails
    */
   run: async (event, image, containerName, port="5432") => {
     process.env.POSTGRES_PORT = port;

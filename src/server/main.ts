@@ -27,11 +27,9 @@ function createWindow() {
   After uncommenting, run "npm run build", and then run "npx electron-packager ." on your terminal. 
   This will generate the jugglr-app electron package in the root directory, based on your machine's OS (e.g., Darwin for Mac) and architecture (e.g., x64 for Darwin).
   You can then move the package anywhere else on your machine and it will work just fine.
-  */
-  // win.loadFile("../../Resources/app/index.html"); //uncomment this
+ */
 
 
-  //win.loadURL('localhost://env variable for endpoint')
   win.webContents.openDevTools();
 
 }
