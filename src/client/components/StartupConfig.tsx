@@ -1,4 +1,4 @@
-import { Space, Box, Title, Paper, Button, TextInput, NativeSelect, Grid,Center } from "@mantine/core";
+import { Space, Title, Paper, Button, TextInput, NativeSelect, Grid,Center, Tooltip } from "@mantine/core";
 import { destructureImageList, getImages, buildOrRun } from "../utility/dockerFunctions";
 import {  useEffect } from "react";
 import { useForm, } from "@mantine/hooks";
@@ -7,17 +7,22 @@ import { setDropDownImage } from "../reducers/envConfigSlice";
 import { image } from "../../types";
 import { showNotification } from "@mantine/notifications";
 import React from "react"
+import { InfoCircle } from "tabler-icons-react";
 
 
-
+/**
+ * 
+ * @returns JSX Definition of Docker Setup tab
+ * Startup Config allows users to create a new image from a Dockerfile and start a new container
+ */
 
 const Startup = ():JSX.Element => {
   //destructure redux global state
-  const {  dropDownImage, port} = useAppSelector(state => state.envConfig)
   //declare redux dispatch function. Used to update global state
+  const {  dropDownImage, port} = useAppSelector(state => state.envConfig)
   const dispatch = useAppDispatch();
  
-  
+  //local state via Mantine hook
   const form1 = useForm({
     initialValues: {
       image:"",
@@ -28,13 +33,15 @@ const Startup = ():JSX.Element => {
     }
   })
  
-
+/**
+ * useEffect hook will grab existing images from Docker, store the image names in an array and update redux state.
+ * useEffect Hook will fire on first mount and everytime dropdown is selected
+ */
   useEffect( () => {
     const grabImages = async (): Promise<void> => {
     const images:image[] = await getImages()
     const iList:string[] = destructureImageList(images)
     dispatch(setDropDownImage({dropDownImage:iList}))
-    form1.setFieldValue('image',"")
     }
    
     grabImages().catch(console.error);
@@ -43,6 +50,9 @@ const Startup = ():JSX.Element => {
 
    
   
+  /**
+   * function to update local state 'imageSubmitted', which will trigger useEffect hook'
+   */
   const imageCreated = ():void => {
      if(form1.values.imageSubmitted===false){
         form1.setFieldValue('imageSubmitted',true)
@@ -51,6 +61,13 @@ const Startup = ():JSX.Element => {
       }
   }
 
+  /**
+   * 
+   * @param args 'args' is the listener response received from the back end
+   * Notify users if container successfully started up
+   * callback function passed into listener - displays a notification that is either an error message (if args is a string) or a success message (if args is a boolean) 
+   * 
+   */
   const notifyUserContainer = (args:boolean|string) => {
     if(typeof args === 'string'){
       showNotification({
@@ -63,10 +80,16 @@ const Startup = ():JSX.Element => {
         autoClose: 3500
       })
     }
-    
+   
+    /**
+   * 
+   * @param args 'args' is the listener response received from the back end
+   * Notify users if image was created successfully
+   * callback function passed into listener - displays a notification that is either an error message (if args is a string) or a success message (if args is a boolean) 
+   * 
+   */
   }
   const notifyUserImage = (arg:boolean|string) => {
-    console.log(typeof arg)
     if(typeof arg==='boolean'){
       showNotification({
         message:'Image created successfully',
@@ -93,13 +116,32 @@ const Startup = ():JSX.Element => {
 
     <form  onSubmit={form1.onSubmit((values)=> buildOrRun(values,'buildImage',notifyUserImage))}>
       <Center>
+       
         <TextInput
             style={{marginTop:"2%", width: "60%"}}
             required
             label="Image Name"
             placeholder="Image Name"
+            rightSection = {
+              <Tooltip
+              style={{marginTop:"2%",width:"80%"}}
+              label="No spaces, special characters, or capitalized letters allowed"
+              closeDelay ={200}
+              position = "top"
+              withArrow
+             >
+                <InfoCircle
+                size={15}
+                strokeWidth={2}
+                color={'#4079bf'}
+                />
+             </Tooltip>
+        
+        }
             {...form1.getInputProps("image")}  
           />
+          
+          
       </Center>
         <Space h="md" />
       <Center>

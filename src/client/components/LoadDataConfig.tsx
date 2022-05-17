@@ -1,7 +1,7 @@
-import { Space, Box, Title, Paper, Button, TextInput, NativeSelect, Tooltip } from "@mantine/core";
+import { Space, Title, Paper, Button, TextInput, NativeSelect, Tooltip } from "@mantine/core";
 import FileSearchButton from "../containers/FileSearchButton";
 import { selectFile } from "../utility/fileExplorer";
-import { uploadTableData} from "../utility/postrgresFunctions";
+import { loadData} from "../utility/postrgresFunctions";
 import { destructureContainerPort} from "../utility/dockerFunctions";
 
 import { useForm } from "@mantine/hooks";
@@ -10,6 +10,7 @@ import { LoadTable,container} from "../../types";
 import   {setEnvConfig,setDropDownPort } from "../reducers/envConfigSlice";
 import { cleanNotifications, showNotification } from "@mantine/notifications";
 import { ChangeEvent, useEffect } from "react";
+import { InfoCircle } from "tabler-icons-react";
 
 /**
  * 
@@ -32,8 +33,8 @@ const form = useForm({
   initialValues: {
     tablePath: tablePath,
     tableName: tableName,
-    // activePorts: [""],
-    portSelected:""
+    portSelected:"",
+    portRefresh:false
     
     }
   });
@@ -61,44 +62,26 @@ const form = useForm({
     
 useEffect(() => {
     
-  grabPorts()
+  grabPorts().catch(console.error)
 
-  },[]
+  },[form.values.portRefresh]
 )
 
-
+  /**
+   * function called in useEffect to grab all active ports
+   * will update global state with array of active ports obtained from Docker
+   */
 const grabPorts = async (): Promise<void> => {
-  // invoke docker function and receive an array of objects with type 'container'.
   const containers:container[] = await dockController.getContainersList(false)
-  //desctructure returned object to just grab container names
-  //destructure returned object to just grab container ids
   const pArray = destructureContainerPort(containers)
-  // form.setFieldValue('activePorts',pArray)
-  //update redux global state
   dispatch(setDropDownPort({activePorts:pArray}))
 }
 
-  const setStateAndCall = async (values: LoadTable) => {
-    
-    const response = await uploadTableData(values,form.values.portSelected)
-    console.log('response', response)
-    if(response !== undefined){
-      showNotification({
-        message: response,
-        autoClose: 4000
-      })
-    } 
-    else {
-      await psUploadData.databaseResult((args:boolean|string|Error)=>{
-        notifyUser(args, values)
-      })
-    }
-    
-  }
+
   /**
    * 
    * @param bool 
-   * Function will display a success or failure message to the user based on what is received from the backend.
+   * Function will display a success or failure message to the user based on what is received from postgres.
    * True indicates data was loaded successfully, whereas false indicates upload failed 
    */
   const notifyUser = (arg: boolean |string |Error, values:LoadTable) => {
@@ -118,12 +101,26 @@ const grabPorts = async (): Promise<void> => {
     }
     dispatch(setEnvConfig(values));
   }
-      //set local state 'portSelected' to the drop down value
+      
+      /**
+       * 
+       * @param event 
+       * set local state 'portSelected' to the drop down value
+       */
   const setSelectedPort = async (event: ChangeEvent<HTMLSelectElement> ):Promise<void> => {
     form.setFieldValue('portSelected', event.currentTarget.value)
   }
 
-
+  /**
+   * function to update local state 'portRefresh', which will trigger useEffect hook'
+   */
+  const portRefresh = ()=>{
+    if(form.values.portRefresh===true){
+      form.setFieldValue('portRefresh',false)
+    } else {
+       form.setFieldValue('portRefresh',true)
+     }
+   }
   return (
     <>
      <Paper style={{ background: "none" }}>
@@ -136,9 +133,9 @@ const grabPorts = async (): Promise<void> => {
 
   
     {/* tablePath and tableName fields are wrapped in a form to leverage Mantine useForm hook */}
-      <form  style={{display:'flex', flexDirection:'column', alignItems:"center"}} onSubmit={form.onSubmit((values)=> {setStateAndCall(values); })}>
+      <form  style={{display:'flex', flexDirection:'column', alignItems:"center"}} onSubmit={form.onSubmit((values)=> {loadData(values,notifyUser); })}>
          
-         <NativeSelect  required  style={{width:"60%"}} placeholder="Select Port" label="Select A Port" data={activePorts} onChange={(event)=> setSelectedPort(event)} />
+         <NativeSelect  required  style={{width:"60%"}} placeholder="Select Port" label="Select A Port" onClick={()=> portRefresh()} data={activePorts} onChange={(event)=> setSelectedPort(event)} />
 
          <Space h={50}/>
     
@@ -161,20 +158,28 @@ const grabPorts = async (): Promise<void> => {
                 }
               />
               
-          <Tooltip
-          style={{marginTop:"2%",width:"60%"}}
-          label="Table name must match schema"
-          closeDelay ={200}
-          position = "bottom"
-          withArrow
-          >
+          
             <TextInput
+              style={{width:"60%"}}
               required
               label="Table Name"
               placeholder="Table Name"
+              rightSection={
+                <Tooltip
+                label="Table name must match schema"
+                closeDelay ={200}
+                position = "bottom"
+                withArrow
+                >
+                  <InfoCircle
+                  size={15}
+                  strokeWidth={2}
+                  color={'#4079bf'}
+                  />
+               </Tooltip>
+              }
               {...form.getInputProps("tableName")}
             />
-          </Tooltip>
 
           <div style={{display: "flex", justifyContent:"center"}}>
             <div >

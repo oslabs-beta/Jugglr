@@ -31,7 +31,6 @@ const fileController = {
       const response = await dialog.showOpenDialog({ properties: ["openDirectory"] })
       if (!response.canceled) {
       
-        console.log(response);
             const fileName = response.filePaths[0];
             return fileName;
             

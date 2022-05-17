@@ -3,11 +3,19 @@ import { container, StartUpObj ,image} from "../../types";
 
 
 //StartupConfig functions
-
+/**
+ * 
+ * @returns returns array of Docker image objects
+ */
 export const getImages = async () : Promise<image[]> => {
   return await dockController.getImagesList()
 }
-
+/**
+ * 
+ * @param arr array of Docker image objects
+ * @returns array of image names
+ * 
+ */
 export const destructureImageList = (arr:image[]): string[] => {
   const newImageList :string[] = ['']
 
@@ -22,6 +30,12 @@ export const destructureImageList = (arr:image[]): string[] => {
   return newImageList
 }
 
+/**
+ * 
+ * @param values local state of startupConfig component
+ * @param action type of action - build image or run new container
+ * @param callback callback function that will listen for a response from Docker
+ */
 export const buildOrRun = async (values:StartUpObj, action:string, callback:Function) => {
   if(action==='buildImage'){
     buildImage(values.image)
@@ -30,32 +44,40 @@ export const buildOrRun = async (values:StartUpObj, action:string, callback:Func
     })
     
   } else {
-     runNewContainer(values)
+    runNewContainer(values)
     await dockController.runNewResult((args:boolean|string)=>{
     callback(args)
     })
   }
 }
 
+/**
+ * 
+ * @param image image name
+ * @returns void
+ */
 const buildImage = async (image:string):Promise<void> => {
-  console.log('buildImage')
-return await dockController.buildImage(image);
+ await dockController.buildImage(image);
 }
 
-const runNewContainer = async (values:StartUpObj): Promise<string> => {
+/**
+ * 
+ * @param values local state of startupConfig component
+ * send information required to start a new container 
+ */
+const runNewContainer = async (values:StartUpObj): Promise<void> => {
   const imageValue = values.selectedImage
   const containerName = values.container
   const port = values.port+'' 
-  const response = await dockController.runContainer(imageValue,containerName,port)
-  return response
+  await dockController.runContainer(imageValue,containerName,port)
+  
 }
 
   //RunConfig Functions
 /**
  * 
- * @param containerId 
- * @param action 
- * @param callback 
+ * @param arr array of container objects obtained from Docker
+ * @returns array of container names
  */
 
  export const destructureContainerList = (arr:container[]):string[] => {
@@ -71,6 +93,12 @@ const runNewContainer = async (values:StartUpObj): Promise<string> => {
   
   return newContainerList
 }
+
+/**
+ * 
+ * @param arr array of container objects obtained from Docker
+ * @returns object with containerName as key and containerid as value
+ */
 export const destructureContainerId = (arr:container[]) => {
   
   const containerIdObj = {}
@@ -85,15 +113,19 @@ export const destructureContainerId = (arr:container[]) => {
   
   return containerIdObj
 }
+
+/**
+ * 
+ * @param containerId container id of selected container
+ * @param action start, top, or remove
+ * @param callback function that listens for response from Docker
+ */
 export  const startStopOrRemove = async (containerId: string, action:'start' | 'stop'| 'remove', callback:Function) :Promise<void> => {
     //clear all notifications so only one notification is shown at any given time
     cleanNotifications(); 
-    console.log(action)
     if(action==='start'){
       await startContainer(containerId)
-    //After invoking start container, listen for response from backend.  Will receive either true or false as a response
       await dockController.startContainerResult((arg:boolean | string)=>{
-        //function below will determine what message is displayed in app 
         callback(arg)
       })
     } else if (action ==='stop') {
@@ -104,12 +136,17 @@ export  const startStopOrRemove = async (containerId: string, action:'start' | '
     } else {
       await removeContainer(containerId)
       await dockController.removeContainerResult((arg: boolean|string)=>{
-      callback(arg)
+        callback(arg)
       })
       }
   
     }
   
+    /**
+     * 
+     * @param containerId id of selected container
+     * @returns boolean - not actually receiving anything from async await. will only return false if no container is selected
+     */
     const startContainer = async(containerId:string): Promise<boolean| string > => {
  
       if(containerId===undefined){
@@ -119,6 +156,11 @@ export  const startStopOrRemove = async (containerId: string, action:'start' | '
       return response
       }
       
+      /**
+       * 
+       * @param containerId id of selected container
+       * @returns boolean - not actually receiving anything from async await. will only return false if no container is selected
+       */
       const stopContainer = async(containerId:string):Promise<boolean> => {
       if(containerId===undefined){
           return false;
@@ -127,7 +169,11 @@ export  const startStopOrRemove = async (containerId: string, action:'start' | '
       return response
        
       }
-      
+      /**
+       * 
+       * @param containerId id of selected container
+       * @returns boolean - not actually receiving anything from async await. will only return false if no container is selected
+       */
        const removeContainer = async(containerId: string): Promise<boolean> => {
         if(containerId ===undefined){
           return false;
@@ -135,7 +181,11 @@ export  const startStopOrRemove = async (containerId: string, action:'start' | '
         const response = await dockController.removeContainer(containerId)
         return response
       }
-
+      /**
+       * 
+       * @param errorMessage 
+       * @returns string of new error message
+       */
       export const modifyErrorRemove = (errorMessage: string)=>{
         const arr=errorMessage.split(' ')
         const newArr = arr.slice(0,6)
@@ -143,7 +193,11 @@ export  const startStopOrRemove = async (containerId: string, action:'start' | '
       }
 
 //LoadDataConfig functions
-
+      /**
+       * 
+       * @param container array of container objects obtained from Docker
+       * @returns array of strings of all active ports
+       */
       export const destructureContainerPort = (container:container[]):string[] => {
         const newArray = ['']
           container.forEach((ele)=>{
