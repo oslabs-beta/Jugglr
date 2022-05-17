@@ -1,11 +1,11 @@
 import { Space, Box, Title, Paper, Button,  NativeSelect } from "@mantine/core";
-import {  destructureContainerList, destructureContainerId, startContainer, stopContainer, removeContainer, modifyErrorRemove} from "../utility/dockerFunctions";
+import {  destructureContainerList, destructureContainerId, modifyErrorRemove, startStopOrRemove} from "../utility/dockerFunctions";
 import { ChangeEvent, useEffect } from "react";
 import { useForm } from "@mantine/hooks";
 import { useAppSelector, useAppDispatch } from "../utility/hooks.types";
 import { setDropDownContainer } from "../reducers/envConfigSlice";
 import { container } from "../../types";
-import { showNotification, cleanNotifications } from "@mantine/notifications";
+import { showNotification} from "@mantine/notifications";
 
 
 /**
@@ -38,44 +38,18 @@ const Run = ():JSX.Element => {
   //function called in useEffect to grab all containers
   const grabContainer = async (): Promise<void> => {
     const containers:container[] = await dockController.getContainersList(true)
-    console.log('run',containers)
     const cList:string[] = destructureContainerList(containers)
     const cObject = destructureContainerId(containers)
     dispatch(setDropDownContainer({containerIdObject: cObject, containerNames:cList}))
   }
   
   //function is called when dropdown value changes
-  const setNameAndId = async (event: ChangeEvent<HTMLSelectElement> ):Promise<void> => {
+  const updateSelectedContainer = async (event: ChangeEvent<HTMLSelectElement> ):Promise<void> => {
     //set local state 'containerSelected' to the drop down value
     form2.setFieldValue('containerSelected', event.currentTarget.value)
   }
 
  
-  const setStateAndCall = async (containerId: string, action:'start' | 'stop'| 'remove') :Promise<void> => {
-    //clear all notifications so only one notification is shown at any given time
-    cleanNotifications(); 
-    console.log(action)
-    if(action==='start'){
-      await startContainer(containerId)
-    //After invoking start container, listen for response from backend.  Will receive either true or false as a response
-      await dockController.startContainerResult((arg:boolean | string)=>{
-        //function below will determine what message is displayed in app 
-        notifyUserStart(arg)
-      })
-    } else if (action ==='stop') {
-      await stopContainer(containerId)
-      await dockController.stopContainerResult((arg:boolean | string)=>{
-        notifyUserStop(arg)
-      })
-    } else {
-      await removeContainer(containerId)
-      await dockController.removeContainerResult((arg: boolean|string)=>{
-      notifyUserRemove(arg)
-      })
-      }
-  
-    }
-  
   
 
   const notifyUserStart = async (arg:Boolean |string) => {
@@ -147,7 +121,7 @@ const Run = ():JSX.Element => {
       <div style={{position: "relative",}}>
           <form style={{position:"absolute",left:"18%", width:"80%" }} > 
             {/* set containerNames global state as drop down options. Selected container will be stored in local form state */}
-            <NativeSelect  required  style={{width:"80%"}} placeholder="Select Container" onClick={()=>containerRefresh()} label="Select A Container" data={containerNames} onChange={(event)=> setNameAndId(event)} />
+            <NativeSelect  required  style={{width:"80%"}} placeholder="Select Container" onClick={()=>containerRefresh()} label="Select A Container" data={containerNames} onChange={(event)=> updateSelectedContainer(event)} />
             <div style={{position:"relative",}}>
               <div
                   style={{
@@ -160,15 +134,15 @@ const Run = ():JSX.Element => {
                   }}>
                     <div style={{ width: "30%" }}>
                     {/* When button is selected, call setStateAndCall passing in the id of the selected container and the action */}
-                      <Button fullWidth onClick={()=>{setStateAndCall(containerIdObject[form2.values.containerSelected],'start') }}>Start</Button>
+                      <Button fullWidth onClick={()=>{startStopOrRemove(containerIdObject[form2.values.containerSelected],'start',notifyUserStart) }}>Start</Button>
                     </div>
   
                     <div style={{ width: "30%" }}>
-                      <Button fullWidth onClick={()=>{ setStateAndCall(containerIdObject[form2.values.containerSelected],'stop'); }}>Stop</Button>
+                      <Button fullWidth onClick={()=>{startStopOrRemove(containerIdObject[form2.values.containerSelected],'stop',notifyUserStop); }}>Stop</Button>
                     </div>
 
                     <div style={{ width: "30%" }}>
-                      <Button fullWidth onClick={()=>{ setStateAndCall(containerIdObject[form2.values.containerSelected],'remove'); }}>Remove</Button>
+                      <Button fullWidth onClick={()=>{startStopOrRemove(containerIdObject[form2.values.containerSelected],'remove',notifyUserRemove); }}>Remove</Button>
                     </div>
               </div>
             </div>

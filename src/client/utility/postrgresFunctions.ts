@@ -1,11 +1,6 @@
 import {  LoadTable} from "../../types";
 
 
-/**
- * Action helpers moved here for time being...
- */
-
-
 
 export const uploadTableData = async (values:LoadTable, port:string) :Promise<string>  => {
   const tablePath= values.tablePath

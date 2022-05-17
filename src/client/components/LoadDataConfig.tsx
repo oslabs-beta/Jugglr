@@ -1,4 +1,4 @@
-import { Space, Box, Title, Paper, Button, TextInput, NativeSelect } from "@mantine/core";
+import { Space, Box, Title, Paper, Button, TextInput, NativeSelect, Tooltip } from "@mantine/core";
 import FileSearchButton from "../containers/FileSearchButton";
 import { selectFile } from "../utility/fileExplorer";
 import { uploadTableData} from "../utility/postrgresFunctions";
@@ -119,7 +119,7 @@ const grabPorts = async (): Promise<void> => {
     dispatch(setEnvConfig(values));
   }
       //set local state 'portSelected' to the drop down value
-  const setNameAndId = async (event: ChangeEvent<HTMLSelectElement> ):Promise<void> => {
+  const setSelectedPort = async (event: ChangeEvent<HTMLSelectElement> ):Promise<void> => {
     form.setFieldValue('portSelected', event.currentTarget.value)
   }
 
@@ -131,47 +131,58 @@ const grabPorts = async (): Promise<void> => {
           Load Data
         </Title>
       </Paper>
-      <Space h={50} />
-    <Box>
+
+      <Space h={25} />
+
+  
     {/* tablePath and tableName fields are wrapped in a form to leverage Mantine useForm hook */}
-    <form  style={{display:'flex', flexDirection:'column', alignItems:"center"}} onSubmit={form.onSubmit((values)=> {setStateAndCall(values); })}>
-    <NativeSelect  required  style={{width:"60%"}} placeholder="Select Port" label="Select A Port" data={activePorts} onChange={(event)=> setNameAndId(event)} />
+      <form  style={{display:'flex', flexDirection:'column', alignItems:"center"}} onSubmit={form.onSubmit((values)=> {setStateAndCall(values); })}>
+         
+         <NativeSelect  required  style={{width:"60%"}} placeholder="Select Port" label="Select A Port" data={activePorts} onChange={(event)=> setSelectedPort(event)} />
 
-    <Space h={50}/>
+         <Space h={50}/>
     
-    <TextInput
-          style={{width:"60%"}}
-          required
-          label="Table Path"
-          placeholder="Table Path"
-          {...form.getInputProps("tablePath")}
-          rightSection={
-            <FileSearchButton
-              setField={setFieldType("tablePath")}
-              setPath={selectFile}
+          <TextInput
+                style={{width:"60%"}}
+                required
+                label="Table Path"
+                placeholder="Table Path"
+                {...form.getInputProps("tablePath")}
+                rightSection={
+                  <Tooltip 
+                    label="Table data must be in .csv format"
+                    withArrow
+                  >
+                    <FileSearchButton
+                    setField={setFieldType("tablePath")}
+                    setPath={selectFile}
+                    />
+                  </Tooltip>
+                }
+              />
+              
+          <Tooltip
+          style={{marginTop:"2%",width:"60%"}}
+          label="Table name must match schema"
+          closeDelay ={200}
+          position = "bottom"
+          withArrow
+          >
+            <TextInput
+              required
+              label="Table Name"
+              placeholder="Table Name"
+              {...form.getInputProps("tableName")}
             />
-          }
-        />
-        
-        <TextInput
-        style={{marginTop:"5%",width:"60%"}}
-          required
-          label="Table Name"
-          placeholder="Table Name"
-          {...form.getInputProps("tableName")}
-          
-         
-        />
-         <div style={{marginTop:"5%",display: "flex", justifyContent:"center"}}>
-         <div >
-         <Button style={{top:"75%"}} onClick={cleanNotifications} type="submit">Load Table Data</Button>
-         </div>
-         </div>
-         
-         </form>
+          </Tooltip>
 
-    </Box>
-
+          <div style={{display: "flex", justifyContent:"center"}}>
+            <div >
+                <Button style={{top:"75%"}} onClick={cleanNotifications} type="submit">Load Table Data</Button>
+            </div>
+          </div>
+         
+      </form>
 
     </>
   );
