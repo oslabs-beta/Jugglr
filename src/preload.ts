@@ -1,7 +1,21 @@
 const { contextBridge, ipcRenderer } = require("electron");
 import { container, DockerFile, image } from './types';
 
+/**
+ * preload is an intermediary step between frontend and main function calls.
+ * Functions invoked via the front end are forwarded to main via preload
+ * responses from main will be returned to the frontend via preload
+ * 
+ * ipcRenderer.invoke
+ * frontend -> preload -> main -> preload -> frontend
+ * 
+ * ipcRenderer.once
+ * listeners set up to listen for events from Docker and postgres that can't be captured via a regular async process 
+ * main -> preload -> frontend
+ * 
+ */
 
+//contextBridge exposes selectorModule, dockController, and psUploadData to frontend without having to write import statement in React
 contextBridge.exposeInMainWorld("selectorModule", {
   openFile: async () => {
     const response = await ipcRenderer.invoke("open");
@@ -48,15 +62,12 @@ contextBridge.exposeInMainWorld("dockController", {
   
   runNewResult: (callback:Function) => {
     ipcRenderer.once('runResult', ( _event: Event, arg: boolean|string) => {
-      console.log('preload', arg)
       callback(arg)
   })
   },
 
   buildImageResult: (callback:Function) => {
-    console.log('outer buildimageresult')
     ipcRenderer.once('buildImageResult', (_event: Event, arg: boolean|string) => {
-    console.log('received buildImageResult', arg)
     callback(arg)
   })
   },
@@ -89,7 +100,6 @@ contextBridge.exposeInMainWorld("psUploadData", {
 
   databaseResult: async (callback:Function) => {
     ipcRenderer.once('databaseResult', (_event: Event, arg: boolean|string) => {
-      console.log('received Database Result', arg)
       callback(arg)
     })
   },

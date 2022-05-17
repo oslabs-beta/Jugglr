@@ -76,9 +76,8 @@ const runNewContainer = async (values:StartUpObj): Promise<void> => {
   //RunConfig Functions
 /**
  * 
- * @param containerId 
- * @param action 
- * @param callback 
+ * @param arr array of container objects obtained from Docker
+ * @returns array of container names
  */
 
  export const destructureContainerList = (arr:container[]):string[] => {
@@ -97,8 +96,8 @@ const runNewContainer = async (values:StartUpObj): Promise<void> => {
 
 /**
  * 
- * @param arr 
- * @returns 
+ * @param arr array of container objects obtained from Docker
+ * @returns object with containerName as key and containerid as value
  */
 export const destructureContainerId = (arr:container[]) => {
   
@@ -117,19 +116,16 @@ export const destructureContainerId = (arr:container[]) => {
 
 /**
  * 
- * @param containerId 
- * @param action 
- * @param callback 
+ * @param containerId container id of selected container
+ * @param action start, top, or remove
+ * @param callback function that listens for response from Docker
  */
 export  const startStopOrRemove = async (containerId: string, action:'start' | 'stop'| 'remove', callback:Function) :Promise<void> => {
     //clear all notifications so only one notification is shown at any given time
     cleanNotifications(); 
-    console.log(action)
     if(action==='start'){
       await startContainer(containerId)
-    //After invoking start container, listen for response from backend.  Will receive either true or false as a response
       await dockController.startContainerResult((arg:boolean | string)=>{
-        //function below will determine what message is displayed in app 
         callback(arg)
       })
     } else if (action ==='stop') {
@@ -140,7 +136,7 @@ export  const startStopOrRemove = async (containerId: string, action:'start' | '
     } else {
       await removeContainer(containerId)
       await dockController.removeContainerResult((arg: boolean|string)=>{
-      callback(arg)
+        callback(arg)
       })
       }
   
@@ -148,8 +144,8 @@ export  const startStopOrRemove = async (containerId: string, action:'start' | '
   
     /**
      * 
-     * @param containerId 
-     * @returns 
+     * @param containerId id of selected container
+     * @returns boolean - not actually receiving anything from async await. will only return false if no container is selected
      */
     const startContainer = async(containerId:string): Promise<boolean| string > => {
  
@@ -162,8 +158,8 @@ export  const startStopOrRemove = async (containerId: string, action:'start' | '
       
       /**
        * 
-       * @param containerId 
-       * @returns 
+       * @param containerId id of selected container
+       * @returns boolean - not actually receiving anything from async await. will only return false if no container is selected
        */
       const stopContainer = async(containerId:string):Promise<boolean> => {
       if(containerId===undefined){
@@ -175,8 +171,8 @@ export  const startStopOrRemove = async (containerId: string, action:'start' | '
       }
       /**
        * 
-       * @param containerId 
-       * @returns 
+       * @param containerId id of selected container
+       * @returns boolean - not actually receiving anything from async await. will only return false if no container is selected
        */
        const removeContainer = async(containerId: string): Promise<boolean> => {
         if(containerId ===undefined){
@@ -188,7 +184,7 @@ export  const startStopOrRemove = async (containerId: string, action:'start' | '
       /**
        * 
        * @param errorMessage 
-       * @returns 
+       * @returns string of new error message
        */
       export const modifyErrorRemove = (errorMessage: string)=>{
         const arr=errorMessage.split(' ')
@@ -199,8 +195,8 @@ export  const startStopOrRemove = async (containerId: string, action:'start' | '
 //LoadDataConfig functions
       /**
        * 
-       * @param container 
-       * @returns 
+       * @param container array of container objects obtained from Docker
+       * @returns array of strings of all active ports
        */
       export const destructureContainerPort = (container:container[]):string[] => {
         const newArray = ['']

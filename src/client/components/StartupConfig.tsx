@@ -1,4 +1,4 @@
-import { Space, Box, Title, Paper, Button, TextInput, NativeSelect, Grid,Center } from "@mantine/core";
+import { Space, Title, Paper, Button, TextInput, NativeSelect, Grid,Center, Tooltip } from "@mantine/core";
 import { destructureImageList, getImages, buildOrRun } from "../utility/dockerFunctions";
 import {  useEffect } from "react";
 import { useForm, } from "@mantine/hooks";
@@ -7,6 +7,7 @@ import { setDropDownImage } from "../reducers/envConfigSlice";
 import { image } from "../../types";
 import { showNotification } from "@mantine/notifications";
 import React from "react"
+import { InfoCircle } from "tabler-icons-react";
 
 
 /**
@@ -89,7 +90,6 @@ const Startup = ():JSX.Element => {
    */
   }
   const notifyUserImage = (arg:boolean|string) => {
-    console.log(typeof arg)
     if(typeof arg==='boolean'){
       showNotification({
         message:'Image created successfully',
@@ -116,13 +116,32 @@ const Startup = ():JSX.Element => {
 
     <form  onSubmit={form1.onSubmit((values)=> buildOrRun(values,'buildImage',notifyUserImage))}>
       <Center>
+       
         <TextInput
             style={{marginTop:"2%", width: "60%"}}
             required
             label="Image Name"
             placeholder="Image Name"
+            rightSection = {
+              <Tooltip
+              style={{marginTop:"2%",width:"80%"}}
+              label="No spaces, special characters, or capitalized letters allowed"
+              closeDelay ={200}
+              position = "top"
+              withArrow
+             >
+                <InfoCircle
+                size={15}
+                strokeWidth={2}
+                color={'#4079bf'}
+                />
+             </Tooltip>
+        
+        }
             {...form1.getInputProps("image")}  
           />
+          
+          
       </Center>
         <Space h="md" />
       <Center>

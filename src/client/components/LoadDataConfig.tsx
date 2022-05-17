@@ -10,6 +10,7 @@ import { LoadTable,container} from "../../types";
 import   {setEnvConfig,setDropDownPort } from "../reducers/envConfigSlice";
 import { cleanNotifications, showNotification } from "@mantine/notifications";
 import { ChangeEvent, useEffect } from "react";
+import { InfoCircle } from "tabler-icons-react";
 
 /**
  * 
@@ -116,10 +117,8 @@ const grabPorts = async (): Promise<void> => {
   const portRefresh = ()=>{
     if(form.values.portRefresh===true){
       form.setFieldValue('portRefresh',false)
-      console.log('false')
     } else {
        form.setFieldValue('portRefresh',true)
-       console.log('true')
      }
    }
   return (
@@ -159,20 +158,28 @@ const grabPorts = async (): Promise<void> => {
                 }
               />
               
-          <Tooltip
-          style={{marginTop:"2%",width:"60%"}}
-          label="Table name must match schema"
-          closeDelay ={200}
-          position = "bottom"
-          withArrow
-          >
+          
             <TextInput
+              style={{width:"60%"}}
               required
               label="Table Name"
               placeholder="Table Name"
+              rightSection={
+                <Tooltip
+                label="Table name must match schema"
+                closeDelay ={200}
+                position = "bottom"
+                withArrow
+                >
+                  <InfoCircle
+                  size={15}
+                  strokeWidth={2}
+                  color={'#4079bf'}
+                  />
+               </Tooltip>
+              }
               {...form.getInputProps("tableName")}
             />
-          </Tooltip>
 
           <div style={{display: "flex", justifyContent:"center"}}>
             <div >
