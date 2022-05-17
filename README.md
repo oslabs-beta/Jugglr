@@ -14,7 +14,7 @@ Jugglr is a tool for managing test data and running tests with a lightweight, de
 
 ## Installation
 
-A. Download the Jugglr executable app from [here](http://github.com/oslabs-beta/Jugglr) to start using it right away. 
+A. Download the Jugglr executable app from the project [website](https://jugglr-test.com/) to start using it right away. 
 
 B. Alternatively, follow these steps:
 
