@@ -3,11 +3,11 @@
  */
  import React from "React";
  import { Provider } from "react-redux";
- import UserEvent from "@testing-library/user-event";
  import { render, screen, waitFor } from "@testing-library/react";
  import {store} from "../src/client/store" 
  import StartupConfig from "../src/client/components/StartupConfig";
  import '@testing-library/jest-dom/extend-expect'
+import userEvent from "@testing-library/user-event";
 //  import {ipcMain, ipcRenderer} from "./electron-mock"
 //  import "../src/preload"
 //  const { contextBridge } = require("electron");
@@ -16,7 +16,8 @@
  
  describe("Unit tests for StartupConfig component", () => {
    let component;
- 
+  //  const {dropDownImage, port} = useAppSelector(state => state.envConfig)
+
    beforeEach(() => {
     component = render(
     <Provider store={store}>
@@ -40,5 +41,19 @@
       expect(buttons[1]).toHaveTextContent('Run New Container')
       expect(buttons[2]).toBe(undefined)
    })
- });
+
+   it("defauls port value to 5432", ()=>{
+    const portNum = screen.getByText("Port")
+    expect(portNum.nextSibling.firstChild).toHaveDisplayValue('5432')
+    
+
+   })
+   
+   xit("updates local state when new image is created",()=>{
+    // userEvent.type(screen.getByRole)
+   })
+  
+ })
+
+ ;
  

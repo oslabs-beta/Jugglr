@@ -3,11 +3,19 @@ import { container, StartUpObj ,image} from "../../types";
 
 
 //StartupConfig functions
-
+/**
+ * 
+ * @returns returns array of Docker image objects
+ */
 export const getImages = async () : Promise<image[]> => {
   return await dockController.getImagesList()
 }
-
+/**
+ * 
+ * @param arr array of Docker image objects
+ * @returns array of image names
+ * 
+ */
 export const destructureImageList = (arr:image[]): string[] => {
   const newImageList :string[] = ['']
 
@@ -22,6 +30,12 @@ export const destructureImageList = (arr:image[]): string[] => {
   return newImageList
 }
 
+/**
+ * 
+ * @param values local state of startupConfig component
+ * @param action type of action - build image or run new container
+ * @param callback callback function that will listen for a response from Docker
+ */
 export const buildOrRun = async (values:StartUpObj, action:string, callback:Function) => {
   if(action==='buildImage'){
     buildImage(values.image)
@@ -30,24 +44,33 @@ export const buildOrRun = async (values:StartUpObj, action:string, callback:Func
     })
     
   } else {
-     runNewContainer(values)
+    runNewContainer(values)
     await dockController.runNewResult((args:boolean|string)=>{
     callback(args)
     })
   }
 }
 
+/**
+ * 
+ * @param image image name
+ * @returns void
+ */
 const buildImage = async (image:string):Promise<void> => {
-  console.log('buildImage')
-return await dockController.buildImage(image);
+ await dockController.buildImage(image);
 }
 
-const runNewContainer = async (values:StartUpObj): Promise<string> => {
+/**
+ * 
+ * @param values local state of startupConfig component
+ * send information required to start a new container 
+ */
+const runNewContainer = async (values:StartUpObj): Promise<void> => {
   const imageValue = values.selectedImage
   const containerName = values.container
   const port = values.port+'' 
-  const response = await dockController.runContainer(imageValue,containerName,port)
-  return response
+  await dockController.runContainer(imageValue,containerName,port)
+  
 }
 
   //RunConfig Functions
@@ -71,6 +94,12 @@ const runNewContainer = async (values:StartUpObj): Promise<string> => {
   
   return newContainerList
 }
+
+/**
+ * 
+ * @param arr 
+ * @returns 
+ */
 export const destructureContainerId = (arr:container[]) => {
   
   const containerIdObj = {}
@@ -85,6 +114,13 @@ export const destructureContainerId = (arr:container[]) => {
   
   return containerIdObj
 }
+
+/**
+ * 
+ * @param containerId 
+ * @param action 
+ * @param callback 
+ */
 export  const startStopOrRemove = async (containerId: string, action:'start' | 'stop'| 'remove', callback:Function) :Promise<void> => {
     //clear all notifications so only one notification is shown at any given time
     cleanNotifications(); 
@@ -110,6 +146,11 @@ export  const startStopOrRemove = async (containerId: string, action:'start' | '
   
     }
   
+    /**
+     * 
+     * @param containerId 
+     * @returns 
+     */
     const startContainer = async(containerId:string): Promise<boolean| string > => {
  
       if(containerId===undefined){
@@ -119,6 +160,11 @@ export  const startStopOrRemove = async (containerId: string, action:'start' | '
       return response
       }
       
+      /**
+       * 
+       * @param containerId 
+       * @returns 
+       */
       const stopContainer = async(containerId:string):Promise<boolean> => {
       if(containerId===undefined){
           return false;
@@ -127,7 +173,11 @@ export  const startStopOrRemove = async (containerId: string, action:'start' | '
       return response
        
       }
-      
+      /**
+       * 
+       * @param containerId 
+       * @returns 
+       */
        const removeContainer = async(containerId: string): Promise<boolean> => {
         if(containerId ===undefined){
           return false;
@@ -135,7 +185,11 @@ export  const startStopOrRemove = async (containerId: string, action:'start' | '
         const response = await dockController.removeContainer(containerId)
         return response
       }
-
+      /**
+       * 
+       * @param errorMessage 
+       * @returns 
+       */
       export const modifyErrorRemove = (errorMessage: string)=>{
         const arr=errorMessage.split(' ')
         const newArr = arr.slice(0,6)
@@ -143,7 +197,11 @@ export  const startStopOrRemove = async (containerId: string, action:'start' | '
       }
 
 //LoadDataConfig functions
-
+      /**
+       * 
+       * @param container 
+       * @returns 
+       */
       export const destructureContainerPort = (container:container[]):string[] => {
         const newArray = ['']
           container.forEach((ele)=>{

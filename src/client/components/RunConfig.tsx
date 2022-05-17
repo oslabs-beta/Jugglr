@@ -28,14 +28,19 @@ const Run = ():JSX.Element => {
     }
   })
   
-  
+  /**
+   *   useEffect will grab all containers from Docker on first render and every time dropdown is selected 
+
+   */
   useEffect( () => {
-    //grab all containers list on first render, and every time 'start' or 'stop' buttons are selected
     grabContainer().catch(console.error);
      
   },[form2.values.removeSelected])
 
-  //function called in useEffect to grab all containers
+  /**
+   * function called in useEffect to grab all containers
+   * will update global state with list of container names and object with all container ids obtained from Docker
+   */
   const grabContainer = async (): Promise<void> => {
     const containers:container[] = await dockController.getContainersList(true)
     const cList:string[] = destructureContainerList(containers)
@@ -43,17 +48,26 @@ const Run = ():JSX.Element => {
     dispatch(setDropDownContainer({containerIdObject: cObject, containerNames:cList}))
   }
   
-  //function is called when dropdown value changes
+ 
+  /**
+   * 
+   * @param event 
+   * set local state 'containerSelected' to the drop down value
+   */
   const updateSelectedContainer = async (event: ChangeEvent<HTMLSelectElement> ):Promise<void> => {
-    //set local state 'containerSelected' to the drop down value
     form2.setFieldValue('containerSelected', event.currentTarget.value)
   }
 
  
   
-
+  /**
+   * 
+   * @param args 'args' is the listener response received from the back end
+   * Notify users if container successfully started
+   * callback function passed into listener - displays a notification that is either an error message (if args is a string) or a success message (if args is a boolean) 
+   * 
+   */
   const notifyUserStart = async (arg:Boolean |string) => {
-    //if true, container started successfully, otherwise container failed to start.
     if(typeof arg==='string'){
       showNotification({
         message: arg,
@@ -67,6 +81,14 @@ const Run = ():JSX.Element => {
     }
       
   }
+
+   /**
+   * 
+   * @param args 'args' is the listener response received from the back end
+   * Notify users if container successfully stopped
+   * callback function passed into listener - displays a notification that is either an error message (if args is a string) or a success message (if args is a boolean) 
+   * 
+   */
 
   const notifyUserStop = async (arg:Boolean |string ) => {
     if(typeof arg==='string'){
@@ -82,6 +104,13 @@ const Run = ():JSX.Element => {
     }
   }
 
+  /**
+   * 
+   * @param args 'args' is the listener response received from the back end
+   * Notify users if container successfully removed
+   * callback function passed into listener - displays a notification that is either an error message (if args is a string) or a success message (if args is a boolean) 
+   * 
+   */
   const notifyUserRemove = async (arg: Boolean|string) => {
     if(typeof arg==='string'){
       arg = modifyErrorRemove(arg)
@@ -97,9 +126,12 @@ const Run = ():JSX.Element => {
       }) 
     }
   }
-
+  
+ 
+  /**
+   * function to update local state 'removeSelected', which will trigger useEffect hook'
+   */
   const containerRefresh = ()=>{
-    //update local state button selected, to re-run the useEffect hook to bring in new container list. This isn't working...
     if(form2.values.removeSelected===true){
       form2.setFieldValue('removeSelected',false)
       console.log('false')

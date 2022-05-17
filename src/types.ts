@@ -42,6 +42,7 @@ export type DockerFile = {
 export type LoadTable = {
   tablePath: string
   tableName: string
+  portSelected:string
 }
 export type rootDir = string;
 export type schema = string;
