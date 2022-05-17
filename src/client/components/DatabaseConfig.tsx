@@ -80,7 +80,7 @@ const DatabaseConfig = ({ navigate }) => {
       return false;
     }
   };
-
+  
   return (
     <Box sx={{ maxWidth: 500 }} mx="auto">
       <Paper style={{ background: "none" }}>

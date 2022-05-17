@@ -5,12 +5,7 @@ const selectorModule = require('./controllers/fileController');
 const { uploadData: psUploadData} = require('./controllers/postgres')
 const dockController = require('./controllers/dockerController')
 
-try {
-  require("electron-reloader")(module);
-} catch (_) {
-  console.log("Error");
-}
-// import { Dockerfile } from '../types'
+require("electron-reloader")(module, {ignore:['./jugglr']});
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -38,6 +33,7 @@ function createWindow() {
 
   //win.loadURL('localhost://env variable for endpoint')
   win.webContents.openDevTools();
+
 }
 
 app.whenReady().then(createWindow);
@@ -48,7 +44,6 @@ ipcMain.handle("open", async (_event) => {
     return result;
   }
   catch (err) {
-    // console.log(err);
     return err;
   }
 });
@@ -59,7 +54,6 @@ ipcMain.handle("dir", async(_event)=>{
     return result;
   }
   catch (err) {
-    // console.log(err);
     return err;
   }
 })
@@ -70,7 +64,6 @@ ipcMain.handle("setProjectRoot", async(_event, rootdir)=>{
     return result;
   }
   catch (err) {
-    // console.log(err);
     return err;
   }
 })
@@ -78,13 +71,11 @@ ipcMain.handle("setProjectRoot", async(_event, rootdir)=>{
 
 ipcMain.handle("uploadData", async (event, table, sqlSchema, port) => {
   try {
-    // console.log('here', table, sqlSchema)
     const result = await psUploadData(event, table, sqlSchema, port);
     return result;
   }
   catch (err:any) {
-    // console.log(err);
-    return event.sender.send('databaseResult', err);
+    event.sender.send('databaseResult', err);
   }
 });
 
@@ -101,12 +92,10 @@ ipcMain.handle("createDockerfile", async (_event, dockerfile) => {
 
 ipcMain.handle("buildImage", async (event, image) => {
   try {
-    // console.log('here');
     const result = await dockController.buildImage(event, image);
     return result;
   }
   catch (err) {
-    // console.log(err);
     return err;
   }
 });
@@ -114,11 +103,10 @@ ipcMain.handle("buildImage", async (event, image) => {
 
 ipcMain.handle("runContainer", async (event, imageName, containerName,port) => {
   try {
-    await dockController.run(event, imageName, containerName,port)
-    return true;
+    const result =  await dockController.run(event, imageName, containerName,port)
+    return result;
   }
   catch (err) {
-    // console.log('catch block', err);
     return err;
   }
  
@@ -127,12 +115,9 @@ ipcMain.handle("runContainer", async (event, imageName, containerName,port) => {
 ipcMain.handle("startContainer", async (event, containerId) => {
   try {
     const result = await dockController.startContainer(event, containerId);
-    // console.log('startcontainer', result);
-
     return result;
   }
   catch (err) {
-    // console.log(err);
     return err;
   }
 });
@@ -140,11 +125,9 @@ ipcMain.handle("startContainer", async (event, containerId) => {
 ipcMain.handle("stopContainer", async (event, containerId) => {
   try {
     const result = await dockController.stopContainer(event, containerId);
-    // console.log('stopcontainer', result);
     return result;
   }
   catch (err) {
-    // console.log(err);
     return err;
   }
 });
@@ -156,7 +139,6 @@ ipcMain.handle("removeContainer", async (event, containerId) => {
     return result;
   }
   catch (err) {
-    // console.log(err);
     return err;
   }
 });
@@ -164,6 +146,7 @@ ipcMain.handle("removeContainer", async (event, containerId) => {
 ipcMain.handle("getContainers", async (_event, all) => {
   try {
     const result = await dockController.getContainersList(all);
+   
     const formatted = result.map(object => {
       const id = object.Id;
       const names = object.Names;
@@ -175,7 +158,6 @@ ipcMain.handle("getContainers", async (_event, all) => {
      return formatted;
   }
   catch (err) {
-    // console.log(err);
     return err;
   }
 });
@@ -192,7 +174,6 @@ ipcMain.handle("getImages", async (_event) => {
    return formatted;
   }
   catch (err) {
-    // console.log(err);
     return err;
   }
 });

@@ -101,7 +101,7 @@ const AppLayout = () => {
               <Paper>
                 <Title
                   style={{
-                    fontFamily: "Oleo Script Swash Caps, cursive",
+                    fontFamily: "Kollektif Regular, sans-serif",
                     fontSize: 45,
                     color: "#228be6"
                   }}

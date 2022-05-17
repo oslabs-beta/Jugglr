@@ -1,11 +1,12 @@
 import { Space, Box, Title, Paper, Button, TextInput, NativeSelect, Grid,Center } from "@mantine/core";
-import { destructureImageList, runNewContainer, buildImage, } from "../utility/fileExplorer";
+import { destructureImageList, getImages, buildOrRun } from "../utility/dockerFunctions";
 import {  useEffect } from "react";
 import { useForm, } from "@mantine/hooks";
 import { useAppSelector, useAppDispatch } from "../utility/hooks.types";
 import { setDropDownImage } from "../reducers/envConfigSlice";
-import { image, StartUpObj } from "../../types";
+import { image } from "../../types";
 import { showNotification } from "@mantine/notifications";
+import React from "react"
 
 
 
@@ -30,7 +31,7 @@ const Startup = ():JSX.Element => {
 
   useEffect( () => {
     const grabImages = async (): Promise<void> => {
-    const images:image[] = await dockController.getImagesList()
+    const images:image[] = await getImages()
     const iList:string[] = destructureImageList(images)
     dispatch(setDropDownImage({dropDownImage:iList}))
     form1.setFieldValue('image',"")
@@ -50,23 +51,23 @@ const Startup = ():JSX.Element => {
       }
   }
 
-  const notifyUserContainer = (bool:boolean) => {
-    if(bool){
+  const notifyUserContainer = (args:boolean|string) => {
+    if(typeof args === 'string'){
       showNotification({
-        message:'Container started successfully',
-        autoClose: 3500
+        message: args,
+        autoClose: 6000
       })
     } else {
       showNotification({
-        message:'Failed to start a new container',
+        message:'Container started successfully',
         autoClose: 3500
       })
     }
     
   }
-  const notifyUserImage = (bool:boolean) => {
-    console.log('notify',bool)
-    if(bool){
+  const notifyUserImage = (arg:boolean|string) => {
+    console.log(typeof arg)
+    if(typeof arg==='boolean'){
       showNotification({
         message:'Image created successfully',
         autoClose: 3500
@@ -78,107 +79,87 @@ const Startup = ():JSX.Element => {
       })
     }
   }
-  
-  const setStateAndCall = async (values:StartUpObj, action:string) => {
-    if(action==='buildImage'){
-      buildImage(values.image)
-      await dockController.buildImageResult((args:boolean)=>{
-       notifyUserImage(args)
-      })
-      
-    } else {
-      runNewContainer(values)
-      await dockController.runNewResult((args:boolean)=>{
-      notifyUserContainer(args)
-      })
-    }
-  }
+ 
+ 
 
 
   return (
     <>
     <Paper style={{ background: "none" }}>
-        <Title order={1} align="center" mt={20}>
+      <Title order={1} align="center" mt={20}>
           Image Configuration
-        </Title>
-      </Paper>
-      <Space h="sm" />
-      <Box>
+      </Title>
+    </Paper>
 
-      <form  onSubmit={form1.onSubmit((values)=> setStateAndCall(values,'buildImage'))}>
-      
+    <form  onSubmit={form1.onSubmit((values)=> buildOrRun(values,'buildImage',notifyUserImage))}>
       <Center>
-
-    <TextInput
-          style={{marginTop:"5%", width: "60%"}}
-          required
-          label="Image Name"
-          placeholder="Image Name"
-          {...form1.getInputProps("image")}  
-        />
+        <TextInput
+            style={{marginTop:"2%", width: "60%"}}
+            required
+            label="Image Name"
+            placeholder="Image Name"
+            {...form1.getInputProps("image")}  
+          />
       </Center>
-
-      <Space h="md" />
+        <Space h="md" />
       <Center>
-      <Button type="submit">Create new Image</Button>
-      
+        <Button type="submit">Create New Image</Button>
       </Center>
-      
-        </form>
-        
-    </Box>
-      <Paper style={{ background: "none" }}>
-        <Title order={1} align="center" mt={20}>
-          Container Configuration
-        </Title>
-      </Paper>
-      <Space h={50} />
-    <Box>
-    
-      <form onSubmit={form1.onSubmit((values)=> setStateAndCall(values,'newContainer'))}>
-        <Grid>
-     
-    <Grid.Col>
-    <Center>
-      <NativeSelect style={{width:"60%"}} placeholder="select image" label="Image" data={dropDownImage} onClick= {()=>imageCreated()} onChange={(event)=> form1.setFieldValue('selectedImage', event.currentTarget.value)} />
-    </Center>
-    </Grid.Col>
-
-    <Grid.Col>
-      <Center><div style={{display:"flex", justifyContent: "space-between", width:"60%"}}>
-    <TextInput
-          style={{marginTop:"5%"}}
-          required
-          label="Container Name"
-          placeholder="Container Name"
-          {...form1.getInputProps("container")}  
-        />
-    
-<TextInput
-          style={{marginTop:"5%"}}
-          required
-          label="Port"
-          placeholder="Port"
-          {...form1.getInputProps("port")}
-        />
-        </div>
-        </Center>
-    </Grid.Col>
-
-    <Grid.Col>
-    <Space h="sm" />
-      <Center>
-    <Button style={{top:"75%"}}type="submit">Run New Container</Button>
-    </Center>
-    </Grid.Col>
-    </Grid>
     </form>
-   
-         
-    </Box>
 
+    <Space h="xl"/>
+    <Space h="xl"/>
 
-    </>
+    <Paper style={{ background: "none" }}>
+       <Title order={1} align="center" mt={20}>
+        Container Configuration
+       </Title>
+    </Paper>
+
+      <Space h="md"/>
+    
+    <form onSubmit={form1.onSubmit((values)=> buildOrRun(values,'newContainer', notifyUserContainer))}>
+
+        <Grid>
+
+          <Grid.Col>
+            <Center>
+              <NativeSelect style={{width:"60%"}} placeholder="select image" label="Image" data={dropDownImage} onClick= {()=>imageCreated()} onChange={(event)=> form1.setFieldValue('selectedImage', event.currentTarget.value)} />
+            </Center>
+          </Grid.Col>
+
+          <Grid.Col>
+            <Center>
+              <div style={{display:"flex", justifyContent: "space-between", width:"60%"}}>
+                <TextInput
+                  style={{width:"55%"}}
+                  required
+                  label="Container Name"
+                  placeholder="Container Name"
+                  {...form1.getInputProps("container")}  
+                />
+    
+                <TextInput
+                  required
+                  label="Port"
+                  placeholder="Port"
+                  {...form1.getInputProps("port")}
+                />
+
+             </div>
+            </Center>
+          </Grid.Col>
+
+          <Grid.Col>
+            <Center>
+              <Button style={{top:"75%"}}type="submit">Run New Container</Button>
+            </Center>
+          </Grid.Col>
+
+        </Grid>
+
+    </form>
+   </>
   );
 };
 

@@ -1,11 +1,15 @@
-import { Space, Box, Title, Paper, Button, TextInput } from "@mantine/core";
+import { Space, Box, Title, Paper, Button, TextInput, NativeSelect, Tooltip } from "@mantine/core";
 import FileSearchButton from "../containers/FileSearchButton";
-import { selectFile, uploadTableData} from "../utility/fileExplorer";
+import { selectFile } from "../utility/fileExplorer";
+import { uploadTableData} from "../utility/postrgresFunctions";
+import { destructureContainerPort} from "../utility/dockerFunctions";
+
 import { useForm } from "@mantine/hooks";
 import { useAppSelector,useAppDispatch} from "../utility/hooks.types";
-import { LoadTable } from "../../types";
-import { setEnvConfig } from "../reducers/envConfigSlice";
+import { LoadTable,container} from "../../types";
+import   {setEnvConfig,setDropDownPort } from "../reducers/envConfigSlice";
 import { cleanNotifications, showNotification } from "@mantine/notifications";
+import { ChangeEvent, useEffect } from "react";
 
 /**
  * 
@@ -16,7 +20,7 @@ import { cleanNotifications, showNotification } from "@mantine/notifications";
 const LoadData = () => {
   
   //pull in redux global state and the redux dispatch function to update global state
-  const { tablePath, tableName } = useAppSelector(state => state.envConfig)
+  const { tablePath, tableName, activePorts } = useAppSelector(state => state.envConfig)
   const dispatch = useAppDispatch();
 
   
@@ -28,6 +32,9 @@ const form = useForm({
   initialValues: {
     tablePath: tablePath,
     tableName: tableName,
+    // activePorts: [""],
+    portSelected:""
+    
     }
   });
   /**
@@ -51,21 +58,42 @@ const form = useForm({
     Function updates global state via dispatch and invokes uploadTableData to initiate backend process responsible for uploading data to containeraized database.
     Will also notify users if the data was uploaded successfully via psUploadData which listens for a true/false value from the backend.
    */
-  const setStateAndCall = async (values: LoadTable) => {
-    dispatch(setEnvConfig(values));
-    const response = await uploadTableData(values)
     
-    if(response !== ""){
+useEffect(() => {
+    
+  grabPorts()
+
+  },[]
+)
+
+
+const grabPorts = async (): Promise<void> => {
+  // invoke docker function and receive an array of objects with type 'container'.
+  const containers:container[] = await dockController.getContainersList(false)
+  //desctructure returned object to just grab container names
+  //destructure returned object to just grab container ids
+  const pArray = destructureContainerPort(containers)
+  // form.setFieldValue('activePorts',pArray)
+  //update redux global state
+  dispatch(setDropDownPort({activePorts:pArray}))
+}
+
+  const setStateAndCall = async (values: LoadTable) => {
+    
+    const response = await uploadTableData(values,form.values.portSelected)
+    console.log('response', response)
+    if(response !== undefined){
       showNotification({
         message: response,
         autoClose: 4000
       })
     } 
-    // else {
-    //   await psUploadData.databaseResult((args:boolean|string)=>{
-    //     notifyUser(args)
-    //   })
-    // }
+    else {
+      await psUploadData.databaseResult((args:boolean|string|Error)=>{
+        notifyUser(args, values)
+      })
+    }
+    
   }
   /**
    * 
@@ -73,18 +101,26 @@ const form = useForm({
    * Function will display a success or failure message to the user based on what is received from the backend.
    * True indicates data was loaded successfully, whereas false indicates upload failed 
    */
-  const notifyUser = (bool:boolean|string) => {
-    if(bool){
+  const notifyUser = (arg: boolean |string |Error, values:LoadTable) => {
+    if(typeof arg==='object' || typeof arg==='string'){
+      const error = ""+arg
       showNotification({
-        message: "Data uploaded successfully",
+        message: error,
         autoClose: 4000
       })
+     
     } else {
       showNotification({
-        message: "Failed to upload data",
+        message: "Data uploaded Successfully",
         autoClose: 4000
       })
+      
     }
+    dispatch(setEnvConfig(values));
+  }
+      //set local state 'portSelected' to the drop down value
+  const setSelectedPort = async (event: ChangeEvent<HTMLSelectElement> ):Promise<void> => {
+    form.setFieldValue('portSelected', event.currentTarget.value)
   }
 
 
@@ -95,43 +131,58 @@ const form = useForm({
           Load Data
         </Title>
       </Paper>
-      <Space h={50} />
-    <Box>
+
+      <Space h={25} />
+
+  
     {/* tablePath and tableName fields are wrapped in a form to leverage Mantine useForm hook */}
-    <form  style={{display:'flex', flexDirection:'column', alignItems:"center"}} onSubmit={form.onSubmit((values)=> {setStateAndCall(values); })}>
-    <TextInput
-          style={{width:"60%"}}
-          required
-          label="Table Path"
-          placeholder="Table Path"
-          {...form.getInputProps("tablePath")}
-          rightSection={
-            <FileSearchButton
-              setField={setFieldType("tablePath")}
-              setPath={selectFile}
+      <form  style={{display:'flex', flexDirection:'column', alignItems:"center"}} onSubmit={form.onSubmit((values)=> {setStateAndCall(values); })}>
+         
+         <NativeSelect  required  style={{width:"60%"}} placeholder="Select Port" label="Select A Port" data={activePorts} onChange={(event)=> setSelectedPort(event)} />
+
+         <Space h={50}/>
+    
+          <TextInput
+                style={{width:"60%"}}
+                required
+                label="Table Path"
+                placeholder="Table Path"
+                {...form.getInputProps("tablePath")}
+                rightSection={
+                  <Tooltip 
+                    label="Table data must be in .csv format"
+                    withArrow
+                  >
+                    <FileSearchButton
+                    setField={setFieldType("tablePath")}
+                    setPath={selectFile}
+                    />
+                  </Tooltip>
+                }
+              />
+              
+          <Tooltip
+          style={{marginTop:"2%",width:"60%"}}
+          label="Table name must match schema"
+          closeDelay ={200}
+          position = "bottom"
+          withArrow
+          >
+            <TextInput
+              required
+              label="Table Name"
+              placeholder="Table Name"
+              {...form.getInputProps("tableName")}
             />
-          }
-        />
-        
-        <TextInput
-        style={{marginTop:"5%",width:"60%"}}
-          required
-          label="Table Name"
-          placeholder="Table Name"
-          {...form.getInputProps("tableName")}
-          
-         
-        />
-         <div style={{marginTop:"5%",display: "flex", justifyContent:"center"}}>
-         <div >
-         <Button style={{top:"75%"}} onClick={cleanNotifications} type="submit">Load Table Data</Button>
-         </div>
-         </div>
-         
-         </form>
+          </Tooltip>
 
-    </Box>
-
+          <div style={{display: "flex", justifyContent:"center"}}>
+            <div >
+                <Button style={{top:"75%"}} onClick={cleanNotifications} type="submit">Load Table Data</Button>
+            </div>
+          </div>
+         
+      </form>
 
     </>
   );

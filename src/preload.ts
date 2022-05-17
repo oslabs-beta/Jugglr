@@ -4,7 +4,6 @@ import { container, DockerFile, image } from './types';
 
 contextBridge.exposeInMainWorld("selectorModule", {
   openFile: async () => {
-    console.log("hello!")
     const response = await ipcRenderer.invoke("open");
     return response;
   },
@@ -40,8 +39,8 @@ contextBridge.exposeInMainWorld("dockController", {
   removeContainer: async (containerId:string):Promise<void> => {
     return await ipcRenderer.invoke('removeContainer', containerId)
   },
-  getContainersList: async ():Promise<container[]>  => {
-    return await ipcRenderer.invoke('getContainers')
+  getContainersList: async (all:boolean):Promise<container[]>  => {
+    return await ipcRenderer.invoke('getContainers',all)
   },
   getImagesList: async ():Promise<image[]> => {
     return await ipcRenderer.invoke('getImages')
@@ -49,11 +48,13 @@ contextBridge.exposeInMainWorld("dockController", {
   
   runNewResult: (callback:Function) => {
     ipcRenderer.once('runResult', ( _event: Event, arg: boolean|string) => {
+      console.log('preload', arg)
       callback(arg)
   })
   },
 
   buildImageResult: (callback:Function) => {
+    console.log('outer buildimageresult')
     ipcRenderer.once('buildImageResult', (_event: Event, arg: boolean|string) => {
     console.log('received buildImageResult', arg)
     callback(arg)
@@ -81,17 +82,17 @@ contextBridge.exposeInMainWorld("dockController", {
 })
 
 contextBridge.exposeInMainWorld("psUploadData", {
-  uploadData: async (table:string,sqlSchema:string) => {
-    const response = await ipcRenderer.invoke("uploadData", table, sqlSchema);
+  uploadData: async (table:string, sqlSchema:string, port:string) => {
+    const response = await ipcRenderer.invoke("uploadData", table, sqlSchema,port);
     return response;
   },
 
-  // DatabaseResult: async (callback:Function) => {
-  //   ipcRenderer.once('databaseResult', (_event: Event, arg: boolean|string) => {
-  //     console.log('received Database Result', arg)
-  //     callback(arg)
-  //   })
-  // },
+  databaseResult: async (callback:Function) => {
+    ipcRenderer.once('databaseResult', (_event: Event, arg: boolean|string) => {
+      console.log('received Database Result', arg)
+      callback(arg)
+    })
+  },
 
    
   

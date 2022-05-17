@@ -18,7 +18,8 @@ export const envConfigSlice = createSlice({
     tableName:"",
     dropDownImage:[""],
     containerIdObject:{},
-    containerNames:[""]
+    containerNames:[""],
+    activePorts:[""] 
   },
   reducers: {
     setEnvConfig: (state, action) => {
@@ -33,12 +34,15 @@ export const envConfigSlice = createSlice({
     setDropDownContainer: (state,action) => {
       const {containerIdObject, containerNames} = action.payload
       return{...state, containerIdObject,containerNames}
+    },
+    setDropDownPort: (state ,action)=>{
+      const {activePorts} = action.payload
+      return{...state, activePorts}
     }
-
     
   }
 });
 
-export const { setEnvConfig, setDropDownImage , setDropDownContainer} = envConfigSlice.actions;
+export const { setEnvConfig, setDropDownImage , setDropDownContainer, setDropDownPort} = envConfigSlice.actions;
 
 export default envConfigSlice.reducer;
