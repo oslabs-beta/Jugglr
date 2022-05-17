@@ -45,7 +45,6 @@ import userEvent from "@testing-library/user-event";
    it("defauls port value to 5432", ()=>{
     const portNum = screen.getByText("Port")
     expect(portNum.nextSibling.firstChild).toHaveDisplayValue('5432')
-    
 
    })
    

@@ -15,9 +15,10 @@ import {
   Title,
   Image,
   Paper,
-  Footer
+  Footer,
+  Button
 } from "@mantine/core";
-
+import { Help } from 'tabler-icons-react'
 import DarkModeButton from "./DarkModeButton";
 import StartupConfig from "./StartupConfig";
 import NavbarButtons from "./NavbarButtons";
@@ -109,9 +110,21 @@ const AppLayout = () => {
                   Jugglr
                 </Title>
               </Paper>
+              
             </div>
-
-            <div style={{ marginLeft: "auto", marginRight: "50px" }}>
+            
+            <div style={{ marginLeft: "auto", marginRight: "50px", display:"flex", gap: "20px"}}>
+            <div>
+             <a href="https://github.com/oslabs-beta/Jugglr/blob/dev/docs/Jugglr%20Documentation.md" target="_blank">
+               <Help 
+               size={26}
+              strokeWidth={2}
+              color={'#406abf'}> 
+                <Button>
+                </Button>
+              </Help >
+            </a>
+            </div>
               <DarkModeButton />
             </div>
           </div>
