@@ -1,0 +1,30 @@
+@font-face {
+  font-family: 'Kollektif Regular';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Kollektif Regular'), url('Kollektif.woff') format('woff');
+  }
+  
+
+  @font-face {
+  font-family: 'Kollektif Italic';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Kollektif Italic'), url('Kollektif-Italic.woff') format('woff');
+  }
+  
+
+  @font-face {
+  font-family: 'Kollektif Bold';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Kollektif Bold'), url('Kollektif-Bold.woff') format('woff');
+  }
+  
+
+  @font-face {
+  font-family: 'Kollektif Bold Italic';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Kollektif Bold Italic'), url('Kollektif-BoldItalic.woff') format('woff');
+  }

@@ -28,8 +28,8 @@ const App = () => {
         <MantineProvider
           theme={{
             colorScheme,
-            fontFamily: "sans-serif",
-            headings: { fontFamily: "sans-serif" }
+            fontFamily: "Kollektif Regular, serif, sans-serif",
+            headings: { fontFamily: "Kollektif Regular, serif, sans-serif" }
           }}
         >
           <NotificationsProvider limit={3} autoClose={3000}>
