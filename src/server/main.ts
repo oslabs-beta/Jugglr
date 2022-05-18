@@ -5,7 +5,6 @@ const selectorModule = require('./controllers/fileController');
 const { uploadData: psUploadData} = require('./controllers/postgres')
 const dockController = require('./controllers/dockerController')
 
-require("electron-reloader")(module, {ignore:['./jugglr']});
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -28,9 +27,6 @@ function createWindow() {
   This will generate the jugglr-app electron package in the root directory, based on your machine's OS (e.g., Darwin for Mac) and architecture (e.g., x64 for Darwin).
   You can then move the package anywhere else on your machine and it will work just fine.
  */
-
-
-  win.webContents.openDevTools();
 
 }
 
