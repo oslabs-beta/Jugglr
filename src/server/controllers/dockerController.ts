@@ -56,7 +56,6 @@ const dockerController = {
       return err;
     } 
     return true;
-
   },
   
  /**
@@ -221,6 +220,10 @@ const dockerController = {
   buildImage:  async (event, image) => {
     try {
       const schema = process.env.SCHEMA
+      if (!lfs.existsSync(schema)){
+        event.sender.send('buildImageResult', 'Schema file not found. Please check the file path.'); 
+        return;
+      } 
       const relSchema = lpath.relative(process.env.DOCKDIR, schema);
       const dockerode = await  new Docker();
       const stream = await dockerode.buildImage({
@@ -228,8 +231,13 @@ const dockerController = {
             src: ['Dockerfile', `${relSchema}`]}, 
             {t: image})
       await new Promise((_resolve, _reject) => {
-        dockerode.modem.followProgress(stream, () => {
-            event.sender.send('buildImageResult', true);      
+        dockerode.modem.followProgress(stream, (_err, output) => {
+          for (const obj of output){
+            if (obj['errorDetail']){
+              event.sender.send('buildImageResult', obj['errorDetail'].message)
+            }
+          }
+          event.sender.send('buildImageResult', true);      
         })
       })
     }
@@ -237,7 +245,6 @@ const dockerController = {
       event.sender.send('buildImageResult', err);
       return false;
     }
-    return true;
   },
   
   /**
