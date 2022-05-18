@@ -234,7 +234,6 @@ const dockerController = {
         dockerode.modem.followProgress(stream, (_err, output) => {
           for (const obj of output){
             if (obj['errorDetail']){
-              console.log(obj['errorDetail'].error, obj['errorDetail'].message)
               event.sender.send('buildImageResult', obj['errorDetail'].message)
             }
           }
@@ -243,7 +242,6 @@ const dockerController = {
       })
     }
     catch (err: any) {
-      console.log(err);
       event.sender.send('buildImageResult', err);
       return false;
     }
