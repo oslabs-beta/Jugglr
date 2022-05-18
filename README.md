@@ -57,6 +57,7 @@ B. Alternatively, follow these steps:
 
 **Note: you must be running Docker to use Jugglr. Download Docker Desktop from [here](https://www.docker.com/get-started/).**
 
+The first time you build an image, it may take some time as Docker needs to download the Postgres image from DockerHub. After that, the Postgres image will be stored locally and image creation should take no more than a second or two.
 ## Documentation
 
 Detailed documentation on how to use Jugglr can be found [here](/docs/Jugglr%20Documentation.md).
@@ -75,6 +76,7 @@ or you can load data as a separate step, as described below
 COPY <yourcsvfilename.csv with full path>  <specify any path in the container, like /usr/data/yourcsvfilename.csv>
 ```
 #### Build the image 
+
 - note: the dot after the image name is important, it means build the image from the current directory. If you want to build image from elsewhere, specify that location relative to where command is being run from
 - if you name your Dockerfile a different name or put it in a different path, specify that after the -f flag.
 ```bash
