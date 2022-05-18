@@ -166,7 +166,7 @@ const grabPorts = async (): Promise<void> => {
               placeholder="Table Name"
               rightSection={
                 <Tooltip
-                label="Table name must match schema"
+                label="Must match table name provided in schema"
                 closeDelay ={200}
                 position = "bottom"
                 withArrow

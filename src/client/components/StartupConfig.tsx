@@ -6,8 +6,8 @@ import { useAppSelector, useAppDispatch } from "../utility/hooks.types";
 import { setDropDownImage } from "../reducers/envConfigSlice";
 import { image } from "../../types";
 import { showNotification } from "@mantine/notifications";
-import React from "react"
 import { InfoCircle } from "tabler-icons-react";
+import React from "react"
 
 
 /**

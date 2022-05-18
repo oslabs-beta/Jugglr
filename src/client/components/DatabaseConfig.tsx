@@ -8,7 +8,8 @@ import {
   Grid,
   PasswordInput,
   Group,
-  Button
+  Button,
+  Tooltip
 } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
@@ -95,10 +96,15 @@ const DatabaseConfig = ({ navigate }) => {
           placeholder="Schema file path"
           {...form.getInputProps("schema")}
           rightSection={
+            <Tooltip
+            label="Schema must be a .sql file located under the selected project's root directory"
+            withArrow
+            >
             <FileSearchButton
               setField={setFieldType("schema")}
               setPath={selectFile}
             />
+             </Tooltip>
           }
         />
         <Space h="sm" />
