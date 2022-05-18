@@ -9,8 +9,9 @@
     "build": "tsc && webpack -w",
     "clean": "rm -rf ./build",
     "start": "electron ./build/server/main.js",
-    "test": "docker rm $(docker ps -q -a) --force; docker image rm $(docker image ls -q) --force; jest --config ./jest.config.ts --runInBand",
+    "test": "jest --config ./jest.config.ts --runInBand",
     "test1": "jest --config ./jest.config.ts",
+    "remove-all": "docker rm $(docker ps -q -a) --force; docker image rm $(docker image ls -q) --force;",
     "remove-cont": "docker rm $(docker ps -q -a) --force",
     "remove-images": "docker image rm $(docker image ls -q) --force"
   },
