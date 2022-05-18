@@ -16,7 +16,10 @@ The next step is to provide information for creating the database. Here you will
 ![Database Configuration](database.png "Database Configuration")
 
 Once you have a Dockerfile, you can create a Docker image. All that is required here is for you to give your image a name, Jugglr takes care of the rest. This also need only be done once, unless you want to change the database schema. For any database changes, it is recommended that you create a new image to capture the changes.
+
 NOTE: image names must be lowercase and have no spaces. Anything else will cause the image build to fail.
+
+The first time you build an image, it may take some time as Docker needs to download the Postgres image from DockerHub. After that, the Postgres image will be stored locally and image creation should take no more than a second or two.
 
 ![Create Image and Run Container](image_config.png "Create Image and Run Container")
   

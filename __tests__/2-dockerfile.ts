@@ -68,19 +68,26 @@ describe('Docker and Postgres tests', () => {
         await ipcMain.on('buildImageResult', (_event: Event, arg: boolean|string) => {
           result = arg;
         })
-        await new Promise(resolve => setTimeout(resolve, 3000));
+        while (result === undefined) {
+          console.log('...waiting')
+          await new Promise(resolve => setTimeout(resolve, 1000));
+        }
         expect(result).toBe(true);
         })
     }),  
   describe ('run image', () => {
     it ('creates a container and runs it', async () => {
       const event = ipcRenderer._event;
-      await run(event, "test:latest", 'testc');
+      await run(event, "test", 'testc');
       let result;
       await ipcMain.on('runResult', (_event: Event, arg: boolean|string) => {
         result = arg;
+        expect(result).toBe(true)
       })
-      await new Promise(resolve => setTimeout(resolve, 4000));
+      while (result === undefined) {
+        console.log('...waiting')
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
       expect(result).toBe(true)
     })
   }),
