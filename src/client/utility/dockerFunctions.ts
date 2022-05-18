@@ -138,7 +138,6 @@ export const destructureContainerId = (arr:container[]) => {
 export  const startStopOrRemove = async (containerId: string|undefined, action:'start' | 'stop'| 'remove', callback:Function) :Promise<void> => {
     //clear all notifications so only one notification is shown at any given time
     cleanNotifications();
-    console.log('here', containerId)
     if(containerId === undefined){
       showNotification({
         message: 'Please select a container from the drop down',
