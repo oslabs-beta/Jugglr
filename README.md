@@ -1,5 +1,5 @@
 
-# Jugglr ·
+# Jugglr
 
 Jugglr is a tool for managing test data and running tests with a lightweight, dedicated database. Jugglr enables developers, testers, and CI/CD processes to run tests against containerized databases with data loaded at runtime.
 
