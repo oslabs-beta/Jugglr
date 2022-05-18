@@ -3,7 +3,15 @@
 
 Jugglr is a tool for managing test data and running tests with a lightweight, dedicated database. Jugglr enables developers, testers, and CI/CD processes to run tests against containerized databases with data loaded at runtime.
 
-
+- [Authors](#authors)
+- [Installation](#installation)
+  * [Clone the project](#clone-the-project)
+  * [Go to the project directory](#go-to-the-project-directory)
+  * [Install dependencies](#install-dependencies)
+  * [Start the servers](#start-the-servers)
+  * [Run tests](#run-tests)
+- [Documentation](#documentation)
+- [Running in CI/CD](#running-in-cicd)
 ## Authors
 
 - [@Anthony Stanislaus](https://github.com/STANISLAUSA)
@@ -82,5 +90,5 @@ docker build -t <image name> . -f jugglr/Dockerfile   //or other name you have g
 #### Finally, load data from a file (keep the single and double quotes in the copy command below):
 
 ```bash
-docker exec -it <container name>  psql -U <database username> -d <databasename> -c "\copy <tablename> FROM '<path to csv file>' DELIMITER ',' CSV HEADER;"
+docker exec -it <container name>  psql -U <database username> -d <databasename> -c "\copy <tablename> FROM '<path to csv file in the Docker Container>' DELIMITER ',' CSV HEADER;"
 ```
