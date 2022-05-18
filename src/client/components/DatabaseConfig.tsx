@@ -90,23 +90,26 @@ const DatabaseConfig = ({ navigate }) => {
       <Space h={50} />
 
       <form onSubmit={form.onSubmit(values => setStateAndCall(values))}>
+      <Tooltip
+            style ={{width:"100%"}}
+            label="Schema must be a .sql file located under the project's root directory"
+            withArrow
+            >
         <TextInput
           required
           label="Schema File"
           placeholder="Schema file path"
           {...form.getInputProps("schema")}
           rightSection={
-            <Tooltip
-            label="Schema must be a .sql file located under the selected project's root directory"
-            withArrow
-            >
+            
             <FileSearchButton
               setField={setFieldType("schema")}
               setPath={selectFile}
             />
-             </Tooltip>
+             
           }
         />
+        </Tooltip>
         <Space h="sm" />
 
         <TextInput

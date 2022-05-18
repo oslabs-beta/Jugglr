@@ -8,9 +8,9 @@ import { useForm } from "@mantine/hooks";
 import { useAppSelector,useAppDispatch} from "../utility/hooks.types";
 import { LoadTable,container} from "../../types";
 import   {setEnvConfig,setDropDownPort } from "../reducers/envConfigSlice";
-import { cleanNotifications, showNotification } from "@mantine/notifications";
+import { cleanNotifications, showNotification, updateNotification } from "@mantine/notifications";
 import { ChangeEvent, useEffect } from "react";
-import { InfoCircle } from "tabler-icons-react";
+import { CircleCheck, FileX, InfoCircle } from "tabler-icons-react";
 
 /**
  * 
@@ -87,15 +87,19 @@ const grabPorts = async (): Promise<void> => {
   const notifyUser = (arg: boolean |string |Error, values:LoadTable) => {
     if(typeof arg==='object' || typeof arg==='string'){
       const error = ""+arg
-      showNotification({
+      updateNotification({
+        id:'upload-data',
         message: error,
-        autoClose: 4000
+        autoClose: 4000,
+        icon: <FileX/>
       })
      
     } else {
-      showNotification({
-        message: "Data uploaded Successfully",
-        autoClose: 4000
+      updateNotification({
+        id:'upload-data',
+        message: 'Data uploaded successfuly',
+        autoClose: 4000,
+        icon: <CircleCheck/>
       })
       
     }
@@ -157,7 +161,7 @@ const grabPorts = async (): Promise<void> => {
                   </Tooltip>
                 }
               />
-              
+               <Space h={25}/>
           
             <TextInput
               style={{width:"60%"}}
