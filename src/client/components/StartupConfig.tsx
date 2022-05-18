@@ -5,8 +5,8 @@ import { useForm, } from "@mantine/hooks";
 import { useAppSelector, useAppDispatch } from "../utility/hooks.types";
 import { setDropDownImage } from "../reducers/envConfigSlice";
 import { image } from "../../types";
-import { showNotification } from "@mantine/notifications";
-import { InfoCircle } from "tabler-icons-react";
+import { showNotification, updateNotification } from "@mantine/notifications";
+import { InfoCircle, CircleCheck, FileX} from "tabler-icons-react";
 import React from "react"
 
 
@@ -70,14 +70,18 @@ const Startup = ():JSX.Element => {
    */
   const notifyUserContainer = (args:boolean|string) => {
     if(typeof args === 'string'){
-      showNotification({
-        message: args,
-        autoClose: 6000
+      updateNotification({
+        id: 'run-new-container',
+        message:args,
+        autoClose: 3500,
+        icon: <FileX/>,
       })
     } else {
-      showNotification({
+      updateNotification({
+        id: 'run-new-container',
         message:'Container started successfully',
-        autoClose: 3500
+        autoClose: 3500,
+        icon: <CircleCheck/>,
       })
     }
    
@@ -89,16 +93,28 @@ const Startup = ():JSX.Element => {
    * 
    */
   }
-  const notifyUserImage = (arg:boolean|string) => {
+  const notifyUserImage = (arg:boolean|string|Error) => {
     if(typeof arg==='boolean'){
-      showNotification({
+      updateNotification({
+        id: 'create-image',
         message:'Image created successfully',
-        autoClose: 3500
+        autoClose: 3500,
+        icon: <CircleCheck/>,
+      })
+    } else if (arg === 'string'){
+     updateNotification({
+        id: 'create-image',
+        message:arg,
+        autoClose: 3500,
+        icon: <FileX/>,
       })
     } else {
-      showNotification({
-        message:'Failed to create new image',
-        autoClose: 3500
+      const message = ""+arg
+      updateNotification({
+        id: 'create-image',
+        message: message,
+        autoClose: 3500,
+        icon: <FileX/>
       })
     }
   }
@@ -194,7 +210,7 @@ const Startup = ():JSX.Element => {
 
           <Grid.Col>
             <Center>
-              <Button style={{top:"75%"}}type="submit">Run New Container</Button>
+              <Button style={{top:"75%"}} type="submit">Run New Container</Button>
             </Center>
           </Grid.Col>
 

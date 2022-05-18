@@ -67,7 +67,7 @@ contextBridge.exposeInMainWorld("dockController", {
   },
 
   buildImageResult: (callback:Function) => {
-    ipcRenderer.once('buildImageResult', (_event: Event, arg: boolean|string) => {
+    ipcRenderer.once('buildImageResult', (_event: Event, arg: boolean|string|Error) => {
     callback(arg)
   })
   },

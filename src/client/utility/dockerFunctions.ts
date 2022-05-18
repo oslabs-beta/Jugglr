@@ -1,4 +1,4 @@
-import { cleanNotifications } from "@mantine/notifications";
+import { cleanNotifications , showNotification} from "@mantine/notifications";
 import { container, StartUpObj ,image} from "../../types";
 
 
@@ -37,14 +37,29 @@ export const destructureImageList = (arr:image[]): string[] => {
  * @param callback callback function that will listen for a response from Docker
  */
 export const buildOrRun = async (values:StartUpObj, action:string, callback:Function) => {
+  cleanNotifications()
   if(action==='buildImage'){
     buildImage(values.image)
+    showNotification({
+      id: 'create-image',
+      loading: true,
+      message: 'Creating image',
+      autoClose: false,
+      disallowClose: true,
+    })
     await dockController.buildImageResult((args:boolean|string|Error)=>{
      callback(args)
     })
     
   } else {
     runNewContainer(values)
+    showNotification({
+      id: 'run-new-container',
+      loading: true,
+      message: 'Starting new container',
+      autoClose: false,
+      disallowClose: true,
+    })
     await dockController.runNewResult((args:boolean|string)=>{
     callback(args)
     })
@@ -120,9 +135,17 @@ export const destructureContainerId = (arr:container[]) => {
  * @param action start, top, or remove
  * @param callback function that listens for response from Docker
  */
-export  const startStopOrRemove = async (containerId: string, action:'start' | 'stop'| 'remove', callback:Function) :Promise<void> => {
+export  const startStopOrRemove = async (containerId: string|undefined, action:'start' | 'stop'| 'remove', callback:Function) :Promise<void> => {
     //clear all notifications so only one notification is shown at any given time
-    cleanNotifications(); 
+    cleanNotifications();
+    console.log('here', containerId)
+    if(containerId === undefined){
+      showNotification({
+        message: 'Please select a container from the drop down',
+        autoClose: 3500
+      })
+      return;
+    } 
     if(action==='start'){
       await startContainer(containerId)
       await dockController.startContainerResult((arg:boolean | string)=>{

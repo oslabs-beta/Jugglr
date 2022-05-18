@@ -134,10 +134,8 @@ const Run = ():JSX.Element => {
   const containerRefresh = ()=>{
     if(form2.values.removeSelected===true){
       form2.setFieldValue('removeSelected',false)
-      console.log('false')
     } else {
        form2.setFieldValue('removeSelected',true)
-       console.log('true')
      }
    }
 
