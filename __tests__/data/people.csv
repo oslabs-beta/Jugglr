@@ -1,0 +1,87 @@
+1,Luke Skywalker,77,blond,fair,blue,19BBY,male,1,1,172
+2,C-3PO,75,n/a,gold,yellow,112BBY,n/a,2,1,167
+3,R2-D2,32,n/a,"white, blue",red,33BBY,n/a,2,8,96
+4,Darth Vader,136,none,white,yellow,41.9BBY,male,1,1,202
+5,Leia Organa,49,brown,light,brown,19BBY,female,1,2,150
+6,Owen Lars,120,"brown, grey",light,blue,52BBY,male,1,1,178
+7,Beru Whitesun lars,75,brown,light,blue,47BBY,female,1,1,165
+8,R5-D4,32,n/a,"white, red",red,,n/a,2,1,97
+9,Biggs Darklighter,84,black,light,brown,24BBY,male,1,1,183
+10,Obi-Wan Kenobi,77,"auburn, white",fair,blue-gray,57BBY,male,1,20,182
+11,Anakin Skywalker,84,blond,fair,blue,41.9BBY,male,1,1,188
+12,Wilhuff Tarkin,,"auburn, grey",fair,blue,64BBY,male,1,21,180
+13,Chewbacca,112,brown,,blue,200BBY,male,3,14,228
+14,Han Solo,80,brown,fair,brown,29BBY,male,1,22,180
+15,Greedo,74,n/a,green,black,44BBY,male,4,23,173
+16,Jabba Desilijic Tiure,"1,358",n/a,"green-tan, brown",orange,600BBY,hermaphrodite,5,24,175
+18,Wedge Antilles,77,brown,fair,hazel,21BBY,male,1,22,170
+19,Jek Tono Porkins,110,brown,fair,blue,,male,1,26,180
+20,Yoda,17,white,green,brown,896BBY,male,6,28,66
+21,Palpatine,75,grey,pale,yellow,82BBY,male,1,8,170
+22,Boba Fett,78.2,black,fair,brown,31.5BBY,male,1,10,183
+23,IG-88,140,none,metal,red,15BBY,none,2,28,200
+24,Bossk,113,none,green,red,53BBY,male,7,29,190
+25,Lando Calrissian,79,black,dark,brown,31BBY,male,1,30,177
+26,Lobot,79,none,light,blue,37BBY,male,1,6,175
+27,Ackbar,83,none,brown mottle,orange,41BBY,male,8,31,180
+28,Mon Mothma,,auburn,fair,blue,48BBY,female,1,32,150
+29,Arvel Crynyd,,brown,fair,brown,,male,1,28,
+30,Wicket Systri Warrick,20,brown,brown,brown,8BBY,male,9,7,88
+31,Nien Nunb,68,none,grey,black,,male,10,33,160
+32,Qui-Gon Jinn,89,brown,fair,blue,92BBY,male,1,28,193
+33,Nute Gunray,90,none,mottled green,red,,male,11,18,191
+34,Finis Valorum,,blond,fair,blue,91BBY,male,1,9,170
+36,Jar Jar Binks,66,none,orange,orange,52BBY,male,12,8,196
+37,Roos Tarpals,82,none,grey,orange,,male,12,8,224
+38,Rugor Nass,,none,green,orange,,male,12,8,206
+39,Ric Olié,,brown,fair,blue,,male,,8,183
+40,Watto,,black,"blue, grey",yellow,,male,13,34,137
+41,Sebulba,40,none,"grey, red",orange,,male,14,35,112
+42,Quarsh Panaka,,black,dark,brown,62BBY,male,,8,183
+43,Shmi Skywalker,,black,fair,brown,72BBY,female,1,1,163
+44,Darth Maul,80,none,red,yellow,54BBY,male,22,36,175
+45,Bib Fortuna,,none,pale,pink,,male,15,37,180
+46,Ayla Secura,55,none,blue,hazel,48BBY,female,15,37,178
+48,Dud Bolt,45,none,"blue, grey",yellow,,male,17,39,94
+49,Gasgano,,none,"white, blue",black,,male,18,40,122
+50,Ben Quadinaros,65,none,"grey, green, yellow",orange,,male,19,41,163
+51,Mace Windu,84,none,dark,brown,72BBY,male,1,42,188
+52,Ki-Adi-Mundi,82,white,pale,yellow,92BBY,male,20,43,198
+53,Kit Fisto,87,none,green,black,,male,21,44,196
+54,Eeth Koth,,black,brown,brown,,male,22,45,171
+55,Adi Gallia,50,none,dark,blue,,female,23,9,184
+56,Saesee Tiin,,none,pale,orange,,male,24,47,188
+57,Yarael Poof,,none,white,yellow,,male,25,48,264
+58,Plo Koon,80,none,orange,black,22BBY,male,26,49,188
+59,Mas Amedda,,none,blue,blue,,male,27,50,196
+60,Gregar Typho,85,black,dark,brown,,male,1,8,185
+61,Cordé,,brown,light,brown,,female,1,8,157
+62,Cliegg Lars,,brown,fair,blue,82BBY,male,1,1,183
+63,Poggle the Lesser,80,none,green,yellow,,male,28,11,183
+64,Luminara Unduli,56.2,black,yellow,blue,58BBY,female,29,51,170
+65,Barriss Offee,50,black,yellow,blue,40BBY,female,29,51,166
+66,Dormé,,brown,light,brown,,female,1,8,165
+67,Dooku,80,white,fair,brown,102BBY,male,1,52,193
+68,Bail Prestor Organa,,black,tan,brown,67BBY,male,1,2,191
+69,Jango Fett,79,black,tan,brown,66BBY,male,1,53,183
+70,Zam Wesell,55,blonde,"fair, green, yellow",yellow,,female,30,54,168
+71,Dexter Jettster,102,none,brown,yellow,,male,31,55,198
+72,Lama Su,88,none,grey,black,,male,32,10,229
+73,Taun We,,none,grey,black,,female,32,10,213
+74,Jocasta Nu,,white,fair,blue,,female,1,9,167
+47,Ratts Tyerell,15,none,"grey, blue",,,male,16,38,79
+75,R4-P17,,none,"silver, red","red, blue",,female,,28,96
+76,Wat Tambor,48,none,"green, grey",,,male,33,56,193
+77,San Hill,,none,grey,gold,,male,34,57,191
+78,Shaak Ti,57,none,"red, blue, white",black,,female,35,58,178
+79,Grievous,159,none,"brown, white","green, yellow",,male,36,59,216
+80,Tarfful,136,brown,brown,blue,,male,3,14,234
+81,Raymus Antilles,79,brown,light,brown,,male,1,2,188
+82,Sly Moore,48,none,pale,white,,female,,60,178
+83,Tion Medon,80,none,grey,black,,male,37,12,206
+84,Finn,,black,dark,dark,,male,1,28,
+85,Rey,,brown,light,hazel,,female,1,28,
+86,Poe Dameron,,brown,light,brown,,male,1,28,
+87,BB8,,none,none,black,,none,2,28,
+88,Captain Phasma,,,,,,female,,28,
+35,Padmé Amidala,45,brown,light,brown,46BBY,female,1,8,165

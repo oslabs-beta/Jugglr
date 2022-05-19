@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "jsx": "react-jsx", 
+    "module": "commonjs", 
+    "esModuleInterop": true,
+
+    "preserveConstEnums": true,
+    "types": ["react/next", "react-dom/next", "node", "jest", "pg", ],
+    "forceConsistentCasingInFileNames": true, 
+    "strict": true, 
+    "noImplicitAny": false,  
+    "noUnusedParameters": true,                      
+    "skipLibCheck": true,
+    "moduleResolution": "node",
+    "outDir": "./build",
+    "lib": ["DOM","es6"],
+    "checkJs": false,
+  },
+  "ts-node": {
+    "transpileOnly": true,
+    "files": true,
+    "compilerOptions": {
+      "rootDir": "./"
+    }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["__tests__/**/*"]
+}
