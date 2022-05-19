@@ -103,6 +103,6 @@ Jugglr is an open source product and we encourage other developers to make impro
  
  Ideas for enhancements:
  - Add support for MongoDB and other popular databases
- - Maintain more than one Dockerfile so users can load data to different databases for different projects without having to switch out the Dockerfile each    time (Maybe consider using a .yml file)
+ - Maintain more than one Dockerfile so users can load data to different databases for different projects without having to switch out the Dockerfile each time (Maybe consider using a .yml file)
  - Render Docker commands directly in the app to pass on to the CI/CD team 
  
