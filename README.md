@@ -97,7 +97,7 @@ docker exec -it <container name>  psql -U <database username> -d <databasename> 
 ## How to Contribute:
 
 Jugglr is an open source product and we encourage other developers to make improvements to the application. If you would like to contribute to Jugglr, head over to the dev branch, fork it, pull down the code, and create your own feature branch in the format name/feature. Run
-```bash 'npm install', 'npm run build', and 'npm start' ```
+```'npm install', 'npm run build', and 'npm start' ```
 to see the app at it's current state. Once you've made your changes, push it back up to your feature branch and create a pull request into the original dev branch and the team will review your changes.
 
  ## Enhancements:
