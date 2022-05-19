@@ -104,6 +104,7 @@ const grabPorts = async (): Promise<void> => {
       
     }
     dispatch(setEnvConfig(values));
+    portRefresh();
   }
       
       /**
@@ -138,7 +139,7 @@ const grabPorts = async (): Promise<void> => {
   
     {/* tablePath and tableName fields are wrapped in a form to leverage Mantine useForm hook */}
       <form  style={{display:'flex', flexDirection:'column', alignItems:"center"}} onSubmit={form.onSubmit((values)=> {loadData(values,notifyUser); })}>
-         
+         {/* onclick calls useEffect to refresh container list in case user removes or starts ports outside of Jugglr app while app is opened to this page */}
          <NativeSelect  required  style={{width:"60%"}} placeholder="Select Port" label="Select A Port" onClick={()=> portRefresh()} data={activePorts} onChange={(event)=> setSelectedPort(event)} />
 
          <Space h={50}/>
