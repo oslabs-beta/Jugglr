@@ -53,7 +53,7 @@ const Startup = ():JSX.Element => {
   /**
    * function to update local state 'imageSubmitted', which will trigger useEffect hook'
    */
-  const imageCreated = ():void => {
+  const imageRefresh = ():void => {
      if(form1.values.imageSubmitted===false){
         form1.setFieldValue('imageSubmitted',true)
       } else {
@@ -84,7 +84,8 @@ const Startup = ():JSX.Element => {
         icon: <CircleCheck/>,
       })
     }
-   
+  imageRefresh()
+  }
     /**
    * 
    * @param args 'args' is the listener response received from the back end
@@ -92,7 +93,6 @@ const Startup = ():JSX.Element => {
    * callback function passed into listener - displays a notification that is either an error message (if args is a string) or a success message (if args is a boolean) 
    * 
    */
-  }
   const notifyUserImage = (arg:boolean|string|Error) => {
     if(typeof arg==='boolean'){
       updateNotification({
@@ -117,6 +117,7 @@ const Startup = ():JSX.Element => {
         icon: <FileX/>
       })
     }
+    imageRefresh()
   }
  
  
@@ -182,7 +183,8 @@ const Startup = ():JSX.Element => {
 
           <Grid.Col>
             <Center>
-              <NativeSelect style={{width:"60%"}} placeholder="select image" label="Image" data={dropDownImage} onClick= {()=>imageCreated()} onChange={(event)=> form1.setFieldValue('selectedImage', event.currentTarget.value)} />
+              {/* onclick calls useEffect in case user creates docker images outside of application while app is opened to this page */}
+              <NativeSelect style={{width:"60%"}} placeholder="select image" label="Image" data={dropDownImage} onClick= {()=>imageRefresh()} onChange={(event)=> form1.setFieldValue('selectedImage', event.currentTarget.value)} />
             </Center>
           </Grid.Col>
 

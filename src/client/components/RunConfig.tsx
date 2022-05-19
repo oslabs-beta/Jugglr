@@ -79,7 +79,8 @@ const Run = ():JSX.Element => {
         autoClose: 3500
       }) 
     }
-      
+    containerRefresh()
+
   }
 
    /**
@@ -102,6 +103,8 @@ const Run = ():JSX.Element => {
         autoClose: 3500
       })
     }
+    containerRefresh()
+
   }
 
   /**
@@ -125,6 +128,7 @@ const Run = ():JSX.Element => {
         autoClose: 3500
       }) 
     }
+    containerRefresh()
   }
   
  
@@ -151,6 +155,8 @@ const Run = ():JSX.Element => {
       <div style={{position: "relative",}}>
           <form style={{position:"absolute",left:"18%", width:"80%" }} > 
             {/* set containerNames global state as drop down options. Selected container will be stored in local form state */}
+            {/* onclick calls useEffect to refresh container list in case user removes containers outside of Jugglr app while app is opened to this page */}
+
             <NativeSelect  required  style={{width:"80%"}} placeholder="Select Container" onClick={()=>containerRefresh()} label="Select A Container" data={containerNames} onChange={(event)=> updateSelectedContainer(event)} />
             <div style={{position:"relative",}}>
               <div
